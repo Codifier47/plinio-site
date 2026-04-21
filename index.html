@@ -13,7 +13,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Borel&family=Architects+Daughter&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
   <style>
     :root {
@@ -23,7 +25,7 @@
       --ink-muted: #8a8578;
       --rule: rgba(26, 26, 26, 0.18);
       --serif: "Fraunces", Georgia, "Times New Roman", serif;
-      --script: "Architects Daughter", "Brush Script MT", cursive;
+      --script: "Borel", cursive;
       --sans: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
@@ -101,44 +103,22 @@
       font-style: italic;
     }
 
-    /* Handwritten "Welcome" with warm gradient + left-to-right reveal */
-    .hero .welcome {
-      font-family: var(--script);
-      font-weight: 600;
-      font-size: clamp(72px, 12vw, 170px);
-      line-height: 1;
-      letter-spacing: 0;
-      transform: translateY(-0.05em);
-      transform-origin: left center;
-
-      background: linear-gradient(
-        92deg,
-        #ff6bb3 0%,
-        #ff2d8a 22%,
-        #ff3d3d 48%,
-        #ff7a3d 74%,
-        #f5b84a 100%
-      );
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-
-      padding-right: 0.15em;
-      clip-path: inset(0 100% 0 0);
-      animation: welcome-reveal 7s cubic-bezier(0.65, 0.05, 0.35, 1) infinite;
+    .hero .welcome-lottie {
+      display: inline-block;
+      width: clamp(280px, 46vw, 640px);
+      transform: translateY(0.1em);
+      flex-shrink: 0;
     }
 
-    @keyframes welcome-reveal {
-      0%   { clip-path: inset(0 100% 0 0); }
-      37%  { clip-path: inset(0 -5% 0 0); }
-      93%  { clip-path: inset(0 -5% 0 0); }
-      100% { clip-path: inset(0 100% 0 0); }
+    .hero .welcome-lottie lottie-player {
+      width: 100%;
+      height: auto;
     }
 
     .script-grad {
-      font-family: "Architects Daughter", "Brush Script MT", cursive;
+      font-family: "Borel", cursive;
       font-weight: 400;
-      font-size: 1.15em;
+      font-size: 1em;
       background: linear-gradient(
         92deg,
         #ff6bb3 0%,
@@ -402,7 +382,15 @@
     <header class="hero" id="top">
       <div class="hi-row">
         <span class="greeting reveal">Hi,</span>
-        <span class="welcome" aria-label="Welcome">Welcome</span>
+        <div class="welcome-lottie">
+          <lottie-player
+            id="welcome-lottie"
+            src="./welcome.json"
+            background="transparent"
+            speed="1"
+            style="width:100%;height:auto;"
+          ></lottie-player>
+        </div>
       </div>
       <h1 class="reveal">I'm <strong>Plinio Diouf</strong> — a payments and product professional based in Austin, Texas.</h1>
     </header>
@@ -418,7 +406,7 @@
 
     <section id="work">
       <div class="section-label reveal">Experience</div>
-      <h2 class="section-heading reveal">Seven years, three continents, one thing — <span class="script-grad">payments.</span></h2>
+      <h2 class="section-heading reveal">Seven years, three continents, one thing — <span class="script-grad">Payments.</span></h2>
 
       <div class="xp-list reveal">
 
@@ -572,6 +560,40 @@
     document.querySelectorAll(".hero .reveal").forEach((el, i) => {
       el.style.transitionDelay = (i * 120) + "ms";
     });
+  </script>
+
+  <script>
+  const lottieEl = document.getElementById('welcome-lottie');
+
+  const DRAW_END = 196;
+  const ERASE_START = 292;
+  const HOLD_MS = 4000;
+
+  let holding = false;
+
+  lottieEl.addEventListener('ready', () => {
+    lottieEl.play();
+  });
+
+  lottieEl.addEventListener('frame', (e) => {
+    const frame = Math.floor(e.detail.frame);
+    if (!holding && frame >= DRAW_END) {
+      holding = true;
+      lottieEl.pause();
+      setTimeout(() => {
+        lottieEl.seek(ERASE_START);
+        lottieEl.play();
+        holding = false;
+      }, HOLD_MS);
+    }
+  });
+
+  lottieEl.addEventListener('complete', () => {
+    if (!holding) {
+      lottieEl.seek(0);
+      lottieEl.play();
+    }
+  });
   </script>
 
 </body>
