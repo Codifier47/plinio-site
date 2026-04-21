@@ -1,40 +1,60 @@
 # plinio.me — Deploy Guide
 
-Your personal CV site. One file: `index.html`. That's it.
+Your personal CV site. One file: `index.html`. Everything else is optional.
 
 ---
 
-## What you need to do (in order)
+## What's already done
 
-### 1. Personalize the content (15 min)
-Open `index.html` in any text editor (Claude Code works great). Use **Find & Replace** to update these:
+Your CV content is **already in the site**:
+- Hero with your name and location
+- Full About section pulled from your CV's summary
+- Four work experiences (Betaramps, Cellulant, EBANX x2) with the full bullets
+- Education (UT Austin, HBS CORe, University of Kent)
+- Skills, tools, languages
+- Contact block with `dioufplinio@gmail.com`
 
-- Replace `Plinio Drumond` with your full name
-- Update the `<h1>` tagline if you want different wording
-- Update the **Experience** section — I put placeholders like `[UK Payments Co.]` and `[Company]`. Swap in real company names, roles, and years from your cv.md.
-- Update the **About** section paragraphs
-- Replace `plinio-diouf` in the LinkedIn link with your actual LinkedIn handle
-- Replace `dioufplinio@gmail.com` with whatever email you want to use (you can set this up later through GoDaddy email)
-- CV link points to Google Drive: `https://drive.google.com/file/d/1lTYNBsEaNjb2P0tUfHYwGA1zWWB0oklR/view?usp=sharing`
+**You only need to do three small things before deploying** (see Step 1 below).
 
-### 2. Put it on GitHub (10 min)
-Vercel deploys from GitHub. If you don't have an account, make one at github.com.
+---
+
+## 1. Small tweaks before deploy (5 min)
+
+Open `index.html` in Claude Code or any text editor and do a Find & Replace for these:
+
+**a) Add your LinkedIn URL.** Search for `YOUR-LINKEDIN` and replace it with your actual LinkedIn vanity URL (whatever comes after `linkedin.com/in/`).
+
+**b) Drop in your CV PDF.** Rename your CV PDF to `plinio-diouf-cv.pdf` and place it in the same folder as `index.html`. The "Download CV" button already points at that filename.
+
+→ You have two CVs (Payment and Product). Recommendation: use the **Product** version as the default download — it's the broader of the two and aligns with the PM roles at the top of your target list. Rename `Product_-_CV_Plinio_-_USA.pdf` to `plinio-diouf-cv.pdf`.
+
+**c) (Optional) Change the email.** If you want a `hello@plinio.me` or `plinio@plinio.me` address later, use Find & Replace to swap `dioufplinio@gmail.com` with the new address. For now, Gmail is totally fine — it's what recruiters will expect and it's what's on your CV.
+
+That's it. Now you're ready to deploy.
+
+---
+
+## 2. Put it on GitHub (10 min)
+
+Vercel deploys from GitHub. If you don't have an account, make one at github.com (free).
 
 In **Mac Terminal**, run these grouped commands:
 
 ```bash
-cd ~/Downloads
 # move the site folder somewhere sensible
-mv plinio-site ~/Sites/plinio-site 2>/dev/null || mkdir -p ~/Sites && mv plinio-site ~/Sites/
+mkdir -p ~/Sites
+mv ~/Downloads/plinio-site ~/Sites/plinio-site
 cd ~/Sites/plinio-site
 
-# init git
+# initialize git
 git init
 git add .
 git commit -m "Initial site"
 ```
 
-Then on github.com: **New repository** → name it `plinio-site` → don't add README/license → create. GitHub will show you two commands to push; they look like:
+Then on **github.com**: click **New repository** → name it `plinio-site` → leave it public, don't add README/license → **Create repository**.
+
+GitHub will show you commands to push. They look like this (substitute your actual username):
 
 ```bash
 git remote add origin https://github.com/YOUR-USERNAME/plinio-site.git
@@ -42,64 +62,77 @@ git branch -M main
 git push -u origin main
 ```
 
-Run those in Mac Terminal.
+Run those in Mac Terminal. Refresh the GitHub page — your files should appear.
 
-### 3. Deploy to Vercel (5 min)
-- Go to **vercel.com** → sign up with your GitHub account
+---
+
+## 3. Deploy to Vercel (5 min)
+
+- Go to **vercel.com** → **Sign Up with GitHub**
 - Click **Add New → Project**
-- Import your `plinio-site` repo
-- Framework Preset: **Other** (Vercel will auto-detect static HTML)
+- Find and import your `plinio-site` repo
+- Framework Preset: **Other** (Vercel auto-detects static HTML — no config needed)
 - Click **Deploy**
 
-In ~30 seconds you'll have a live URL like `plinio-site-abc123.vercel.app`. **Test it.**
+In ~30 seconds you'll get a live URL like `plinio-site-abc123.vercel.app`. **Open it, test it.** Check that the CV downloads, the LinkedIn link works, the layout looks right on your phone.
 
-### 4. Connect plinio.me (10 min)
-In the Vercel project dashboard:
-- Go to **Settings → Domains**
-- Add `plinio.me` and `www.plinio.me`
-- Vercel will show you **2 DNS records** to add (an A record and a CNAME, or a set of nameservers)
+---
 
-Then in **GoDaddy**:
-- Log in → **My Products** → find plinio.me → **DNS**
-- Add the records Vercel gave you (delete conflicting default records — GoDaddy usually has a parked-page A record you'll need to remove)
+## 4. Connect plinio.me (10 min + DNS wait)
+
+**In Vercel:**
+- Open your project → **Settings → Domains**
+- Add `plinio.me`
+- Add `www.plinio.me` (Vercel will auto-redirect one to the other)
+- Vercel shows you DNS records to add — usually an `A` record pointing to `76.76.21.21` and a `CNAME` for `www` pointing to `cname.vercel-dns.com`
+
+**In GoDaddy:**
+- Log in → **My Products** → find **plinio.me** → click **DNS**
+- Delete any existing `A` record pointing to a parked page
+- Add the records Vercel gave you (exactly as shown — GoDaddy's interface has an "Add Record" button)
 - Save
 
-DNS propagation takes **5 min to a few hours**. Once it propagates, plinio.me loads your site. Vercel automatically provisions a free SSL cert, so you'll get https:// too.
+**Then wait.** DNS propagation takes anywhere from 5 minutes to a few hours. You can check progress at dnschecker.org. Once it propagates, `plinio.me` loads your site and Vercel auto-provisions a free SSL cert (so you get `https://` automatically).
 
 ---
 
 ## Updating the site later
 
-Any time you want to change something:
+Want to tweak a bullet, add a new role, swap out the CV?
 
 ```bash
 cd ~/Sites/plinio-site
-# edit index.html
+# edit index.html in Claude Code or your editor
 git add .
-git commit -m "Update experience section"
+git commit -m "Updated experience"
 git push
 ```
 
-Vercel auto-deploys in ~20 seconds. That's it.
+Vercel auto-deploys in ~20 seconds. Live.
 
 ---
 
-## Questions you might have
+## FAQ
 
 **Do I need to pay for anything?**
-No. Vercel is free for personal sites. GitHub is free. You already paid for the domain.
+No. Vercel is free for personal sites (under 100GB bandwidth/month — you won't come close). GitHub is free. You already paid for the domain.
 
-**What about email (dioufplinio@gmail.com)?**
-Vercel handles the website, but email needs a separate service. Easiest option: activate email through GoDaddy (the "Activate Email" button you saw on your dashboard) — comes free with some domain purchases. Or use Cloudflare Email Routing for free forwarding to your Gmail.
+**What about email (hello@plinio.me)?**
+The site uses your Gmail (`dioufplinio@gmail.com`) for now. If you want a `@plinio.me` address later, two free options:
+- **GoDaddy email**: click the "Activate Email" button on your GoDaddy dashboard (comes free with some domains)
+- **Cloudflare Email Routing**: free forwarding — anything sent to `hello@plinio.me` lands in your Gmail inbox
 
-**What if I want to add more sections (projects, writing, etc.) later?**
-The HTML is organized by section with clear comments (`<!-- ABOUT -->`, `<!-- EXPERIENCE -->`, etc.). Copy an existing section and modify it. Or just ask me.
+**Can I add more sections later (projects, writing, case studies)?**
+Yes. The HTML has clear section comments (`<!-- ABOUT -->`, `<!-- EXPERIENCE -->`, etc.). Copy an existing `section` block and modify it. Or just ask Claude to do it.
+
+**Should I use the Payment CV or the Product CV as the download?**
+My vote: **Product CV** as the default download. Your target roles lean PM. Recruiters scanning LinkedIn and applying for PM roles expect that framing. The only reason to host the Payment CV would be if you're specifically applying to roles like "Payments Ops" or "Payment Strategy" — in which case, swap the download temporarily for that application.
 
 ---
 
-## Design notes (so you know what to tweak)
+## Design notes
 
-- **Fonts**: Fraunces (serif, for headings) + Inter Tight (sans, for body). Both free via Google Fonts, already loaded.
-- **Colors**: Warm off-white paper (`#f4f1ea`) with near-black ink and a burnt-orange accent (`#c8441f`). All defined as CSS variables at the top of `<style>` — change them once, affects the whole site.
-- **Layout**: Single page, responsive. Mobile version collapses the experience grid into a stacked list.
-- **Animations**: Subtle fade-in on scroll, hover states on experience rows and project cards. Nothing flashy.
+- **Fonts**: Fraunces (serif, for headings) + Inter Tight (sans, for body). Both free via Google Fonts.
+- **Colors**: Warm off-white paper (`#f4f1ea`) with near-black ink. No accent color — kept it restrained per your "genuine, simple, clean" direction. All defined as CSS variables at the top of `<style>` — change them once, the whole site updates.
+- **Layout**: Single page, responsive. Mobile collapses the year column into a stacked list.
+- **Animations**: Subtle fade-in on scroll. Nothing flashy.
