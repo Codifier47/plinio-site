@@ -13,7 +13,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet" />
 
   <style>
     :root {
@@ -23,7 +23,7 @@
       --ink-muted: #8a8578;
       --rule: rgba(26, 26, 26, 0.18);
       --serif: "Fraunces", Georgia, "Times New Roman", serif;
-      --script: "Caveat", "Brush Script MT", cursive;
+      --script: "Architects Daughter", "Brush Script MT", cursive;
       --sans: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
@@ -88,8 +88,8 @@
     .hero .hi-row {
       display: flex;
       align-items: baseline;
-      gap: 18px;
-      flex-wrap: wrap;
+      gap: 12px;
+      flex-wrap: nowrap;
     }
 
     .hero .greeting {
@@ -105,10 +105,10 @@
     .hero .welcome {
       font-family: var(--script);
       font-weight: 600;
-      font-size: clamp(80px, 14vw, 200px);
+      font-size: clamp(72px, 12vw, 170px);
       line-height: 1;
       letter-spacing: 0;
-      transform: rotate(-3deg) translateY(-0.08em);
+      transform: translateY(-0.05em);
       transform-origin: left center;
 
       background: linear-gradient(
@@ -133,6 +133,24 @@
       37%  { clip-path: inset(0 -5% 0 0); }
       93%  { clip-path: inset(0 -5% 0 0); }
       100% { clip-path: inset(0 100% 0 0); }
+    }
+
+    .script-grad {
+      font-family: "Architects Daughter", "Brush Script MT", cursive;
+      font-weight: 400;
+      font-size: 1.15em;
+      background: linear-gradient(
+        92deg,
+        #ff6bb3 0%,
+        #ff2d8a 22%,
+        #ff3d3d 48%,
+        #ff7a3d 74%,
+        #f5b84a 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline;
     }
 
     .hero h1 {
@@ -400,7 +418,7 @@
 
     <section id="work">
       <div class="section-label reveal">Experience</div>
-      <h2 class="section-heading reveal">Seven years, three continents, one thing — payments.</h2>
+      <h2 class="section-heading reveal">Seven years, three continents, one thing — <span class="script-grad">payments.</span></h2>
 
       <div class="xp-list reveal">
 
@@ -502,9 +520,9 @@
         <div class="skills-block">
           <div class="skills-label">Languages</div>
           <ul>
-            <li>English — fluent</li>
-            <li>French — fluent</li>
-            <li>Portuguese — fluent</li>
+            <li><span class="script-grad">English</span> — fluent</li>
+            <li><span class="script-grad">French</span> — fluent</li>
+            <li><span class="script-grad">Portuguese</span> — fluent</li>
           </ul>
         </div>
         <div class="skills-block">
@@ -540,7 +558,7 @@
 
     <footer>
       <div class="loc">Austin, Texas</div>
-      <div>Clauded with Love, Plinio 2026</div>
+      <div><span class="script-grad">Clauded with Love, Plinio 2026</span></div>
     </footer>
 
   </div>
