@@ -388,6 +388,7 @@
             src="./welcome-animation.json"
             background="transparent"
             speed="1"
+            autoplay
             style="width:100%;height:auto;"
           ></lottie-player>
         </div>
@@ -406,7 +407,7 @@
 
     <section id="work">
       <div class="section-label reveal">Experience</div>
-      <h2 class="section-heading reveal">Seven years, three continents, one thing — <span class="script-grad">payments.</span></h2>
+      <h2 class="section-heading reveal">Seven years, three continents, one thing — <span class="script-grad">Payments.</span></h2>
 
       <div class="xp-list reveal">
 
@@ -567,8 +568,12 @@
   const ERASE_START = 292;
   const HOLD_MS = 4000;
   let holding = false;
+  let started = false;
 
-  function startLottie(lottieEl) {
+  function attachListeners(lottieEl) {
+    if (started) return;
+    started = true;
+
     lottieEl.addEventListener('frame', (e) => {
       const frame = Math.floor(e.detail.frame);
       if (!holding && frame >= DRAW_END) {
@@ -588,31 +593,21 @@
         lottieEl.play();
       }
     });
-
-    lottieEl.play();
   }
 
-  // Poll until the lottie player has a live instance, then start
-  function waitForLottie() {
+  window.addEventListener('load', () => {
     const lottieEl = document.getElementById('welcome-lottie');
-    if (!lottieEl) { setTimeout(waitForLottie, 100); return; }
+    if (!lottieEl) return;
 
-    // getLottieInstance is available once the element is fully initialized
-    const check = setInterval(() => {
-      const instance = lottieEl.getLottieInstance ? lottieEl.getLottieInstance() : null;
-      if (instance) {
-        clearInterval(check);
-        startLottie(lottieEl);
-      }
-    }, 100);
-  }
+    // Wait for custom element to be defined and upgraded
+    customElements.whenDefined('lottie-player').then(() => {
+      // Additional small delay to ensure internal state is ready
+      setTimeout(() => attachListeners(lottieEl), 300);
+    });
 
-  // Start polling after DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', waitForLottie);
-  } else {
-    waitForLottie();
-  }
+    // Also listen for ready event as backup
+    lottieEl.addEventListener('ready', () => attachListeners(lottieEl));
+  });
   </script>
 
 </body>
