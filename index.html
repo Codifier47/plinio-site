@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Borel&family=Architects+Daughter&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet" />
 
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@1.5.7/dist/lottie-player.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 
   <style>
     :root {
@@ -110,9 +110,11 @@
       flex-shrink: 0;
     }
 
-    .hero .welcome-lottie lottie-player {
+    .hero .welcome-lottie > div,
+    .hero .welcome-lottie svg {
       width: 100%;
       height: auto;
+      display: block;
     }
 
     .script-grad {
@@ -383,14 +385,7 @@
       <div class="hi-row">
         <span class="greeting reveal">Hi,</span>
         <div class="welcome-lottie">
-          <lottie-player
-            id="welcome-lottie"
-            src="./welcome-animation.json"
-            background="transparent"
-            speed="1"
-            autoplay
-            style="width:100%;height:auto;"
-          ></lottie-player>
+          <div id="welcome-lottie" aria-label="Welcome animation" role="img"></div>
         </div>
       </div>
       <h1 class="reveal">I'm <strong>Plinio Diouf</strong> — a payments and product professional based in Austin, Texas.</h1>
@@ -564,50 +559,48 @@
   </script>
 
   <script>
-  const DRAW_END = 196;
-  const ERASE_START = 292;
-  const HOLD_MS = 4000;
-  let holding = false;
-  let started = false;
+    // Welcome animation: draw → hold 4s → erase → loop, using lottie-web directly.
+    (function () {
+      const container = document.getElementById('welcome-lottie');
+      if (!container || typeof lottie === 'undefined') return;
 
-  function attachListeners(lottieEl) {
-    if (started) return;
-    started = true;
+      const DRAW_START  = 0;
+      const DRAW_END    = 196;
+      const ERASE_START = 292;
+      const ERASE_END   = 470;
+      const HOLD_MS     = 4000;
 
-    lottieEl.addEventListener('frame', (e) => {
-      const frame = Math.floor(e.detail.frame);
-      if (!holding && frame >= DRAW_END) {
-        holding = true;
-        lottieEl.pause();
-        setTimeout(() => {
-          lottieEl.seek(ERASE_START);
-          lottieEl.play();
-          holding = false;
-        }, HOLD_MS);
+      const anim = lottie.loadAnimation({
+        container,
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        path: './welcome-animation.json',
+        rendererSettings: { preserveAspectRatio: 'xMidYMid meet' }
+      });
+
+      let phase = 'idle'; // 'drawing' | 'holding' | 'erasing'
+
+      function playDraw() {
+        phase = 'drawing';
+        anim.playSegments([DRAW_START, DRAW_END], true);
       }
-    });
-
-    lottieEl.addEventListener('complete', () => {
-      if (!holding) {
-        lottieEl.seek(0);
-        lottieEl.play();
+      function playErase() {
+        phase = 'erasing';
+        anim.playSegments([ERASE_START, ERASE_END], true);
       }
-    });
-  }
 
-  window.addEventListener('load', () => {
-    const lottieEl = document.getElementById('welcome-lottie');
-    if (!lottieEl) return;
+      anim.addEventListener('DOMLoaded', playDraw);
 
-    // Wait for custom element to be defined and upgraded
-    customElements.whenDefined('lottie-player').then(() => {
-      // Additional small delay to ensure internal state is ready
-      setTimeout(() => attachListeners(lottieEl), 300);
-    });
-
-    // Also listen for ready event as backup
-    lottieEl.addEventListener('ready', () => attachListeners(lottieEl));
-  });
+      anim.addEventListener('complete', () => {
+        if (phase === 'drawing') {
+          phase = 'holding';
+          setTimeout(playErase, HOLD_MS);
+        } else if (phase === 'erasing') {
+          playDraw();
+        }
+      });
+    })();
   </script>
 
 </body>
