@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Borel&family=Architects+Daughter&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet" />
 
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@1.5.7/dist/lottie-player.js"></script>
 
   <style>
     :root {
@@ -118,7 +118,7 @@
     .script-grad {
       font-family: "Borel", cursive;
       font-weight: 400;
-      font-size: 1em;
+      font-size: 1.15em;
       background: linear-gradient(
         92deg,
         #ff6bb3 0%,
@@ -406,7 +406,7 @@
 
     <section id="work">
       <div class="section-label reveal">Experience</div>
-      <h2 class="section-heading reveal">Seven years, three continents, one thing — <span class="script-grad">Payments.</span></h2>
+      <h2 class="section-heading reveal">Seven years, three continents, one thing — <span class="script-grad">payments.</span></h2>
 
       <div class="xp-list reveal">
 
@@ -563,37 +563,56 @@
   </script>
 
   <script>
-  const lottieEl = document.getElementById('welcome-lottie');
-
   const DRAW_END = 196;
   const ERASE_START = 292;
   const HOLD_MS = 4000;
-
   let holding = false;
 
-  lottieEl.addEventListener('ready', () => {
-    lottieEl.play();
-  });
+  function startLottie(lottieEl) {
+    lottieEl.addEventListener('frame', (e) => {
+      const frame = Math.floor(e.detail.frame);
+      if (!holding && frame >= DRAW_END) {
+        holding = true;
+        lottieEl.pause();
+        setTimeout(() => {
+          lottieEl.seek(ERASE_START);
+          lottieEl.play();
+          holding = false;
+        }, HOLD_MS);
+      }
+    });
 
-  lottieEl.addEventListener('frame', (e) => {
-    const frame = Math.floor(e.detail.frame);
-    if (!holding && frame >= DRAW_END) {
-      holding = true;
-      lottieEl.pause();
-      setTimeout(() => {
-        lottieEl.seek(ERASE_START);
+    lottieEl.addEventListener('complete', () => {
+      if (!holding) {
+        lottieEl.seek(0);
         lottieEl.play();
-        holding = false;
-      }, HOLD_MS);
-    }
-  });
+      }
+    });
 
-  lottieEl.addEventListener('complete', () => {
-    if (!holding) {
-      lottieEl.seek(0);
-      lottieEl.play();
-    }
-  });
+    lottieEl.play();
+  }
+
+  // Poll until the lottie player has a live instance, then start
+  function waitForLottie() {
+    const lottieEl = document.getElementById('welcome-lottie');
+    if (!lottieEl) { setTimeout(waitForLottie, 100); return; }
+
+    // getLottieInstance is available once the element is fully initialized
+    const check = setInterval(() => {
+      const instance = lottieEl.getLottieInstance ? lottieEl.getLottieInstance() : null;
+      if (instance) {
+        clearInterval(check);
+        startLottie(lottieEl);
+      }
+    }, 100);
+  }
+
+  // Start polling after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', waitForLottie);
+  } else {
+    waitForLottie();
+  }
   </script>
 
 </body>
