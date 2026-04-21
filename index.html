@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plinio Drumond — Product & Payments</title>
+  <meta name="description" content="Plinio Drumond — Product, Payments, and Customer Success. Currently seeking PM / Payments / CSM opportunities in the US." />
+
+  <!-- Open Graph (so LinkedIn / Slack / iMessage previews look good) -->
+  <meta property="og:title" content="Plinio Drumond — Product & Payments" />
+  <meta property="og:description" content="Product, Payments, and Customer Success. Based in Austin, TX." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://plinio.me" />
+
+  <!-- Fonts: Fraunces (editorial display serif) + Inter Tight (refined body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --paper: #f4f1ea;
+      --ink: #1a1a1a;
+      --ink-soft: #4a4a4a;
+      --ink-muted: #8a8578;
+      --accent: #c8441f;
+      --rule: #1a1a1a;
+      --serif: "Fraunces", Georgia, "Times New Roman", serif;
+      --sans: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 17px;
+      line-height: 1.55;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* Subtle paper grain */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    }
+
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 2; }
+
+    /* ---------- NAV ---------- */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 32px 0 0;
+    }
+
+    .logo {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 500;
+      font-style: italic;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 400;
+      position: relative;
+      padding-bottom: 2px;
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    /* ---------- HERO ---------- */
+    .hero {
+      padding: 120px 0 100px;
+      position: relative;
+    }
+
+    .hero .greeting {
+      font-family: var(--serif);
+      font-size: clamp(64px, 11vw, 160px);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.035em;
+      font-style: italic;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(44px, 7vw, 96px);
+      font-weight: 400;
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+      margin-top: 12px;
+      max-width: 900px;
+    }
+
+    .hero h1 .accent { color: var(--accent); font-style: italic; font-weight: 300; }
+
+    .hero-meta {
+      display: flex;
+      gap: 48px;
+      margin-top: 72px;
+      padding-top: 28px;
+      border-top: 1px solid var(--ink);
+      flex-wrap: wrap;
+    }
+
+    .hero-meta .block { flex: 1; min-width: 180px; }
+    .hero-meta .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--ink-muted);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .hero-meta .value {
+      font-family: var(--serif);
+      font-size: 19px;
+      font-weight: 400;
+    }
+
+    /* Status dot */
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border: 1px solid var(--ink);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 28px;
+    }
+    .status .dot {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    /* ---------- SECTIONS ---------- */
+    section { padding: 100px 0; position: relative; }
+
+    .section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--ink-muted);
+      font-weight: 500;
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-label::before {
+      content: "";
+      width: 40px;
+      height: 1px;
+      background: var(--ink);
+    }
+
+    .section-heading {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 40px;
+      max-width: 800px;
+    }
+
+    .section-heading em { font-style: italic; color: var(--accent); font-weight: 300; }
+
+    /* ---------- ABOUT ---------- */
+    .about-body {
+      max-width: 720px;
+      font-size: 20px;
+      line-height: 1.65;
+      color: var(--ink-soft);
+      font-weight: 300;
+    }
+    .about-body p + p { margin-top: 24px; }
+    .about-body strong { color: var(--ink); font-weight: 500; }
+
+    /* ---------- EXPERIENCE ---------- */
+    .xp-list { border-top: 1px solid var(--ink); }
+    .xp {
+      display: grid;
+      grid-template-columns: 160px 1fr auto;
+      gap: 48px;
+      padding: 36px 0;
+      border-bottom: 1px solid rgba(26,26,26,0.15);
+      align-items: baseline;
+      transition: padding 0.3s ease;
+    }
+    .xp:hover { padding-left: 16px; }
+    .xp .year {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 17px;
+      color: var(--ink-muted);
+    }
+    .xp .role {
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+    .xp .role .co { color: var(--ink-muted); font-style: italic; font-weight: 300; }
+    .xp .place {
+      font-size: 13px;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      white-space: nowrap;
+    }
+
+    /* ---------- PROJECTS ---------- */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+    .project {
+      padding: 36px;
+      border: 1px solid var(--ink);
+      background: transparent;
+      transition: background 0.3s ease, transform 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .project:hover { background: var(--ink); color: var(--paper); transform: translate(-4px, -4px); box-shadow: 8px 8px 0 var(--accent); }
+    .project .tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      margin-bottom: 20px;
+      display: inline-block;
+      font-weight: 500;
+    }
+    .project h3 {
+      font-family: var(--serif);
+      font-size: 30px;
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+    }
+    .project p { font-size: 15px; line-height: 1.6; color: inherit; opacity: 0.85; }
+    .project .arrow {
+      margin-top: 24px;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 17px;
+    }
+
+    /* ---------- CONTACT ---------- */
+    .contact-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .contact-big {
+      font-family: var(--serif);
+      font-size: clamp(40px, 6vw, 80px);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      font-style: italic;
+    }
+    .contact-big a { color: var(--accent); text-decoration: none; border-bottom: 2px solid var(--accent); }
+    .contact-links { display: flex; flex-direction: column; gap: 2px; margin-top: 16px; }
+    .contact-links a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(26,26,26,0.2);
+      color: var(--ink);
+      text-decoration: none;
+      font-family: var(--serif);
+      font-size: 22px;
+      transition: padding 0.3s ease, color 0.3s ease;
+    }
+    .contact-links a:first-child { border-top: 1px solid rgba(26,26,26,0.2); }
+    .contact-links a:hover { padding-left: 16px; color: var(--accent); }
+    .contact-links a .ext { font-family: var(--sans); font-size: 13px; font-style: normal; color: var(--ink-muted); }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      padding: 60px 0 48px;
+      border-top: 1px solid var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--ink-muted);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    footer .loc { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink); }
+
+    /* ---------- REVEAL ANIMATION ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 720px) {
+      .wrap { padding: 0 20px; }
+      nav { padding-top: 20px; }
+      .nav-links { gap: 20px; }
+      .hero { padding: 70px 0 60px; }
+      section { padding: 70px 0; }
+      .xp { grid-template-columns: 1fr; gap: 8px; padding: 24px 0; }
+      .xp .place { justify-self: start; }
+      .projects-grid { grid-template-columns: 1fr; gap: 24px; }
+      .contact-block { grid-template-columns: 1fr; gap: 32px; }
+      .hero-meta { gap: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <!-- NAV -->
+    <nav>
+      <a href="#top" class="logo">Plinio.</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero" id="top">
+      <div class="status reveal">
+        <span class="dot"></span>
+        <span>Open to PM, Payments & CSM roles · US-based</span>
+      </div>
+      <div class="greeting reveal">Hi,</div>
+      <h1 class="reveal">I'm Plinio — building <span class="accent">payments</span> products across the US, Brazil & the UK.</h1>
+
+      <div class="hero-meta">
+        <div class="block reveal">
+          <div class="label">Based in</div>
+          <div class="value">Austin, Texas</div>
+        </div>
+        <div class="block reveal">
+          <div class="label">Focus</div>
+          <div class="value">Product · Payments · CS</div>
+        </div>
+        <div class="block reveal">
+          <div class="label">Work Auth</div>
+          <div class="value">OPT STEM / H-1B</div>
+        </div>
+        <div class="block reveal">
+          <div class="label">Currently</div>
+          <div class="value">Seeking new role</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-label reveal">About</div>
+      <h2 class="section-heading reveal">A product-minded operator at the intersection of <em>fintech, payments</em>, and customer experience.</h2>
+      <div class="about-body reveal">
+        <p>I'm a <strong>product and payments professional</strong> based in Austin, Texas, where I recently completed my graduate studies at UT Austin. My work sits where payments rails, product strategy, and customer success meet — translating messy real-world financial workflows into products people actually want to use.</p>
+        <p>Before Austin, I co-founded and helped build a <strong>UK-based payments company</strong>, which gave me hands-on experience across every stage of product delivery: from merchant onboarding and compliance to go-to-market and post-sale customer success. I've stepped back from day-to-day operations there to focus on joining a larger company where I can contribute at scale.</p>
+        <p>I've worked across the <strong>US, Brazil, and the UK</strong>, and I bring that multi-jurisdictional lens to every problem — especially useful in payments, where regulation, culture, and user behavior shift dramatically at every border.</p>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="section-label reveal">Experience</div>
+      <h2 class="section-heading reveal">Selected <em>work.</em></h2>
+
+      <div class="xp-list reveal">
+        <div class="xp">
+          <div class="year">2024 — Present</div>
+          <div>
+            <div class="role">Graduate Researcher <span class="co">· UT Austin</span></div>
+          </div>
+          <div class="place">Austin, TX</div>
+        </div>
+
+        <div class="xp">
+          <div class="year">2021 — 2024</div>
+          <div>
+            <div class="role">Co-founder &amp; Product <span class="co">· [UK Payments Co.]</span></div>
+          </div>
+          <div class="place">London, UK</div>
+        </div>
+
+        <div class="xp">
+          <div class="year">2019 — 2021</div>
+          <div>
+            <div class="role">[Previous Role] <span class="co">· [Company]</span></div>
+          </div>
+          <div class="place">São Paulo, BR</div>
+        </div>
+
+        <div class="xp">
+          <div class="year">2017 — 2019</div>
+          <div>
+            <div class="role">[Earlier Role] <span class="co">· [Company]</span></div>
+          </div>
+          <div class="place">São Paulo, BR</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS / HIGHLIGHTS -->
+    <section id="projects">
+      <div class="section-label reveal">Highlights</div>
+      <h2 class="section-heading reveal">A few things I've <em>shipped</em> or thought deeply about.</h2>
+
+      <div class="projects-grid">
+        <a class="project reveal" href="#contact">
+          <span class="tag">Payments</span>
+          <h3>Building a cross-border payments stack from scratch.</h3>
+          <p>Co-founded a UK payments company — owned merchant onboarding, compliance (PSD2, safeguarding), and the core product experience from day one.</p>
+          <div class="arrow">Ask me about it →</div>
+        </a>
+
+        <a class="project reveal" href="#contact">
+          <span class="tag">Product</span>
+          <h3>Multi-jurisdictional product thinking.</h3>
+          <p>Shipping product across US, UK, and Brazilian regulatory regimes — a crash course in why payments is harder than it looks, and why that's the whole moat.</p>
+          <div class="arrow">Ask me about it →</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-label reveal">Get in touch</div>
+      <div class="contact-block">
+        <div class="contact-big reveal">
+          The fastest way to reach me is <a href="mailto:dioufplinio@gmail.com">dioufplinio@gmail.com</a>
+        </div>
+        <div>
+          <div class="contact-links reveal">
+            <a href="https://drive.google.com/file/d/1lTYNBsEaNjb2P0tUfHYwGA1zWWB0oklR/view?usp=sharing" target="_blank" rel="noopener">
+              <span>Download CV</span>
+              <span class="ext">PDF ↗</span>
+            </a>
+            <a href="https://www.linkedin.com/in/plinio-diouf" target="_blank" rel="noopener">
+              <span>LinkedIn</span>
+              <span class="ext">↗</span>
+            </a>
+            <a href="mailto:dioufplinio@gmail.com">
+              <span>Email</span>
+              <span class="ext">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="loc">Austin, Texas · 30.27°N, 97.74°W</div>
+      <div>© 2026 Plinio Drumond · Handcrafted</div>
+    </footer>
+
+  </div>
+
+  <script>
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); });
+    }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+
+    // Stagger the hero reveals
+    document.querySelectorAll(".hero .reveal").forEach((el, i) => {
+      el.style.transitionDelay = (i * 90) + "ms";
+    });
+  </script>
+
+</body>
+</html>
