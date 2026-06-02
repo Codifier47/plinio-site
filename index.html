@@ -64,6 +64,9 @@
       text-decoration: none;
       color: var(--ink);
     }
+    @media (max-width: 768px) {
+      .logo { display: none; }
+    }
     .nav-links { display: flex; gap: 32px; list-style: none; }
     .nav-links a {
       color: var(--ink);
@@ -98,6 +101,11 @@
     .nav-globe:hover {
       background: rgba(26, 26, 26, 0.06);
       border-color: rgba(26, 26, 26, 0.45);
+    }
+    .nav-globe-short { display: none; }
+    @media (max-width: 768px) {
+      .nav-globe-full  { display: none; }
+      .nav-globe-short { display: inline; }
     }
 
     /* HERO */
@@ -395,7 +403,12 @@
         <li><a href="#about">About</a></li>
         <li><a href="#work">Work</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li><a href="./globe.html" class="nav-globe">Instant Payments Globe</a></li>
+        <li>
+          <a href="./globe.html" class="nav-globe">
+            <span class="nav-globe-full">Instant Payments Globe</span>
+            <span class="nav-globe-short">Payment Globe</span>
+          </a>
+        </li>
       </ul>
     </nav>
 
