@@ -85,6 +85,21 @@
     }
     .nav-links a:hover::after { transform: scaleX(1); }
 
+    .nav-globe {
+      font-size: 12px !important;
+      padding: 5px 11px !important;
+      border: 1px solid rgba(26, 26, 26, 0.25);
+      border-radius: 20px;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      transition: background 0.25s ease, border-color 0.25s ease !important;
+    }
+    .nav-globe::after { display: none !important; }
+    .nav-globe:hover {
+      background: rgba(26, 26, 26, 0.06);
+      border-color: rgba(26, 26, 26, 0.45);
+    }
+
     /* HERO */
     .hero { padding: 140px 0 100px; }
 
@@ -380,6 +395,7 @@
         <li><a href="#about">About</a></li>
         <li><a href="#work">Work</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><a href="./globe.html" class="nav-globe">Instant Payments Globe</a></li>
       </ul>
     </nav>
 

@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instant Payments Globe — Plinio Diouf</title>
+  <meta name="description" content="Interactive globe showing countries with instant payment infrastructure." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <style>
+    :root {
+      --paper: #f4f1ea;
+      --ink: #1a1a1a;
+      --ink-soft: #3d3d3d;
+      --ink-muted: #8a8578;
+      --rule: rgba(26, 26, 26, 0.12);
+      --serif: "Fraunces", Georgia, "Times New Roman", serif;
+      --sans: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body { background: #f4f1ea; color: var(--ink); font-family: var(--sans); overflow: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0;
+      width: 66.666%; height: 56px;
+      background: rgba(244, 241, 234, 0.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(26,26,26,0.1);
+      z-index: 10; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 32px;
+    }
+    nav a.back-link { font-family: var(--serif); font-style: italic; font-size: 16px; color: #1a1a1a; text-decoration: none; }
+    nav a.back-link:hover { opacity: 0.8; }
+    nav .page-title { font-family: var(--sans); font-size: 13px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.15em; color: #8a8578; }
+
+    #globe-area { position: fixed; top: 0; left: 0; width: 66.666%; height: 100%; z-index: 1; background: #f4f1ea; }
+    canvas { display: block; width: 100% !important; height: 100% !important; background: #f4f1ea; }
+
+    #sidebar {
+      position: fixed; top: 0; right: 0;
+      width: 33.333%; height: 100%;
+      background: var(--paper); z-index: 5;
+      overflow-y: auto; padding: 80px 32px 48px;
+    }
+    .sidebar-close { display: none; }
+
+    /* Default state */
+    .sidebar-default { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .sidebar-default p { font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--ink-muted); line-height: 1.5; }
+    .sidebar-default .globe-icon { font-size: 32px; margin-bottom: 16px; opacity: 0.5; }
+
+    /* Scheme sidebar */
+    .scheme-full-name { font-family: var(--serif); font-size: 24px; font-weight: 400; color: var(--ink); line-height: 1.15; margin-bottom: 2px; }
+    .scheme-tag { font-family: var(--sans); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); }
+    .scheme-flags { font-size: 22px; letter-spacing: 0.1em; margin-bottom: 2px; margin-top: 8px; }
+    .scheme-region { font-family: var(--sans); font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--ink-muted); margin-bottom: 12px; }
+    .scheme-divider { border: none; border-top: 1px solid var(--rule); margin: 16px 0; }
+    .scheme-definition { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-soft); line-height: 1.65; margin-bottom: 14px; }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .stat-card { background: rgba(26,26,26,0.05); border-radius: 6px; padding: 8px 10px; }
+    .stat-label { font-family: var(--sans); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 3px; }
+    .stat-value { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--ink); line-height: 1.2; }
+    .scheme-row { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 0; }
+    .scheme-row-label { font-family: var(--sans); font-size: 12px; color: var(--ink-muted); flex-shrink: 0; margin-right: 12px; }
+    .scheme-row-value { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--ink); text-align: right; }
+    .api-label { font-family: var(--sans); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin: 12px 0 6px; }
+    .api-row { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; font-size: 13px; color: var(--ink); }
+    .api-row a { font-size: 12px; color: #3a7bd5; text-decoration: none; }
+    .api-row a:hover { text-decoration: underline; }
+    .scheme-fact { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-muted); line-height: 1.6; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule); }
+    .no-scheme { font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--ink-muted); line-height: 1.5; margin-top: 8px; }
+
+    @keyframes ripple {
+      0%   { transform: scale(1);   opacity: 0.65; }
+      100% { transform: scale(4.5); opacity: 0; }
+    }
+    .ripple-ring {
+      transform-box: fill-box;
+      transform-origin: center;
+      fill: none;
+      stroke: #e8195a;
+      stroke-width: 1.2px;
+      animation: ripple 2.4s ease-out infinite;
+    }
+    .ripple-ring.d1 { animation-delay: 0s; }
+    .ripple-ring.d2 { animation-delay: 0.8s; }
+    .ripple-ring.d3 { animation-delay: 1.6s; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="back-link" href="./index.html">← plinio.me</a>
+    <span class="page-title">Instant Payments Globe</span>
+  </nav>
+
+  <div id="globe-area">
+    <svg id="ripple-svg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;"></svg>
+  </div>
+
+  <div id="sidebar">
+    <button class="sidebar-close" id="closeBtn" aria-label="Close">×</button>
+    <div id="sidebarContent">
+      <div class="sidebar-default">
+        <div class="globe-icon">•</div>
+        <p>Click any glowing dot<br>to explore an instant<br>payment scheme.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ─── COUNTRIES (bounding-box hit detection + dot highlight) ──────────────
+
+    const COUNTRIES = [
+      // Americas
+      { name: "Brazil",        flag: "🇧🇷", region: "Latin America",   minLat: -33, maxLat: 5,    minLng: -73,  maxLng: -34,  centroidLat: -14,  centroidLng: -51 },
+      { name: "United States", flag: "🇺🇸", region: "North America",   minLat: 24,  maxLat: 49,   minLng: -125, maxLng: -66,  centroidLat: 38,   centroidLng: -97 },
+      { name: "Canada",        flag: "🇨🇦", region: "North America",   minLat: 41,  maxLat: 83,   minLng: -141, maxLng: -52,  centroidLat: 60,   centroidLng: -96 },
+      { name: "Mexico",        flag: "🇲🇽", region: "Latin America",   minLat: 14,  maxLat: 32,   minLng: -117, maxLng: -87,  centroidLat: 23,   centroidLng: -102 },
+      { name: "Colombia",      flag: "🇨🇴", region: "Latin America",   minLat: -4,  maxLat: 12,   minLng: -79,  maxLng: -66,  centroidLat: 4,    centroidLng: -72 },
+      { name: "Argentina",     flag: "🇦🇷", region: "Latin America",   minLat: -55, maxLat: -21,  minLng: -73,  maxLng: -53,  centroidLat: -38,  centroidLng: -63 },
+      { name: "Chile",         flag: "🇨🇱", region: "Latin America",   minLat: -56, maxLat: -17,  minLng: -75,  maxLng: -66,  centroidLat: -35,  centroidLng: -71 },
+      { name: "Peru",          flag: "🇵🇪", region: "Latin America",   minLat: -18, maxLat: 0,    minLng: -81,  maxLng: -68,  centroidLat: -9,   centroidLng: -75 },
+      // Europe
+      { name: "United Kingdom",flag: "🇬🇧", region: "Europe",          minLat: 49,  maxLat: 61,   minLng: -8,   maxLng: 2,    centroidLat: 55,   centroidLng: -3 },
+      { name: "Germany",       flag: "🇩🇪", region: "Europe",          minLat: 47,  maxLat: 55,   minLng: 6,    maxLng: 15,   centroidLat: 51,   centroidLng: 10 },
+      { name: "France",        flag: "🇫🇷", region: "Europe",          minLat: 42,  maxLat: 51,   minLng: -5,   maxLng: 8,    centroidLat: 46,   centroidLng: 2 },
+      { name: "Netherlands",   flag: "🇳🇱", region: "Europe",          minLat: 50,  maxLat: 53,   minLng: 3,    maxLng: 7,    centroidLat: 52,   centroidLng: 5 },
+      { name: "Sweden",        flag: "🇸🇪", region: "Europe",          minLat: 55,  maxLat: 69,   minLng: 11,   maxLng: 24,   centroidLat: 62,   centroidLng: 16 },
+      { name: "Norway",        flag: "🇳🇴", region: "Europe",          minLat: 57,  maxLat: 71,   minLng: 4,    maxLng: 31,   centroidLat: 65,   centroidLng: 13 },
+      { name: "Denmark",       flag: "🇩🇰", region: "Europe",          minLat: 54,  maxLat: 58,   minLng: 8,    maxLng: 15,   centroidLat: 56,   centroidLng: 10 },
+      { name: "Finland",       flag: "🇫🇮", region: "Europe",          minLat: 59,  maxLat: 70,   minLng: 20,   maxLng: 31,   centroidLat: 64,   centroidLng: 26 },
+      { name: "Switzerland",   flag: "🇨🇭", region: "Europe",          minLat: 45,  maxLat: 48,   minLng: 6,    maxLng: 11,   centroidLat: 47,   centroidLng: 8 },
+      { name: "Poland",        flag: "🇵🇱", region: "Europe",          minLat: 49,  maxLat: 55,   minLng: 14,   maxLng: 24,   centroidLat: 52,   centroidLng: 20 },
+      { name: "Spain",         flag: "🇪🇸", region: "Europe",          minLat: 36,  maxLat: 44,   minLng: -9,   maxLng: 4,    centroidLat: 40,   centroidLng: -4 },
+      { name: "Italy",         flag: "🇮🇹", region: "Europe",          minLat: 36,  maxLat: 47,   minLng: 6,    maxLng: 18,   centroidLat: 42,   centroidLng: 12 },
+      { name: "Portugal",      flag: "🇵🇹", region: "Europe",          minLat: 36,  maxLat: 42,   minLng: -9,   maxLng: -6,   centroidLat: 39,   centroidLng: -8 },
+      { name: "Belgium",       flag: "🇧🇪", region: "Europe",          minLat: 49,  maxLat: 52,   minLng: 2,    maxLng: 6,    centroidLat: 50,   centroidLng: 4 },
+      // Asia & Pacific
+      { name: "India",         flag: "🇮🇳", region: "South Asia",      minLat: 8,   maxLat: 35,   minLng: 68,   maxLng: 97,   centroidLat: 20,   centroidLng: 78 },
+      { name: "Pakistan",      flag: "🇵🇰", region: "South Asia",      minLat: 23,  maxLat: 37,   minLng: 60,   maxLng: 77,   centroidLat: 30,   centroidLng: 69 },
+      { name: "China",         flag: "🇨🇳", region: "East Asia",       minLat: 18,  maxLat: 53,   minLng: 73,   maxLng: 135,  centroidLat: 35,   centroidLng: 105 },
+      { name: "Japan",         flag: "🇯🇵", region: "East Asia",       minLat: 30,  maxLat: 45,   minLng: 129,  maxLng: 145,  centroidLat: 36,   centroidLng: 138 },
+      { name: "South Korea",   flag: "🇰🇷", region: "East Asia",       minLat: 34,  maxLat: 38,   minLng: 126,  maxLng: 130,  centroidLat: 36,   centroidLng: 128 },
+      { name: "Hong Kong",     flag: "🇭🇰", region: "East Asia",       minLat: 22.1,maxLat: 22.6, minLng: 113.8,maxLng: 114.5,centroidLat: 22.3, centroidLng: 114.1 },
+      { name: "Singapore",     flag: "🇸🇬", region: "Southeast Asia",  minLat: 1,   maxLat: 2,    minLng: 103,  maxLng: 104,  centroidLat: 1.3,  centroidLng: 103.8 },
+      { name: "Thailand",      flag: "🇹🇭", region: "Southeast Asia",  minLat: 5,   maxLat: 21,   minLng: 97,   maxLng: 106,  centroidLat: 15,   centroidLng: 101 },
+      { name: "Philippines",   flag: "🇵🇭", region: "Southeast Asia",  minLat: 4,   maxLat: 21,   minLng: 116,  maxLng: 127,  centroidLat: 13,   centroidLng: 122 },
+      { name: "Indonesia",     flag: "🇮🇩", region: "Southeast Asia",  minLat: -11, maxLat: 6,    minLng: 95,   maxLng: 141,  centroidLat: -2,   centroidLng: 118 },
+      { name: "Australia",     flag: "🇦🇺", region: "Oceania",         minLat: -44, maxLat: -10,  minLng: 113,  maxLng: 154,  centroidLat: -27,  centroidLng: 133 },
+      // Middle East
+      { name: "Saudi Arabia",  flag: "🇸🇦", region: "Middle East",     minLat: 16,  maxLat: 32,   minLng: 36,   maxLng: 56,   centroidLat: 24,   centroidLng: 45 },
+      { name: "UAE",           flag: "🇦🇪", region: "Middle East",     minLat: 22,  maxLat: 26,   minLng: 51,   maxLng: 56,   centroidLat: 24,   centroidLng: 54 },
+      { name: "Turkey",        flag: "🇹🇷", region: "Middle East",     minLat: 36,  maxLat: 42,   minLng: 26,   maxLng: 45,   centroidLat: 39,   centroidLng: 35 },
+      // Africa
+      { name: "Nigeria",       flag: "🇳🇬", region: "Africa",          minLat: 4,   maxLat: 14,   minLng: 2,    maxLng: 15,   centroidLat: 9,    centroidLng: 8 },
+      { name: "Kenya",         flag: "🇰🇪", region: "Africa",          minLat: -5,  maxLat: 5,    minLng: 34,   maxLng: 42,   centroidLat: 0,    centroidLng: 38 },
+      { name: "Tanzania",      flag: "🇹🇿", region: "Africa",          minLat: -12, maxLat: -1,   minLng: 29,   maxLng: 40,   centroidLat: -6,   centroidLng: 35 },
+      { name: "South Africa",  flag: "🇿🇦", region: "Africa",          minLat: -35, maxLat: -22,  minLng: 16,   maxLng: 33,   centroidLat: -29,  centroidLng: 25 },
+      { name: "Ghana",         flag: "🇬🇭", region: "Africa",          minLat: 4,   maxLat: 11,   minLng: -4,   maxLng: 1,    centroidLat: 8,    centroidLng: -1 },
+      { name: "Egypt",         flag: "🇪🇬", region: "Africa",          minLat: 22,  maxLat: 31,   minLng: 25,   maxLng: 37,   centroidLat: 27,   centroidLng: 30 },
+      { name: "Morocco",       flag: "🇲🇦", region: "Africa",          minLat: 27,  maxLat: 36,   minLng: -13,  maxLng: -1,   centroidLat: 32,   centroidLng: -6 },
+      { name: "Mozambique",    flag: "🇲🇿", region: "Africa",          minLat: -26, maxLat: -10,  minLng: 30,   maxLng: 41,   centroidLat: -18,  centroidLng: 35 },
+      { name: "DRC",           flag: "🇨🇩", region: "Africa",          minLat: -13, maxLat: 5,    minLng: 12,   maxLng: 31,   centroidLat: -4,   centroidLng: 24 },
+      { name: "Lesotho",       flag: "🇱🇸", region: "Africa",          minLat: -30.7,maxLat:-28.5,minLng: 27,   maxLng: 29.5, centroidLat: -29.6,centroidLng: 28.2 },
+      // West Africa (WAEMU / PI-SPI)
+      { name: "Senegal",       flag: "🇸🇳", region: "West Africa",     minLat: 12,  maxLat: 16,   minLng: -17,  maxLng: -11,  centroidLat: 14,   centroidLng: -14 },
+      { name: "Ivory Coast",   flag: "🇨🇮", region: "West Africa",     minLat: 4,   maxLat: 10,   minLng: -8,   maxLng: -2,   centroidLat: 7,    centroidLng: -5 },
+      { name: "Mali",          flag: "🇲🇱", region: "West Africa",     minLat: 10,  maxLat: 25,   minLng: -12,  maxLng: 4,    centroidLat: 17,   centroidLng: -4 },
+      { name: "Burkina Faso",  flag: "🇧🇫", region: "West Africa",     minLat: 9,   maxLat: 15,   minLng: -5,   maxLng: 2,    centroidLat: 12,   centroidLng: -2 },
+      { name: "Niger",         flag: "🇳🇪", region: "West Africa",     minLat: 11,  maxLat: 23,   minLng: 0,    maxLng: 16,   centroidLat: 17,   centroidLng: 8 },
+      { name: "Togo",          flag: "🇹🇬", region: "West Africa",     minLat: 6,   maxLat: 11,   minLng: -0.1, maxLng: 1.8,  centroidLat: 8,    centroidLng: 1 },
+      { name: "Benin",         flag: "🇧🇯", region: "West Africa",     minLat: 6,   maxLat: 12,   minLng: 0.7,  maxLng: 3.9,  centroidLat: 9,    centroidLng: 2 },
+      { name: "Guinea-Bissau", flag: "🇬🇼", region: "West Africa",     minLat: 10.8,maxLat: 12.7, minLng: -16.8,maxLng: -13.6,centroidLat: 12,   centroidLng: -15 },
+    ];
+
+    // ─── SCHEMES (one per rail — scheme-centric architecture) ─────────────────
+
+    const SCHEMES = [
+      {
+        id: "upi", name: "UPI", fullName: "Unified Payments Interface",
+        operator: "National Payments Corporation of India (NPCI)", launched: 2016,
+        countries: ["India"], flags: ["🇮🇳"], region: "South Asia",
+        markerLat: 20, markerLng: 78, populationM: 500,
+        volume: "228.3B transactions", volumeYear: 2025,
+        population: "~500 million active users",
+        limit: "₹1,00,000 (P2P) / ₹5,00,000 (verified merchants)",
+        definition: "UPI is a mobile-based instant payment system built by NPCI that links all Indian bank accounts through a single interface. Users transact using a Virtual Payment Address — no account number needed. Every transaction settles in real time, 24/7, at zero cost to the user.",
+        apiPlayers: [
+          { name: "Razorpay", url: "https://razorpay.com" },
+          { name: "PayU", url: "https://payu.in" },
+          { name: "Cashfree", url: "https://cashfree.com" }
+        ],
+        fact: "UPI accounts for ~50% of all real-time payment transactions globally by volume. December 2025 alone (21.6B transactions) exceeded all of 2020's total volume."
+      },
+      {
+        id: "pix", name: "Pix", fullName: "Pix",
+        operator: "Banco Central do Brasil (BCB)", launched: 2020,
+        countries: ["Brazil"], flags: ["🇧🇷"], region: "Latin America",
+        markerLat: -14, markerLng: -51, populationM: 178,
+        volume: "79.8B transactions / R$35.36 trillion value", volumeYear: 2025,
+        population: "~178 million users (~91% of Brazilian adults)",
+        limit: "No system cap — institution limits vary (commonly R$1,000–R$15,000)",
+        definition: "Pix is Brazil's instant payment ecosystem operated by the Central Bank. Transfers between any bank account, digital wallet, or business settle in under 10 seconds using a Pix key — CPF, phone number, email, or random key. Available 24/7 including weekends and holidays.",
+        apiPlayers: [
+          { name: "Gerencianet (Efí)", url: "https://efipay.com.br" },
+          { name: "Stripe", url: "https://stripe.com" },
+          { name: "EBANX", url: "https://ebanx.com" }
+        ],
+        fact: "Pix recorded 313.3 million transfers in a single day (Dec 5, 2025) — more than Brazil's entire population — and represents 54.7% of all financial transactions in the country."
+      },
+      {
+        id: "fednow", name: "FedNow", fullName: "FedNow Service",
+        operator: "Federal Reserve Banks", launched: 2023,
+        countries: ["United States"], flags: ["🇺🇸"], region: "North America",
+        markerLat: 40, markerLng: -100, populationM: 258,
+        volume: "8.4M transactions / $853.4B value", volumeYear: 2025,
+        population: "~1,600 participating financial institutions across all 50 states",
+        limit: "$10,000,000 per transaction (raised from $1M in Nov 2025)",
+        definition: "FedNow is the US Federal Reserve's instant payment rail enabling banks and credit unions to offer real-time credit transfers. It operates as wholesale infrastructure — banks connect and surface it through their own apps. Settlement is final and irrevocable within seconds.",
+        apiPlayers: [
+          { name: "Jack Henry", url: "https://jackhenry.com" },
+          { name: "Finastra", url: "https://finastra.com" },
+          { name: "Finzly", url: "https://finzly.com" }
+        ],
+        fact: "FedNow's total transaction value grew 460% year-over-year in 2025. Q2 2025 volume represented a 49,000% increase over Q2 2024."
+      },
+      {
+        id: "rtp", name: "RTP", fullName: "RTP® Network (Real-Time Payments)",
+        operator: "The Clearing House (TCH)", launched: 2017,
+        countries: ["United States"], flags: ["🇺🇸"], region: "North America",
+        markerLat: 38, markerLng: -95, populationM: 231,
+        volume: "~430M transactions / ~$1.9 trillion value", volumeYear: 2025,
+        population: "1,000+ financial institutions — reaches ~70% of US demand deposit accounts",
+        limit: "$10,000,000 per transaction (raised Feb 2025)",
+        definition: "RTP is a private-sector instant payment network operated by The Clearing House, connecting over 1,000 US financial institutions. It was the first US instant payment rail and is primarily used for business-to-business and high-value transfers.",
+        apiPlayers: [
+          { name: "ACI Worldwide", url: "https://aciworldwide.com" },
+          { name: "Fiserv", url: "https://fiserv.com" },
+          { name: "Alacriti", url: "https://alacriti.com" }
+        ],
+        fact: "RTP surpassed 1 billion lifetime transactions on January 31, 2025, and set a single-day record of 1,808,967 transactions on October 3, 2025."
+      },
+      {
+        id: "zelle", name: "Zelle", fullName: "Zelle",
+        operator: "Early Warning Services LLC (owned by 7 major US banks)", launched: 2017,
+        countries: ["United States"], flags: ["🇺🇸"], region: "North America",
+        markerLat: 36, markerLng: -90, populationM: 340,
+        volume: "3.6B transactions / $1.07 trillion value", volumeYear: 2024,
+        population: "~340 million (US population) — available through 2,000+ banks and credit unions",
+        limit: "Varies by bank — typically $500–$5,000 per day",
+        definition: "Zelle is a bank-embedded instant payment network owned by seven major US banks and available through 2,000+ financial institutions. Money moves directly between bank accounts within minutes — no standalone wallet. It is not accessible via a public developer API.",
+        apiPlayers: [
+          { name: "Closed network — no public developer API", url: null }
+        ],
+        fact: "Zelle became the first US payment network to surpass $1 trillion in annual transfer value in 2024 — exceeding the GDP of Switzerland — operating as an invisible rail embedded inside existing bank apps."
+      },
+      {
+        id: "faster-payments-uk", name: "Faster Payments", fullName: "Faster Payments Service (FPS)",
+        operator: "Pay.UK (operated by Vocalink / Mastercard)", launched: 2008,
+        countries: ["United Kingdom"], flags: ["🇬🇧"], region: "Europe",
+        markerLat: 55, markerLng: -3, populationM: 60,
+        volume: "5.6B transactions", volumeYear: 2024,
+        population: "~60 million UK adults via virtually all UK banks",
+        limit: "£1,000,000 scheme max (retail banks typically cap at £25,000–£100,000)",
+        definition: "Faster Payments is the UK's real-time payment backbone enabling instant bank transfers 24/7 across virtually all UK banks. Launched in 2008 as the world's first national instant payment system, it processes everything from P2P transfers to Open Banking payments.",
+        apiPlayers: [
+          { name: "Modulr", url: "https://modulrfinance.com" },
+          { name: "Bottomline", url: "https://bottomline.com" },
+          { name: "TrueLayer", url: "https://truelayer.com" }
+        ],
+        fact: "Faster Payments launched in 2008 as the world's first nationwide 24/7 instant credit transfer system and has processed transactions continuously, every second, for over 17 years."
+      },
+      {
+        id: "sepa-instant", name: "SEPA Instant", fullName: "SEPA Instant Credit Transfer (SCT Inst)",
+        operator: "European Payments Council (EPC) — settled via ECB TIPS", launched: 2017,
+        countries: ["Germany","France","Netherlands","Spain","Italy","Portugal","Belgium","Austria","Finland","Ireland","Greece","Luxembourg","Slovakia","Slovenia","Estonia","Latvia","Lithuania","Malta","Cyprus","Croatia","Poland","Sweden","Denmark","Norway","Iceland","Liechtenstein","Switzerland","Hungary","Czech Republic","Romania","Bulgaria"],
+        flags: ["🇩🇪","🇫🇷","🇳🇱","🇪🇸","🇮🇹","🇵🇹","🇧🇪","🇦🇹","🇫🇮","🇮🇪","🇬🇷","🇱🇺","🇸🇰","🇸🇮","🇪🇪","🇱🇻","🇱🇹","🇲🇹","🇨🇾","🇭🇷","🇵🇱","🇸🇪","🇩🇰","🇳🇴","🇮🇸","🇱🇮","🇨🇭","🇭🇺","🇨🇿","🇷🇴","🇧🇬"],
+        region: "Europe",
+        markerLat: 50, markerLng: 10, populationM: 350,
+        volume: "~23% of all SEPA credit transfers in H1 2025", volumeYear: 2025,
+        population: "350 million+ EU adults",
+        limit: "€100,000 per transaction",
+        definition: "SEPA Instant Credit Transfer is a pan-European scheme enabling euro transfers between bank accounts in 36 countries to settle within 10 seconds, around the clock. Built on the SEPA rulebook and settled in central bank money through the ECB's TIPS infrastructure, which charges just €0.002 per transaction.",
+        apiPlayers: [
+          { name: "Adyen", url: "https://adyen.com" },
+          { name: "Stripe", url: "https://stripe.com" },
+          { name: "Worldline", url: "https://worldline.com" }
+        ],
+        fact: "Settled in real time by the ECB's TIPS infrastructure — which charges just €0.002 per transaction and was built from scratch in only 12 months. After the EU Instant Payments Regulation made SCT Inst mandatory for eurozone banks by Oct 2025, the instant share jumped from 16% to 23% of all SEPA credit transfers in under a year."
+      },
+      {
+        id: "promptpay", name: "PromptPay", fullName: "PromptPay",
+        operator: "Bank of Thailand (BOT) / National ITMX", launched: 2017,
+        countries: ["Thailand"], flags: ["🇹🇭"], region: "Southeast Asia",
+        markerLat: 15, markerLng: 101, populationM: 72,
+        volume: "~25.9B transactions", volumeYear: 2025,
+        population: "90+ million registrations (exceeds Thailand's ~72M adult population)",
+        limit: "THB 9.9 billion system cap — banks typically set THB 150,000–2,000,000",
+        definition: "PromptPay is Thailand's national instant payment system enabling transfers via mobile number, national ID, or e-wallet. Operated by the Bank of Thailand, it has become the default payment method for the majority of Thai adults, with QR-code payments deeply embedded in everyday retail.",
+        apiPlayers: [
+          { name: "Opn Payments", url: "https://opn.ooo" },
+          { name: "2C2P", url: "https://2c2p.com" },
+          { name: "Xendit", url: "https://xendit.co" }
+        ],
+        fact: "PromptPay registrations exceed Thailand's entire adult population — most Thais hold more than one registered payment proxy ID — the highest over-registration ratio of any national payment scheme."
+      },
+      {
+        id: "paynow", name: "PayNow", fullName: "PayNow",
+        operator: "Association of Banks in Singapore (ABS) / BCS — regulated by MAS", launched: 2017,
+        countries: ["Singapore"], flags: ["🇸🇬"], region: "Southeast Asia",
+        markerLat: 1.3, markerLng: 103.8, populationM: 5.5,
+        volume: "500M transactions (FAST + PayNow combined)", volumeYear: 2024,
+        population: "7.6 million+ registered proxies across ~5.5 million adults",
+        limit: "SGD 200,000 per transaction",
+        definition: "PayNow is Singapore's real-time peer-to-peer transfer service linking all major banks through mobile number, NRIC, or UEN proxies. Regulated by MAS, it is interoperable with India's UPI, Malaysia's DuitNow, and Thailand's PromptPay — making Singapore a hub for cross-border instant payments.",
+        apiPlayers: [
+          { name: "Stripe", url: "https://stripe.com" },
+          { name: "Adyen", url: "https://adyen.com" },
+          { name: "HitPay", url: "https://hitpayapp.com" }
+        ],
+        fact: "PayNow was the world's first retail instant payment system to achieve cross-border interoperability — linked to India's UPI in 2021, then to Malaysia's DuitNow and Thailand's PromptPay."
+      },
+      {
+        id: "interac", name: "Interac e-Transfer", fullName: "Interac e-Transfer",
+        operator: "Interac Corp. — regulated by Bank of Canada", launched: 2003,
+        countries: ["Canada"], flags: ["🇨🇦"], region: "North America",
+        markerLat: 56, markerLng: -96, populationM: 30,
+        volume: "~1.6B transactions / ~C$600B value", volumeYear: 2025,
+        population: "250+ participating financial institutions — virtually all Canadian adults",
+        limit: "C$3,000 (personal) / C$25,000 (business)",
+        definition: "Interac e-Transfer enables Canadians to send money directly between bank accounts using only an email address or phone number. The Autodeposit feature removes the security question requirement, making transfers arrive instantly without any recipient action required.",
+        apiPlayers: [
+          { name: "Paysafe", url: "https://paysafe.com" },
+          { name: "J.P. Morgan", url: "https://jpmorgan.com" },
+          { name: "Wealthsimple", url: "https://wealthsimple.com" }
+        ],
+        fact: "Interac e-Transfer grew 15× in a decade — from 105M transactions in 2015 to ~1.6B in 2025 — and was the last major G7 instant rail to allow third-party fintech access, opening only in 2023."
+      },
+      {
+        id: "npp", name: "NPP / PayID", fullName: "New Payments Platform (NPP) / PayID",
+        operator: "Australian Payments Plus (AP+) — infrastructure by SWIFT", launched: 2018,
+        countries: ["Australia"], flags: ["🇦🇺"], region: "Oceania",
+        markerLat: -27, markerLng: 133, populationM: 25,
+        volume: "~1.86B transactions / ~AUD 2.5 trillion value", volumeYear: 2025,
+        population: "128M accounts across 100+ institutions — 25M+ PayIDs registered",
+        limit: "No system-level limit — set by individual institutions",
+        definition: "Australia's New Payments Platform enables real-time transfers 24/7 using a PayID — phone number, email, or ABN — instead of a BSB and account number. Owned by Australian Payments Plus, it underpins Osko, the consumer-facing instant transfer product offered by Australian banks.",
+        apiPlayers: [
+          { name: "Zepto", url: "https://zepto.com.au" },
+          { name: "Monoova", url: "https://monoova.com" },
+          { name: "Zai", url: "https://hellozai.com" }
+        ],
+        fact: "Over 25 million PayIDs have been registered — roughly one per adult Australian — linking phone numbers and email addresses to bank accounts across a country the size of the contiguous United States."
+      },
+      {
+        id: "spei", name: "SPEI", fullName: "Sistema de Pagos Electrónicos Interbancarios (SPEI)",
+        operator: "Banco de México (Banxico)", launched: 2004,
+        countries: ["Mexico"], flags: ["🇲🇽"], region: "Latin America",
+        markerLat: 23, markerLng: -102, populationM: 73,
+        volume: "7.3B+ transactions / MXN 347 trillion value", volumeYear: 2025,
+        population: "~73 million adults with formal bank accounts",
+        limit: "MXN 15,000 (personal third-party) / MXN 1,000,000 (own accounts)",
+        definition: "SPEI is Mexico's interbank electronic payments system operated by Banco de México since 2004 — one of the world's oldest instant payment rails. It processes transfers between any Mexican bank account in seconds, 24/7 including holidays, and has been extended to include QR payments and mobile-number addressing.",
+        apiPlayers: [
+          { name: "Stripe", url: "https://stripe.com" },
+          { name: "Rapyd", url: "https://rapyd.com" },
+          { name: "EBANX", url: "https://ebanx.com" }
+        ],
+        fact: "SPEI processed value equivalent to 10× Mexico's annual GDP in 2025 and handles ~222 transactions per second continuously — every day of the year including holidays — since 2004."
+      },
+      {
+        id: "blik", name: "BLIK", fullName: "BLIK",
+        operator: "Polski Standard Płatności (PSP) — owned by six major Polish banks", launched: 2015,
+        countries: ["Poland"], flags: ["🇵🇱"], region: "Europe",
+        markerLat: 52, markerLng: 20, populationM: 20.7,
+        volume: "2.9B transactions / PLN 441.5B (~EUR 104.9B) value", volumeYear: 2025,
+        population: "20.7 million active users (~54% of Polish adults)",
+        limit: "PLN 1,000 per transaction (default) / PLN 5,000 daily",
+        definition: "BLIK is Poland's instant payment standard based on a one-time 6-digit code generated by a banking app, valid for 2 minutes. The user shares the code at checkout or with a recipient — no card number or account details ever exposed. Owned jointly by Poland's six largest banks.",
+        apiPlayers: [
+          { name: "Przelewy24", url: "https://przelewy24.pl" },
+          { name: "Tpay", url: "https://tpay.com" },
+          { name: "PayU", url: "https://payu.pl" }
+        ],
+        fact: "BLIK uses a one-time 6-digit code valid for just 2 minutes. This single UX innovation drove adoption from zero to 20.7 million users in under 10 years, processing 92 transactions per second in 2025."
+      },
+      {
+        id: "swish", name: "Swish", fullName: "Swish",
+        operator: "Swish AB (owned by six major Swedish banks, Bankgirot, Riksbank)", launched: 2012,
+        countries: ["Sweden"], flags: ["🇸🇪"], region: "Europe",
+        markerLat: 62, markerLng: 16, populationM: 8.9,
+        volume: "1.1B transactions / ~SEK 600B value", volumeYear: 2025,
+        population: "~8.9 million private users (~86% of Sweden's total population)",
+        limit: "SEK 150,000 per transaction (standard)",
+        definition: "Swish is Sweden's mobile payment app linking bank accounts to mobile numbers, enabling instant person-to-person and person-to-business transfers. Backed by the six largest Swedish banks and anchored to BankID, it has become so culturally embedded that Swisha is now an everyday Swedish verb.",
+        apiPlayers: [
+          { name: "Bank-only rail — no public API", url: null }
+        ],
+        fact: "Swisha has entered everyday Swedish as a verb meaning to pay digitally. Swish has penetrated 86% of Sweden's total population — the highest per-capita adoption of any mobile payment app in a major developed country."
+      },
+      {
+        id: "vipps-mobilepay", name: "Vipps MobilePay", fullName: "Vipps MobilePay",
+        operator: "Vipps MobilePay AS — regulated by Finanstilsynet (Norway)", launched: 2013,
+        countries: ["Norway","Denmark","Finland"], flags: ["🇳🇴","🇩🇰","🇫🇮"], region: "Europe",
+        markerLat: 62, markerLng: 14, populationM: 12,
+        volume: "1.52B transactions across all markets", volumeYear: 2024,
+        population: "12 million total users (4M Norway, 4.6M Denmark, 2.8M Finland)",
+        limit: "NOK 50,000 within 7 days (Norway) — varies by country",
+        definition: "Vipps MobilePay is the merged Scandinavian mobile payment platform covering Norway, Denmark, and Finland. Users link a bank account to their phone number and pay or transfer money in seconds. In December 2024 it became the world's first app to offer a tap-to-pay alternative to Apple Pay on iPhone.",
+        apiPlayers: [
+          { name: "Adyen", url: "https://adyen.com" },
+          { name: "Nets (Nexi)", url: "https://nets.eu" },
+          { name: "Stripe", url: "https://stripe.com" }
+        ],
+        fact: "Vipps MobilePay became the world's first company to launch a tap-to-pay alternative to Apple Pay on iPhone (Norway, December 2024), attracting 1 million activated cards in under a year."
+      },
+      {
+        id: "fps-hk", name: "FPS Hong Kong", fullName: "Faster Payment System (FPS)",
+        operator: "Hong Kong Interbank Clearing Limited (HKICL) — overseen by HKMA", launched: 2018,
+        countries: ["Hong Kong"], flags: ["🇭🇰"], region: "East Asia",
+        markerLat: 22.3, markerLng: 114.1, populationM: 7.5,
+        volume: "~456M transactions", volumeYear: 2024,
+        population: "13.6 million+ registered users — all HK bank and e-wallet account holders",
+        limit: "Set by individual banks/SVFs (e.g. HK$10,000/day for cross-border Payment Connect)",
+        definition: "Hong Kong's Faster Payment System enables real-time transfers in both HKD and RMB, 24/7, using a phone number, email, or FPS ID as proxy. It is the first system in the world to support multi-currency instant payments within a single national infrastructure.",
+        apiPlayers: [
+          { name: "HSBC HK", url: "https://developer.hsbc.com" },
+          { name: "DBS HK", url: "https://www.dbs.com.hk/developer" },
+          { name: "ZA Bank", url: "https://www.zabank.hk" }
+        ],
+        fact: "In June 2025, HKMA launched Payment Connect linking FPS directly to mainland China's IBPS system — enabling real-time cross-border remittances for a combined potential 315 million users."
+      },
+      {
+        id: "aani", name: "Aani", fullName: "Aani (Instant Payment Platform)",
+        operator: "Al Etihad Payments (AEP) — subsidiary of Central Bank of the UAE (CBUAE)", launched: 2023,
+        countries: ["UAE"], flags: ["🇦🇪"], region: "Middle East",
+        markerLat: 24, markerLng: 54, populationM: 12.5,
+        volume: "~AED 164B value / 6× year-on-year volume growth", volumeYear: 2025,
+        population: "12.5 million+ registered users — 74 licensed financial institutions",
+        limit: "AED 50,000 (IBAN transfers) / AED 5,000 (mobile number transfers)",
+        definition: "Aani is the UAE's national instant payment platform operated by Al Etihad Payments under the Central Bank of the UAE. It allows individuals and businesses to send and receive money instantly using a mobile number or IBAN across 74 licensed financial institutions. The name means 'now' in Arabic.",
+        apiPlayers: [
+          { name: "Emirates NBD", url: "https://developer.emiratesnbd.com" },
+          { name: "FAB", url: "https://api.bankfab.com" },
+          { name: "ENBD X", url: "https://developer.emiratesnbd.com" }
+        ],
+        fact: "Aani grew from 1.5 million to 12.5 million users in less than two years — one of the fastest adoption curves of any central-bank-operated instant payment system globally."
+      },
+      {
+        id: "raast", name: "Raast", fullName: "Raast (Pakistan Instant Digital Payments)",
+        operator: "State Bank of Pakistan (SBP)", launched: 2021,
+        countries: ["Pakistan"], flags: ["🇵🇰"], region: "South Asia",
+        markerLat: 30, markerLng: 69, populationM: 48,
+        volume: "~2B transactions / Rs 50 trillion value", volumeYear: 2025,
+        population: "48 million registered users — 2.1 million+ onboarded merchants",
+        limit: "No SBP system ceiling — banks set own limits",
+        definition: "Raast is Pakistan's central-bank-operated instant payment system enabling real-time transfers using a Raast ID — mobile number, CNIC, or account number. Built entirely by State Bank of Pakistan engineers, it covers person-to-person, person-to-merchant, and bulk disbursement use cases.",
+        apiPlayers: [
+          { name: "1LINK", url: "https://1link.net.pk" },
+          { name: "NayaPay", url: "https://nayapay.com" },
+          { name: "Finja", url: "https://finja.pk" }
+        ],
+        fact: "Raast was designed and built entirely by SBP engineers, and in 2025 processed nearly 2 billion transactions worth ~10% of Pakistan's annual GDP — with 81% of all digital payments in the country now flowing through Raast-based apps."
+      },
+      {
+        id: "pi-spi", name: "PI-SPI", fullName: "Plateforme Interopérable du Système de Paiement Instantané (PI-SPI)",
+        operator: "Banque Centrale des États de l'Afrique de l'Ouest (BCEAO)", launched: 2025,
+        countries: ["Senegal","Ivory Coast","Mali","Burkina Faso","Niger","Togo","Benin","Guinea-Bissau"],
+        flags: ["🇸🇳","🇨🇮","🇲🇱","🇧🇫","🇳🇪","🇹🇬","🇧🇯","🇬🇼"], region: "West Africa",
+        markerLat: 12, markerLng: -2, populationM: 145,
+        volume: "Not disclosed — launched Q4 2025", volumeYear: null,
+        population: "~145 million adults across 8 WAEMU member states",
+        limit: "Not disclosed",
+        definition: "PI-SPI is the West African Economic and Monetary Union's interoperable instant payment platform, enabling real-time transfers across all 8 WAEMU member states in the CFA franc zone. Built entirely by BCEAO engineers, it interconnects banks, mobile money operators, and fintechs — with all individual-initiated transactions free of charge.",
+        apiPlayers: [
+          { name: "Developer ecosystem not yet documented", url: null }
+        ],
+        fact: "PI-SPI was built entirely by BCEAO engineers trained at West African universities — a rare fully sovereign, internally developed regional payment infrastructure — and all individual-initiated transactions are free of charge by design."
+      },
+      {
+        id: "mpesa", name: "M-Pesa", fullName: "M-Pesa",
+        operator: "Safaricom (Kenya) / Vodacom (Tanzania, Mozambique, DRC, Lesotho, Egypt, Ghana)", launched: 2007,
+        countries: ["Kenya","Tanzania","Mozambique","DRC","Lesotho","Egypt","Ghana"],
+        flags: ["🇰🇪","🇹🇿","🇲🇿","🇨🇩","🇱🇸","🇪🇬","🇬🇭"], region: "Africa",
+        markerLat: 0, markerLng: 37, populationM: 51,
+        volume: "~$314B GMV (Kenya alone)", volumeYear: 2024,
+        population: "~51 million active users across 7 countries",
+        limit: "KES 500,000 / transaction (Kenya) — varies by country",
+        definition: "M-Pesa is a mobile phone-based money transfer service. Users deposit cash at an agent, load it onto their SIM as e-float, and send it instantly to any mobile number — no bank account required. Pioneered in Kenya in 2007, it remains the dominant payment infrastructure across East and Southern Africa.",
+        apiPlayers: [
+          { name: "Safaricom Daraja API", url: "https://developer.safaricom.co.ke" },
+          { name: "Flutterwave", url: "https://flutterwave.com" },
+          { name: "Cellulant", url: "https://cellulant.io" }
+        ],
+        fact: "M-Pesa moves roughly 50% of Kenya's GDP annually and pioneered mobile money for the unbanked globally — launched in 2007, 13 years before most Western economies had instant payment rails."
+      },
+      {
+        id: "payshap", name: "PayShap", fullName: "PayShap",
+        operator: "BankservAfrica", launched: 2023,
+        countries: ["South Africa"], flags: ["🇿🇦"], region: "Africa",
+        markerLat: -29, markerLng: 25, populationM: 22,
+        volume: "Not yet disclosed — Phase 1 rollout", volumeYear: null,
+        population: "~22 million South Africans with bank accounts",
+        limit: "ZAR 3,000 / transaction (Phase 1)",
+        definition: "PayShap is South Africa's first mass-market real-time payment scheme, enabling instant bank transfers using a phone number or ShapID as payment proxy — no account number needed. It runs on BankservAfrica infrastructure 24/7 and is designed to bring instant low-cost payments to all banked South Africans.",
+        apiPlayers: [
+          { name: "Standard Bank API", url: "https://developer.standardbank.com" },
+          { name: "Nedbank API", url: "https://www.nedbank.co.za" },
+          { name: "Absa API", url: "https://developer.absa.africa" }
+        ],
+        fact: "PayShap launched in March 2023 as South Africa's answer to UPI — designed to bring instant, low-cost payments to the 22 million banked South Africans who previously relied on 2-3 day batch transfers."
+      },
+    ];
+
+    // Lookup map: scheme id → scheme object
+    const SCHEMES_BY_ID = Object.fromEntries(SCHEMES.map(s => [s.id, s]));
+
+    // Build reverse map: country name → array of scheme ids
+    const COUNTRY_TO_SCHEMES = {};
+    SCHEMES.forEach(s => {
+      s.countries.forEach(cn => {
+        if (!COUNTRY_TO_SCHEMES[cn]) COUNTRY_TO_SCHEMES[cn] = [];
+        COUNTRY_TO_SCHEMES[cn].push(s.id);
+      });
+    });
+
+    // ─── THREE.JS SETUP ───────────────────────────────────────────────────────
+
+    const globeArea = document.getElementById('globe-area');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, globeArea.offsetWidth / globeArea.offsetHeight, 0.1, 1000);
+    camera.position.z = 2.5;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(globeArea.offsetWidth, globeArea.offsetHeight);
+    renderer.setClearColor(0xf4f1ea, 1);
+    globeArea.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    dirLight.position.set(5, 3, 5);
+    scene.add(dirLight);
+
+    const clock = new THREE.Clock();
+    const globe = new THREE.Group();
+    scene.add(globe);
+
+    // ─── STATE ────────────────────────────────────────────────────────────────
+
+    let isIdle = true;
+    let idleTimer = null;
+    let mouseDown = false;
+    let lastMouseX = 0, lastMouseY = 0;
+    let mouseDownX = 0, mouseDownY = 0;
+    let selectedScheme = null;
+
+    let landPoints = null;
+    let landColors = null;
+    let landPositions = null;
+
+    let markerPoints = null;
+    let markerGeometry = null;
+    let markerSizes = null;
+    let markerBaseSizes = null;
+    let schemeMarkerMap = {};   // marker index → scheme id
+
+    // ─── SIDEBAR ─────────────────────────────────────────────────────────────
+
+    const sidebar = document.getElementById('sidebar');
+    const sidebarContent = document.getElementById('sidebarContent');
+
+    function showSidebarDefault() {
+      sidebarContent.innerHTML = `
+        <div class="sidebar-default">
+          <div class="globe-icon">•</div>
+          <p>Click any glowing dot<br>to explore an instant<br>payment scheme.</p>
+        </div>`;
+    }
+
+    function showSidebarScheme(scheme) {
+      // Truncate volume at first '/'
+      const volShort = scheme.volume ? scheme.volume.split('/')[0].trim() : '—';
+      // Truncate limit at first '—'
+      const limitShort = scheme.limit ? scheme.limit.split('—')[0].split('(')[0].trim() : '—';
+      const volumeLabel = scheme.volumeYear ? `${volShort} (${scheme.volumeYear})` : 'Not yet disclosed';
+
+      const apiRows = scheme.apiPlayers.map((p, i) => {
+        let linkHtml = '';
+        if (p.url) {
+          try {
+            const hostname = new URL(p.url).hostname.replace(/^www\./, '');
+            linkHtml = `<a href="${p.url}" target="_blank" rel="noopener">${hostname} ↗</a>`;
+          } catch(e) {}
+        }
+        return `<div class="api-row"><span>${i + 1}. ${p.name}</span>${linkHtml}</div>`;
+      }).join('');
+
+      sidebarContent.innerHTML = `
+        <div class="scheme-block">
+          <div class="scheme-full-name">${scheme.fullName}</div>
+          <div class="scheme-tag">${scheme.name} · ${scheme.launched}</div>
+          <div class="scheme-flags">${scheme.flags.join(' ')}</div>
+          <div class="scheme-region">${scheme.region}</div>
+          <hr class="scheme-divider" />
+          <div class="scheme-definition">${scheme.definition}</div>
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-label">Volume</div>
+              <div class="stat-value">${volumeLabel}</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Users</div>
+              <div class="stat-value">${scheme.populationM}M</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Tx limit</div>
+              <div class="stat-value">${limitShort}</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Since</div>
+              <div class="stat-value">${scheme.launched}</div>
+            </div>
+          </div>
+          <div class="scheme-row">
+            <span class="scheme-row-label">Operator</span>
+            <span class="scheme-row-value">${scheme.operator}</span>
+          </div>
+          <div class="scheme-row">
+            <span class="scheme-row-label">Countries</span>
+            <span class="scheme-row-value">${scheme.countries.join(', ')}</span>
+          </div>
+          <div class="api-label">API Access</div>
+          ${apiRows}
+          <div class="scheme-fact">${scheme.fact}</div>
+        </div>`;
+    }
+
+    // ─── DOT COLORS ───────────────────────────────────────────────────────────
+
+    const COLOR_DEFAULT   = new THREE.Color('#b8b0a4');
+    const COLOR_HIGHLIGHT = new THREE.Color('#1a1a1a');
+
+    function resetDotColors() {
+      if (!landColors || !landPoints) return;
+      for (let i = 0; i < landColors.length; i += 3) {
+        landColors[i]     = COLOR_DEFAULT.r;
+        landColors[i + 1] = COLOR_DEFAULT.g;
+        landColors[i + 2] = COLOR_DEFAULT.b;
+      }
+      landPoints.geometry.attributes.color.needsUpdate = true;
+    }
+
+    function highlightScheme(scheme) {
+      resetDotColors();
+      if (!scheme) return;
+      scheme.countries.forEach(countryName => {
+        const country = COUNTRIES.find(c => c.name === countryName);
+        if (!country) return;
+        const { minLat, maxLat, minLng, maxLng } = country;
+        for (let i = 0; i < landPositions.length; i++) {
+          const { lat, lng } = landPositions[i];
+          if (lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng) {
+            landColors[i * 3]     = COLOR_HIGHLIGHT.r;
+            landColors[i * 3 + 1] = COLOR_HIGHLIGHT.g;
+            landColors[i * 3 + 2] = COLOR_HIGHLIGHT.b;
+          }
+        }
+      });
+      landPoints.geometry.attributes.color.needsUpdate = true;
+    }
+
+    function updateMarkerColors() {
+      if (!markerPoints) return;
+      const colors = markerPoints.geometry.attributes.color;
+      const colorRest     = new THREE.Color('#e8195a');
+      const colorSelected = new THREE.Color('#1a1a1a');
+      SCHEMES.forEach((scheme, i) => {
+        const c = (selectedScheme && selectedScheme.id === scheme.id) ? colorSelected : colorRest;
+        colors.setXYZ(i, c.r, c.g, c.b);
+      });
+      colors.needsUpdate = true;
+    }
+
+    // ─── COORDINATE HELPERS ───────────────────────────────────────────────────
+
+    function latLngToXYZ(lat, lng, r) {
+      const phi   = (90 - lat) * Math.PI / 180;
+      const theta = (lng + 180) * Math.PI / 180;
+      return {
+        x: -r * Math.sin(phi) * Math.cos(theta),
+        y:  r * Math.cos(phi),
+        z:  r * Math.sin(phi) * Math.sin(theta),
+      };
+    }
+
+    function xyzToLatLng(x, y, z) {
+      const r = Math.sqrt(x*x + y*y + z*z);
+      const lat = 90 - Math.acos(y / r) * 180 / Math.PI;
+      const lng = (Math.atan2(z, -x) * 180 / Math.PI) - 180;
+      return { lat, lng: lng < -180 ? lng + 360 : lng };
+    }
+
+    // ─── COUNTRY LOOKUP ───────────────────────────────────────────────────────
+
+    function getCountryAtLatLng(lat, lng) {
+      const matches = COUNTRIES.filter(c =>
+        lat >= c.minLat && lat <= c.maxLat && lng >= c.minLng && lng <= c.maxLng
+      );
+      if (matches.length === 0) return null;
+      if (matches.length === 1) return matches[0];
+      let best = null, bestDist = Infinity;
+      for (const c of matches) {
+        const d = (lat - c.centroidLat) ** 2 + (lng - c.centroidLng) ** 2;
+        if (d < bestDist) { bestDist = d; best = c; }
+      }
+      return best;
+    }
+
+    // ─── GLOBE BUILDING ───────────────────────────────────────────────────────
+
+    function buildGlobe(imageData, imgWidth, imgHeight) {
+      const N = 60000, R = 1.0;
+      const positions = [], colors = [], meta = [];
+      const goldenRatio = (1 + Math.sqrt(5)) / 2;
+
+      for (let i = 0; i < N; i++) {
+        const theta = Math.acos(1 - 2 * (i + 0.5) / N);
+        const phi   = 2 * Math.PI * i / goldenRatio;
+        const lat   = 90 - theta * 180 / Math.PI;
+        const lng   = (phi * 180 / Math.PI) % 360 - 180;
+
+        const px  = Math.floor((lng + 180) / 360 * imgWidth);
+        const py  = Math.floor((90 - lat)  / 180 * imgHeight);
+        const idx = (py * imgWidth + px) * 4;
+
+        if (imageData.data[idx] < 10) {
+          const pos = latLngToXYZ(lat, lng, R);
+          positions.push(pos.x, pos.y, pos.z);
+          colors.push(COLOR_DEFAULT.r, COLOR_DEFAULT.g, COLOR_DEFAULT.b);
+          meta.push({ lat, lng });
+        }
+      }
+
+      const geom = new THREE.BufferGeometry();
+      geom.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
+      geom.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(colors), 3));
+
+      landPoints    = new THREE.Points(geom, new THREE.PointsMaterial({ size: 0.012, sizeAttenuation: true, vertexColors: true }));
+      landColors    = geom.attributes.color.array;
+      landPositions = meta;
+      globe.add(landPoints);
+
+      buildMarkers();
+      startAnimation();
+    }
+
+    // ─── MARKERS (scheme-centric) ──────────────────────────────────────────────
+
+    function buildMarkers() {
+      const MIN_SIZE = 0.035, MAX_SIZE = 0.11;
+      const colorRest = new THREE.Color('#e8195a');
+      const positions = [], colors = [], sizes = [];
+      schemeMarkerMap = {};
+
+      SCHEMES.forEach((scheme, i) => {
+        const pop        = scheme.populationM || 1;
+        const normalized = Math.log(pop) / Math.log(500);
+        const size       = MIN_SIZE + normalized * (MAX_SIZE - MIN_SIZE);
+
+        const pos = latLngToXYZ(scheme.markerLat, scheme.markerLng, 1.02);
+        positions.push(pos.x, pos.y, pos.z);
+        colors.push(colorRest.r, colorRest.g, colorRest.b);
+        sizes.push(size);
+        schemeMarkerMap[i] = scheme.id;
+      });
+
+      markerSizes     = new Float32Array(sizes);
+      markerBaseSizes = new Float32Array(sizes);
+
+      markerGeometry = new THREE.BufferGeometry();
+      markerGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
+      markerGeometry.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(colors), 3));
+      markerGeometry.setAttribute('size',     new THREE.BufferAttribute(markerSizes, 1));
+
+      const markerMat = new THREE.ShaderMaterial({
+        vertexShader: `
+          attribute float size;
+          attribute vec3 color;
+          varying vec3 vColor;
+          void main() {
+            vColor = color;
+            vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+            gl_PointSize = size * (300.0 / -mvPosition.z);
+            gl_Position = projectionMatrix * mvPosition;
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vColor;
+          void main() {
+            if (length(gl_PointCoord - vec2(0.5)) > 0.5) discard;
+            gl_FragColor = vec4(vColor, 1.0);
+          }
+        `,
+      });
+
+      markerPoints = new THREE.Points(markerGeometry, markerMat);
+      globe.add(markerPoints);
+
+      buildRipples();
+    }
+
+    // ─── RIPPLE RINGS ─────────────────────────────────────────────────────────
+
+    function buildRipples() {
+      const svg = document.getElementById('ripple-svg');
+      if (!svg) return;
+      svg.innerHTML = '';
+      SCHEMES.forEach(scheme => {
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.dataset.schemeId = scheme.id;
+        const pop        = scheme.populationM || 1;
+        const normalized = Math.log(pop) / Math.log(500);
+        const baseR      = 4 + normalized * 8;
+        for (let d = 0; d < 3; d++) {
+          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('r', baseR);
+          circle.setAttribute('class', `ripple-ring d${d + 1}`);
+          g.appendChild(circle);
+        }
+        svg.appendChild(g);
+      });
+    }
+
+    function updateRipples() {
+      const svg = document.getElementById('ripple-svg');
+      if (!svg) return;
+      const W = globeArea.offsetWidth;
+      const H = globeArea.offsetHeight;
+      SCHEMES.forEach(scheme => {
+        const g = svg.querySelector(`[data-scheme-id="${scheme.id}"]`);
+        if (!g) return;
+        const pos3d = latLngToXYZ(scheme.markerLat, scheme.markerLng, 1.02);
+        const vec   = new THREE.Vector3(pos3d.x, pos3d.y, pos3d.z);
+        vec.applyEuler(globe.rotation);
+        if (vec.z < 0.05) { g.style.display = 'none'; return; }
+        g.style.display = '';
+        const projected = vec.clone().project(camera);
+        const x = (projected.x *  0.5 + 0.5) * W;
+        const y = (projected.y * -0.5 + 0.5) * H;
+        g.setAttribute('transform', `translate(${x}, ${y})`);
+      });
+    }
+
+    // ─── ANIMATION ────────────────────────────────────────────────────────────
+
+    function startAnimation() {
+      function animate() {
+        requestAnimationFrame(animate);
+
+        if (isIdle) globe.rotation.y += 0.0015;
+
+        renderer.render(scene, camera);
+        updateRipples();
+      }
+      animate();
+    }
+
+    // ─── INTERACTION ──────────────────────────────────────────────────────────
+
+    function resetIdleTimer() {
+      isIdle = false;
+      if (idleTimer) clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => { isIdle = true; }, 3000);
+    }
+
+    renderer.domElement.addEventListener('mousedown', e => {
+      mouseDown = true;
+      lastMouseX = mouseDownX = e.clientX;
+      lastMouseY = mouseDownY = e.clientY;
+      resetIdleTimer();
+    });
+
+    window.addEventListener('mousemove', e => {
+      if (!mouseDown) return;
+      globe.rotation.y += (e.clientX - lastMouseX) * 0.005;
+      globe.rotation.x += (e.clientY - lastMouseY) * 0.005;
+      globe.rotation.x = Math.max(-0.5, Math.min(0.5, globe.rotation.x));
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+    });
+
+    window.addEventListener('mouseup', e => {
+      if (!mouseDown) return;
+      const moved = Math.hypot(e.clientX - mouseDownX, e.clientY - mouseDownY);
+      if (moved < 4) handleClick(e.clientX, e.clientY);
+      mouseDown = false;
+      resetIdleTimer();
+    });
+
+    renderer.domElement.addEventListener('wheel', e => {
+      e.preventDefault();
+      camera.position.z = Math.max(1.5, Math.min(4.0, camera.position.z - e.deltaY * 0.001));
+    }, { passive: false });
+
+    // Touch
+    let lastTouchX = 0, lastTouchY = 0, touchDownX = 0, touchDownY = 0;
+    renderer.domElement.addEventListener('touchstart', e => {
+      const t = e.touches[0];
+      lastTouchX = touchDownX = t.clientX;
+      lastTouchY = touchDownY = t.clientY;
+      resetIdleTimer(); e.preventDefault();
+    }, { passive: false });
+
+    renderer.domElement.addEventListener('touchmove', e => {
+      const t = e.touches[0];
+      globe.rotation.y += (t.clientX - lastTouchX) * 0.005;
+      globe.rotation.x += (t.clientY - lastTouchY) * 0.005;
+      globe.rotation.x = Math.max(-0.5, Math.min(0.5, globe.rotation.x));
+      lastTouchX = t.clientX; lastTouchY = t.clientY;
+      e.preventDefault();
+    }, { passive: false });
+
+    renderer.domElement.addEventListener('touchend', e => {
+      const t = e.changedTouches[0];
+      const moved = Math.hypot(t.clientX - touchDownX, t.clientY - touchDownY);
+      if (moved < 4) handleClick(t.clientX, t.clientY);
+      resetIdleTimer(); e.preventDefault();
+    }, { passive: false });
+
+    // ─── CLICK DETECTION ─────────────────────────────────────────────────────
+
+    const raycaster = new THREE.Raycaster();
+    // invisible sphere for land-click fallback
+    const hitSphere = new THREE.Mesh(
+      new THREE.SphereGeometry(1.0, 32, 32),
+      new THREE.MeshBasicMaterial({ visible: false, side: THREE.FrontSide })
+    );
+    globe.add(hitSphere);
+
+    function selectScheme(scheme) {
+      selectedScheme = scheme;
+      highlightScheme(scheme);
+      updateMarkerColors();
+      showSidebarScheme(scheme);
+    }
+
+    function handleClick(clientX, clientY) {
+      const rect = renderer.domElement.getBoundingClientRect();
+      const mouse = new THREE.Vector2(
+        ((clientX - rect.left)  / rect.width)  * 2 - 1,
+        -((clientY - rect.top) / rect.height) * 2 + 1
+      );
+      raycaster.setFromCamera(mouse, camera);
+
+      // 1 — Try hitting a marker dot first
+      if (markerPoints) {
+        raycaster.params.Points = { threshold: 0.04 };
+        const markerHits = raycaster.intersectObject(markerPoints);
+        if (markerHits.length > 0) {
+          const idx    = markerHits[0].index;
+          const sId    = schemeMarkerMap[idx];
+          const scheme = SCHEMES_BY_ID[sId];
+          if (scheme) { selectScheme(scheme); return; }
+        }
+      }
+
+      // 2 — Fall back to land sphere hit → country → scheme lookup
+      const hits = raycaster.intersectObject(hitSphere);
+      if (hits.length === 0) return;
+
+      const localPoint = globe.worldToLocal(hits[0].point.clone());
+      const { lat, lng } = xyzToLatLng(localPoint.x, localPoint.y, localPoint.z);
+      const country = getCountryAtLatLng(lat, lng);
+      if (!country) return;
+
+      const ids = COUNTRY_TO_SCHEMES[country.name];
+      if (!ids || ids.length === 0) {
+        // Country has no scheme — show no-scheme message
+        selectedScheme = null;
+        resetDotColors();
+        updateMarkerColors();
+        sidebarContent.innerHTML = `<p class="no-scheme" style="margin-top:80px">No major instant payment scheme documented for ${country.name}.</p>`;
+        return;
+      }
+
+      // Pick the scheme whose marker is closest to the click lat/lng
+      let bestScheme = null, bestDist = Infinity;
+      ids.forEach(id => {
+        const s = SCHEMES_BY_ID[id];
+        if (!s) return;
+        const d = (lat - s.markerLat) ** 2 + (lng - s.markerLng) ** 2;
+        if (d < bestDist) { bestDist = d; bestScheme = s; }
+      });
+      if (bestScheme) selectScheme(bestScheme);
+    }
+
+    // ─── RESIZE ───────────────────────────────────────────────────────────────
+
+    window.addEventListener('resize', () => {
+      camera.aspect = globeArea.offsetWidth / globeArea.offsetHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(globeArea.offsetWidth, globeArea.offsetHeight);
+    });
+
+    // ─── LAND MASK LOADING ────────────────────────────────────────────────────
+
+    const offCanvas = document.createElement('canvas');
+    offCanvas.width = 1024; offCanvas.height = 512;
+    const ctx = offCanvas.getContext('2d');
+
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0, 1024, 512);
+      buildGlobe(ctx.getImageData(0, 0, 1024, 512), 1024, 512);
+    };
+    img.onerror = () => console.error('Land mask failed to load — must be served over HTTP');
+    img.src = 'https://cdn.jsdelivr.net/npm/three-globe@2.27.2/example/img/earth-dark.jpg';
+
+    showSidebarDefault();
+  </script>
+</body>
+</html>
