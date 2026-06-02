@@ -93,6 +93,122 @@
     .ripple-ring.d1 { animation-delay: 0s; }
     .ripple-ring.d2 { animation-delay: 0.8s; }
     .ripple-ring.d3 { animation-delay: 1.6s; }
+
+@media (max-width: 768px) {
+
+  /* Switch from fixed side-by-side to stacked scrolling page */
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* Globe area: full width, 60vh tall, sits at top of page */
+  #globe-area {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    top: 0;
+    left: 0;
+  }
+
+  /* Canvas fills globe area */
+  #globe-area canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Ripple SVG overlay fills globe area */
+  #ripple-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Nav: full width, sits above globe */
+  nav {
+    width: 100% !important;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 20;
+    padding: 0 20px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Shrink nav title on mobile to prevent overlap */
+  nav .page-title {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
+  /* Push globe down below fixed nav */
+  #globe-area {
+    margin-top: 48px;
+    height: calc(60vh - 48px);
+  }
+
+  /* Sidebar: full width, below globe, normal document flow */
+  #sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 40vh;
+    top: auto;
+    right: auto;
+    transform: none !important;
+    border-left: none;
+    border-top: 1px solid rgba(26, 26, 26, 0.12);
+    padding: 28px 24px 60px;
+    overflow-y: visible;
+  }
+
+  /* Sidebar default message */
+  .sidebar-default p {
+    font-size: 16px;
+  }
+
+  /* Scheme full name — smaller on mobile */
+  .scheme-full-name {
+    font-size: 18px !important;
+  }
+
+  /* Stat grid stays 2 columns — already compact */
+  .stat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Scheme row labels and values wrap better */
+  .scheme-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 6px 0;
+  }
+  .scheme-row-value {
+    text-align: left !important;
+    max-width: 100%;
+  }
+
+  /* API rows wrap on small screens */
+  .api-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 5px 0;
+  }
+
+  /* Flags row wraps */
+  .scheme-flags {
+    font-size: 18px;
+    line-height: 1.8;
+  }
+
+}
   </style>
 </head>
 <body>
@@ -107,11 +223,13 @@
   </div>
 
   <div id="sidebar">
-    <button class="sidebar-close" id="closeBtn" aria-label="Close">×</button>
-    <div id="sidebarContent">
-      <div class="sidebar-default">
-        <div class="globe-icon">•</div>
-        <p>Click any glowing dot<br>to explore an instant<br>payment scheme.</p>
+    <div id="sidebarInner">
+      <button class="sidebar-close" id="closeBtn" aria-label="Close">×</button>
+      <div id="sidebarContent">
+        <div class="sidebar-default">
+          <div class="globe-icon">•</div>
+          <p>Click any glowing dot<br>to explore an instant<br>payment scheme.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -830,9 +948,11 @@
         const pop        = scheme.populationM || 1;
         const normalized = Math.log(pop) / Math.log(500);
         const baseR      = 4 + normalized * 8;
+        const isMobile   = window.innerWidth <= 768;
+        const scaledR    = isMobile ? baseR * 0.6 : baseR;
         for (let d = 0; d < 3; d++) {
           const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          circle.setAttribute('r', baseR);
+          circle.setAttribute('r', scaledR);
           circle.setAttribute('class', `ripple-ring d${d + 1}`);
           g.appendChild(circle);
         }
@@ -951,6 +1071,15 @@
       highlightScheme(scheme);
       updateMarkerColors();
       showSidebarScheme(scheme);
+      // On mobile, auto-scroll to sidebar so user sees the data
+      if (window.innerWidth <= 768) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+          setTimeout(() => {
+            sidebar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+        }
+      }
     }
 
     function handleClick(clientX, clientY) {
@@ -1009,6 +1138,7 @@
       camera.aspect = globeArea.offsetWidth / globeArea.offsetHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(globeArea.offsetWidth, globeArea.offsetHeight);
+      buildRipples();
     });
 
     // ─── LAND MASK LOADING ────────────────────────────────────────────────────
