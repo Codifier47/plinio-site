@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plinio Diouf — Payments </title>
+  <title>Plinio Diouf · Payments</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="shortcut icon" href="./favicon.svg" />
-  <meta name="description" content="Plinio Diouf — Payments professional based in Austin, Texas. 7 years building and scaling payment infrastructure across Latin America, Africa, and Europe." />
+  <meta name="description" content="Plinio Diouf. Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company he co-founded in the UK." />
 
-  <meta property="og:title" content="Plinio Diouf — Payments" />
-  <meta property="og:description" content="Payments professional based in Austin, Texas." />
+  <meta property="og:title" content="Plinio Diouf · Payments" />
+  <meta property="og:description" content="Plinio Diouf. Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company he co-founded in the UK." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://plinio.me" />
+  <meta property="og:image" content="https://plinio.me/og-image.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Plinio Diouf · Payments" />
+  <meta name="twitter:description" content="Plinio Diouf. Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company he co-founded in the UK." />
+  <meta name="twitter:image" content="https://plinio.me/og-image.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -172,6 +178,96 @@
     }
     .hero h1 strong { color: var(--ink); font-weight: 500; }
 
+    .avail-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 28px;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--ink-soft);
+      border: 1px solid rgba(26, 26, 26, 0.25);
+      border-radius: 20px;
+      padding: 7px 14px;
+      letter-spacing: 0.01em;
+    }
+    .avail-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: linear-gradient(92deg, #ff6bb3, #ff2d8a, #ff3d3d, #ff7a3d, #f5b84a);
+    }
+
+    /* STAT STRIP */
+    .stat-strip-section { padding: 0 0 40px; }
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+    }
+    .stat {
+      padding: 26px 22px;
+      border-right: 1px solid var(--rule);
+      font-size: 15px;
+      line-height: 1.45;
+      color: var(--ink-soft);
+      font-weight: 300;
+    }
+    .stat:last-child { border-right: none; }
+    .stat-fig {
+      font-family: var(--serif);
+      font-weight: 500;
+      color: var(--ink);
+      font-size: 1.35em;
+      letter-spacing: -0.01em;
+    }
+    @media (max-width: 720px) {
+      .stat-strip { grid-template-columns: 1fr 1fr; }
+      .stat { border-bottom: 1px solid var(--rule); }
+      .stat:nth-child(2n) { border-right: none; }
+      .stat:nth-last-child(-n + 2) { border-bottom: none; }
+    }
+
+    /* CASE STUDY TEASER */
+    .case-link {
+      margin-top: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--ink-soft);
+    }
+    .case-link a {
+      color: var(--ink);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .case-link a:hover { color: var(--ink-muted); }
+
+    /* GLOBE FEATURE (compact line) */
+    .globe-feature { padding: 40px 0; }
+    .globe-line {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      flex-wrap: wrap;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .globe-line .section-label { margin: 0; }
+    .globe-line-text {
+      font-family: var(--serif);
+      font-size: clamp(20px, 2.6vw, 28px);
+      color: var(--ink);
+      border-bottom: 1px solid var(--rule);
+      transition: border-color 0.2s ease;
+    }
+    .globe-line:hover .globe-line-text { border-color: var(--ink); }
+    .globe-line-arrow { font-size: 18px; color: var(--ink-soft); }
+    @media (max-width: 720px) {
+      .globe-line { gap: 6px 14px; }
+    }
+
     /* SECTIONS */
     section { padding: 90px 0; }
     .section-label {
@@ -203,61 +299,76 @@
     .about-body p + p { margin-top: 22px; }
     .about-body strong { color: var(--ink); font-weight: 500; }
 
-    /* EXPERIENCE */
+    /* EXPERIENCE — condensed rail */
     .xp-list { border-top: 1px solid var(--ink); }
     .xp {
-      display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 40px;
-      padding: 32px 0;
+      padding: 26px 0;
       border-bottom: 1px solid var(--rule);
+      transition: padding-left 0.3s ease;
+    }
+    .xp:hover { padding-left: 10px; }
+    .xp-top {
+      display: grid;
+      grid-template-columns: 108px 1fr auto;
+      gap: 0 26px;
       align-items: baseline;
     }
     .xp .year {
       font-family: var(--serif);
       font-style: italic;
-      font-size: 16px;
+      font-size: 15px;
       color: var(--ink-muted);
       white-space: nowrap;
     }
     .xp .role {
       font-family: var(--serif);
-      font-size: 24px;
+      font-size: 23px;
       font-weight: 400;
       letter-spacing: -0.01em;
       line-height: 1.25;
     }
     .xp .role .co { color: var(--ink-muted); font-style: italic; font-weight: 300; }
+    .xp .fig {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .xp-body { margin-left: 134px; }
     .xp .meta {
-      margin-top: 6px;
-      font-size: 13px;
+      margin-top: 8px;
+      font-size: 12px;
       color: var(--ink-muted);
       text-transform: uppercase;
       letter-spacing: 0.12em;
     }
     .xp .detail {
-      margin-top: 14px;
+      margin-top: 10px;
       font-size: 15px;
-      line-height: 1.65;
+      line-height: 1.62;
       color: var(--ink-soft);
       font-weight: 300;
-      max-width: 640px;
+      max-width: 600px;
     }
 
     /* EDUCATION */
     .edu-list { border-top: 1px solid var(--ink); }
     .edu {
       display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 40px;
-      padding: 28px 0;
+      grid-template-columns: 108px 1fr;
+      gap: 0 26px;
+      padding: 26px 0;
       border-bottom: 1px solid var(--rule);
       align-items: baseline;
+      transition: padding-left 0.3s ease;
     }
+    .edu:hover { padding-left: 10px; }
     .edu .year {
       font-family: var(--serif);
       font-style: italic;
-      font-size: 16px;
+      font-size: 15px;
       color: var(--ink-muted);
       white-space: nowrap;
     }
@@ -382,11 +493,19 @@
       .nav-links { gap: 20px; }
       .hero { padding: 70px 0 60px; }
       section { padding: 64px 0; }
-      .xp, .edu {
+      .xp-top {
+        grid-template-columns: 1fr auto;
+        gap: 2px 16px;
+        align-items: baseline;
+      }
+      .xp .year { grid-column: 1 / -1; order: -1; }
+      .xp-body { margin-left: 0; }
+      .edu {
         grid-template-columns: 1fr;
-        gap: 6px;
+        gap: 4px;
         padding: 22px 0;
       }
+      .edu:hover, .xp:hover { padding-left: 0; }
       .skills-grid { grid-template-columns: 1fr; gap: 32px; }
       .contact-links { margin-top: 40px; }
       .contact-links a { font-size: 19px; }
@@ -400,7 +519,6 @@
     <nav>
       <a href="#top" class="logo">Plinio.</a>
       <ul class="nav-links">
-        <li><a href="#about">About</a></li>
         <li><a href="#work">Work</a></li>
         <li><a href="#contact">Contact</a></li>
         <li>
@@ -419,61 +537,83 @@
           <div id="welcome-lottie" aria-label="Welcome animation" role="img"></div>
         </div>
       </div>
-      <h1 class="reveal">I'm <strong>Plinio Diouf</strong> — a payments professional based in Austin, Texas.</h1>
+      <h1 class="reveal">I'm <strong>Plinio</strong>. I sold, launched, and managed payment rails across three continents.</h1>
+      <div class="avail-pill reveal"><span class="avail-dot"></span>Open to Account Executive, GTM partnership, and Ops</div>
     </header>
 
-    <section id="about">
-      <div class="section-label reveal">About</div>
-      <div class="about-body reveal">
-        <p>I've spent the last <strong>seven years building and scaling payment infrastructure</strong> across Latin America, Africa, and Europe — most recently as <strong>co-founder and COO of Betaramps</strong>, a UK-based payments company where I launched cross-border rails in 31 countries and automated crypto transaction flows reaching $1M+ in annual TPV.</p>
-        <p>Before that, I worked on the ground at <strong>EBANX</strong> in Brazil and <strong>Cellulant</strong> in Kenya, where I learned how much of payments is really about translating messy merchant needs into product decisions that hold up under regulation, FX volatility, and go-to-market pressure.</p>
-        <p>I'm currently finishing my <strong>MS in Technology Commercialization at UT Austin</strong> (expected May 2026) and looking for product, partnerships, or customer success roles where I can bring that operator's lens to a bigger stage.</p>
+    <section id="stats" class="stat-strip-section">
+      <div class="stat-strip reveal">
+        <div class="stat">Launched payment rails in <span class="stat-fig">31 countries</span></div>
+        <div class="stat">Originated <span class="stat-fig">$30M+</span> in 18 months</div>
+        <div class="stat">Closed and managed a $300M+ account</div>
+        <div class="stat"><span class="stat-fig">126%</span> AOV lift from one integration</div>
       </div>
     </section>
 
     <section id="work">
       <div class="section-label reveal">Experience</div>
-      <h2 class="section-heading reveal">Seven years, three continents, one thing — <span class="script-grad">Payments.</span></h2>
+      <h2 class="section-heading reveal">Seven years, three continents<br>One thing: <span class="script-grad">Payments.</span></h2>
 
       <div class="xp-list reveal">
 
         <div class="xp">
-          <div class="year">2021 — 2025</div>
-          <div>
+          <div class="xp-top">
+            <div class="year">2021—2025</div>
             <div class="role">COO &amp; Co-founder <span class="co">· Betaramps</span></div>
-            <div class="meta">Payment infrastructure fintech · United Kingdom</div>
-            <div class="detail">Led product development and launched a wallet infrastructure that replaced manual crypto transfers, automating 95% of transactions and scaling the platform to $1M annual TPV. Expanded payment rails to 31 countries — including a 2-week launch sprint in Norway that cut fees 40% and drove 4x MoM TPV growth. Built the KPI dashboards (DBeaver, JetAdmin) that made the team data-driven.</div>
+            <div class="fig">31 countries</div>
+          </div>
+          <div class="xp-body">
+            <div class="meta">Payment infrastructure · United Kingdom</div>
+            <div class="detail">Launched wallet infrastructure that replaced manual crypto transfers — 95% of transactions automated, scaled to $1M annual TPV. A two-week Norway sprint cut fees 40% and drove 4× MoM growth.</div>
           </div>
         </div>
 
         <div class="xp">
-          <div class="year">2020 — 2021</div>
-          <div>
+          <div class="xp-top">
+            <div class="year">2020—2021</div>
             <div class="role">Sales Manager <span class="co">· Cellulant</span></div>
+            <div class="fig">$100M lead</div>
+          </div>
+          <div class="xp-body">
             <div class="meta">Payment service provider · Kenya</div>
-            <div class="detail">Led sales for global e-commerce merchants across Africa and ran technical feasibility on a $100M enterprise lead, surfacing product gaps in FX pricing. Proposed USDT/NGN liquidity swaps to mitigate currency risk and advised against an onboarding that would have cost three months of engineering bandwidth.</div>
+            <div class="detail">Led sales for global e-commerce merchants across Africa; ran feasibility on a $100M enterprise lead, surfacing FX-pricing gaps, and proposed USDT/NGN liquidity swaps to mitigate currency risk.</div>
           </div>
         </div>
 
         <div class="xp">
-          <div class="year">2018 — 2019</div>
-          <div>
+          <div class="xp-top">
+            <div class="year">2018—2019</div>
             <div class="role">Sr Business Developer &amp; CSM <span class="co">· EBANX</span></div>
-            <div class="meta">Payment infrastructure fintech · Brazil</div>
-            <div class="detail">Architected a cross-border expansion workflow for SMBs (HubSpot + Tableau + API signals) that automated country activation for merchants. Cut manual support tickets by 67% in a single quarter by resolving bottlenecks between Compliance and Engineering. Grew quarterly upsell count 18%.</div>
+            <div class="fig">−67% tickets</div>
+          </div>
+          <div class="xp-body">
+            <div class="meta">Payment infrastructure · Brazil</div>
+            <div class="detail">Built a cross-border expansion workflow (HubSpot + Tableau + API signals) that automated country activation; grew quarterly upsell 18%.</div>
           </div>
         </div>
 
         <div class="xp">
-          <div class="year">2016 — 2018</div>
-          <div>
+          <div class="xp-top">
+            <div class="year">2016—2018</div>
             <div class="role">Business Developer <span class="co">· EBANX</span></div>
-            <div class="meta">Payment infrastructure fintech · Brazil</div>
-            <div class="detail">Acquired 80+ international merchants through inbound, outbound, and referrals, generating $30M+ in new processing volume over 18 months. Co-led GTM campaigns for Latin American payment localization, including an installment-payment integration in Mexico that lifted AOV 126% MoM for a top-tier e-commerce merchant.</div>
+            <div class="fig">$30M+ TPV</div>
+          </div>
+          <div class="xp-body">
+            <div class="meta">Payment infrastructure · Brazil</div>
+            <div class="detail">Acquired 80+ international merchants, generating $30M+ in new processing volume over 18 months. Co-led LatAm localization, including a Mexico installment integration that lifted AOV 126% MoM.</div>
+            <div class="case-link">My largest deal: a merchant that grew into one of EBANX's biggest accounts. Read the case study.</div>
           </div>
         </div>
 
       </div>
+    </section>
+
+    <section id="globe-feature" class="globe-feature reveal">
+      <a href="./globe.html" class="globe-line">
+        <span class="section-label">Interactive</span>
+        <span class="globe-line-text">Discover the world's top instant payment schemes</span>
+        <span class="globe-line-arrow">↗</span>
+      </a>
     </section>
 
     <section id="education">
@@ -482,7 +622,7 @@
       <div class="edu-list reveal">
 
         <div class="edu">
-          <div class="year">2025 — 2026</div>
+          <div class="year">2025—2026</div>
           <div>
             <div class="school">University of Texas at Austin</div>
             <div class="degree">MS, Technology Commercialization <span class="class">· Honors Graduate, GPA 3.91</span></div>
@@ -498,7 +638,7 @@
         </div>
 
         <div class="edu">
-          <div class="year">2015 — 2016</div>
+          <div class="year">2015—2016</div>
           <div>
             <div class="school">University of Kent</div>
             <div class="degree">MSc Finance, Investment &amp; Risk <span class="class">· Distinction</span></div>
@@ -535,17 +675,17 @@
         <div class="skills-block">
           <div class="skills-label">Languages</div>
           <ul>
-            <li><span class="script-grad">English</span> — fluent</li>
-            <li><span class="script-grad">French</span> — fluent</li>
-            <li><span class="script-grad">Portuguese</span> — fluent</li>
+            <li><span class="script-grad">English</span> · fluent</li>
+            <li><span class="script-grad">French</span> · fluent</li>
+            <li><span class="script-grad">Portuguese</span> · fluent</li>
           </ul>
         </div>
         <div class="skills-block">
           <div class="skills-label">Awards</div>
           <ul>
-            <li>Best Negotiator Award — MSTC 2026</li>
-            <li>Most Collaborative Student Award — MSTC 2026</li>
-            <li>Winner of the Launch Competition — MSTC 2026</li>
+            <li>Best Negotiator Award · MSTC 2026</li>
+            <li>Most Collaborative Student Award · MSTC 2026</li>
+            <li>Winner of the Launch Competition · MSTC 2026</li>
           </ul>
         </div>
       </div>
@@ -554,11 +694,11 @@
     <section id="contact">
       <div class="section-label reveal">Get in touch</div>
       <div class="contact-big reveal">
-        The easiest way to reach me is <a href="mailto:dioufplinio@gmail.com">dioufplinio@gmail.com</a>. I'm currently open to product, partnership, and customer success roles.
+        The easiest way to reach me is <a href="mailto:dioufplinio@gmail.com">dioufplinio@gmail.com</a>. I'm currently open to Account Executive, GTM partnership, and Ops roles.
       </div>
 
       <div class="contact-links reveal">
-        <a href="https://drive.google.com/file/d/1v9IKWHU1h9KnDkhdvn7lGNant5T7NA_F/view?usp=sharing" target="_blank" rel="noopener">
+        <a href="./plinio-diouf-cv.pdf" target="_blank" rel="noopener">
           <span>Download CV</span>
           <span class="ext">PDF ↗</span>
         </a>
