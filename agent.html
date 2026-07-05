@@ -3,35 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Featured Deal · Plinio Diouf</title>
+  <title>An agent that watched my immigration case · Plinio Diouf</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="shortcut icon" href="./favicon.svg" />
-  <meta name="description" content="The story of my largest EBANX deal: an unknown merchant I championed internally that grew into one of the company's biggest accounts, roughly $300M in annual processing volume." />
+  <meta name="description" content="I built an autonomous agent with Claude that watches a federal court docket tied to my work authorization, explains each change in plain language, and emails me the moment anything moves." />
 
-  <meta property="og:title" content="Plinio Diouf · Payments" />
-  <meta property="og:description" content="Plinio Diouf. Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company he co-founded in the UK." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://plinio.me" />
+  <meta property="og:title" content="An autonomous agent that watched my immigration case · Plinio Diouf" />
+  <meta property="og:description" content="I built an autonomous agent with Claude that watches a federal court docket tied to my work authorization, explains each change in plain language, and emails me the moment anything moves." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://plinio.me/agent.html" />
   <meta property="og:image" content="https://plinio.me/og-image.png" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Plinio Diouf · Payments" />
-  <meta name="twitter:description" content="Plinio Diouf. Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company he co-founded in the UK." />
+  <meta name="twitter:title" content="An autonomous agent that watched my immigration case · Plinio Diouf" />
+  <meta name="twitter:description" content="I built an autonomous agent with Claude that watches a federal court docket tied to my work authorization, explains each change in plain language, and emails me the moment anything moves." />
   <meta name="twitter:image" content="https://plinio.me/og-image.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Borel&family=Architects+Daughter&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Borel&family=Architects+Daughter&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
   <style>
     @font-face {
       font-family: "Lumen Full";
       src: url("./fonts/Lumen-Full.ttf") format("truetype");
-      font-display: swap;
-    }
-    @font-face {
-      font-family: "Lumen Dots";
-      src: url("./fonts/Lumen-Dots.ttf") format("truetype");
       font-display: swap;
     }
     :root {
@@ -44,7 +39,8 @@
       --serif: "Fraunces", Georgia, "Times New Roman", serif;
       --script: "Borel", cursive;
       --sans: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
-      --measure: 660px; /* one shared text column — keeps every block's right edge aligned */
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --measure: 660px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -106,6 +102,12 @@
       color: transparent;
       display: inline;
     }
+    .grad {
+      background: linear-gradient(92deg, #ff6bb3 0%, #ff2d8a 22%, #ff3d3d 48%, #ff7a3d 74%, #f5b84a 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
 
     /* HERO */
     .deal-hero { padding: 96px 0 56px; }
@@ -124,23 +126,11 @@
       font-family: var(--serif);
       font-style: italic;
       font-weight: 400;
-      font-size: clamp(40px, 7.4vw, 92px);
-      line-height: 1.02;
+      font-size: clamp(38px, 6.4vw, 82px);
+      line-height: 1.04;
       letter-spacing: -0.025em;
       color: var(--ink);
-      max-width: var(--measure);
-    }
-    .deal-headline .amt {
-      font-family: "Lumen Full", var(--script);
-      font-style: normal;
-      font-weight: 400;
-      font-size: 0.92em;
-      letter-spacing: 0.01em;
-      white-space: nowrap;
-      background: linear-gradient(92deg, #ff6bb3 0%, #ff2d8a 22%, #ff3d3d 48%, #ff7a3d 74%, #f5b84a 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      max-width: 780px;
     }
 
     /* METRIC STRIP */
@@ -160,10 +150,9 @@
       font-family: var(--serif);
       font-weight: 500;
       color: var(--ink);
-      font-size: clamp(30px, 4.4vw, 46px);
+      font-size: clamp(28px, 4vw, 44px);
       letter-spacing: -0.02em;
       line-height: 1;
-      /* bottom-align every figure so all sub-labels share a baseline */
       display: flex;
       align-items: flex-end;
       min-height: 1em;
@@ -206,6 +195,99 @@
       color: var(--ink);
     }
 
+    /* EMAIL SPECIMEN */
+    .specimen-section { padding: 56px 0 8px; }
+    .specimen-lead {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(15px, 1.7vw, 17px);
+      color: var(--ink-muted);
+      margin-bottom: 20px;
+      max-width: var(--measure);
+    }
+    .email {
+      max-width: var(--measure);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      background: #faf8f2;
+      overflow: hidden;
+      box-shadow: 0 18px 40px -28px rgba(26, 26, 26, 0.5);
+    }
+    .email-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--rule-soft);
+      background: rgba(26, 26, 26, 0.02);
+    }
+    .email-bar .dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: rgba(26, 26, 26, 0.18);
+    }
+    .email-bar .from {
+      margin-left: 6px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink-muted);
+      letter-spacing: -0.01em;
+    }
+    .email-bar .flag {
+      margin-left: auto;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #ff3d3d;
+      border: 1px solid rgba(255, 61, 61, 0.35);
+      border-radius: 20px;
+      padding: 3px 9px;
+    }
+    .email-head { padding: 22px 26px 6px; }
+    .email-subject-label {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--ink-muted);
+      margin-bottom: 7px;
+    }
+    .email-subject {
+      font-family: var(--serif);
+      font-size: clamp(20px, 2.6vw, 26px);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      color: var(--ink);
+    }
+    .email-body {
+      padding: 16px 26px 26px;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--ink-soft);
+      font-weight: 300;
+    }
+    .email-body .tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: #1f8a5b;
+      border: 1px solid rgba(31, 138, 91, 0.3);
+      border-radius: 5px;
+      padding: 2px 8px;
+      margin-bottom: 14px;
+    }
+    .email-body p + p { margin-top: 12px; }
+    .email-foot {
+      padding: 14px 26px 18px;
+      border-top: 1px solid var(--rule-soft);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink-muted);
+      letter-spacing: -0.01em;
+    }
+
     /* PULL QUOTE */
     .pull {
       padding: 80px 0;
@@ -231,7 +313,7 @@
       color: var(--ink-muted);
     }
 
-    /* TIMELINE */
+    /* LOOP TIMELINE */
     .cycle { padding: 8px 0 64px; }
     .cycle .section-label { margin-bottom: 8px; }
     .cycle-heading {
@@ -253,10 +335,10 @@
       align-items: baseline;
     }
     .step .num {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: 15px;
+      font-family: var(--mono);
+      font-size: 13px;
       color: var(--ink-muted);
+      letter-spacing: 0.02em;
     }
     .step .phase {
       font-family: var(--serif);
@@ -361,10 +443,10 @@
       .deal-hero { padding: 56px 0 40px; }
       .pull { padding: 56px 0; margin: 48px 0; }
       .lead::first-letter { font-size: 2.6em; }
+      .email-body { padding: 16px 20px 22px; }
+      .email-head { padding: 20px 20px 6px; }
     }
   </style>
-<link id="gfont-Righteous" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Righteous:wght@300;400;500;600;700&amp;display=swap">
-<link id="gfont-Architects-Daughter" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Architects+Daughter:wght@300;400;500;600;700&amp;display=swap">
 </head>
 
 <body>
@@ -373,34 +455,34 @@
 
     <nav>
       <a class="back-link" href="./index.html">← Plinio</a>
-      <span class="page-title">Use Case · SHEIN</span>
+      <span class="page-title">Use Case · Autonomous Agent</span>
     </nav>
 
     <!-- HERO -->
     <header class="deal-hero">
-      <div class="section-label reveal">Featured Deal · EBANX · 2017–2018</div>
-      <p class="deal-frame reveal">My largest deal at EBANX — and how I won it before anyone in the building was watching.</p>
-      <h1 class="deal-headline reveal">From an unknown merchant to a <span class="amt" style="font-weight: 400; font-family: Borel">$300M</span> account.</h1>
+      <div class="section-label reveal">Built with Claude · 2026</div>
+      <p class="deal-frame reveal">A federal court docket decided when I could work. So I built something to watch it for me, and tell me what each change actually meant.</p>
+      <h1 class="deal-headline reveal">I built an autonomous agent to <span class="grad">do the monitoring.</span></h1>
     </header>
 
     <!-- METRIC STRIP -->
     <section class="metric-strip-section">
       <div class="metric-strip reveal">
         <div class="metric">
-          <span class="fig" data-count="300" data-prefix="$" data-suffix="M">$300M</span>
-          <div class="lab">Annual processing volume at peak</div>
+          <span class="fig">1h</span>
+          <div class="lab">Docket checked, around the clock</div>
         </div>
         <div class="metric">
-          <span class="fig" data-count="126" data-suffix="%">126%</span>
-          <div class="lab">AOV lift, month over month</div>
+          <span class="fig" data-count="25">25</span>
+          <div class="lab">Docket changes caught &amp; explained</div>
         </div>
         <div class="metric">
-          <span class="fig">2</span>
-          <div class="lab">Markets launched, Mexico then Brazil</div>
+          <span class="fig" data-count="260" data-prefix="~">~260</span>
+          <div class="lab">Lines of Python</div>
         </div>
         <div class="metric">
-          <span class="fig">#1</span>
-          <div class="lab">Top business developer that year</div>
+          <span class="fig" data-count="1">1</span>
+          <div class="lab">User. Me.</div>
         </div>
       </div>
     </section>
@@ -408,51 +490,63 @@
     <!-- NARRATIVE -->
     <section class="narrative">
       <div class="deal-body">
-        <p class="lead reveal">In late 2017, I went after a fast-growing e-commerce merchant almost no one at EBANX was paying attention to, and I championed it internally to win the resources to land it. Stakeholders spanned the US, Mexico, and China, each with a different level of influence, so technical alignment had to happen overnight, across time zones.</p>
+        <p class="lead reveal">My work authorization was frozen while a federal court decided its fate, and the only public record was a docket I kept refreshing by hand. So I built an autonomous agent with Claude to do the watching. Every hour it loads the page, spots anything new, asks Claude what the change means for my case, and emails me in plain language.</p>
+      </div>
+    </section>
+
+    <!-- EMAIL SPECIMEN -->
+    <section class="specimen-section">
+      <p class="specimen-lead reveal">What actually landed in my inbox, subject line and all, written by Claude:</p>
+      <div class="email reveal">
+        <div class="email-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="from">docket-watch@ · Dorcas v. USCIS</span>
+          <span class="flag">New entry</span>
+        </div>
+        <div class="email-head">
+          <div class="email-subject-label">Subject</div>
+          <div class="email-subject">Final judgment entered: the hold on your case is vacated.</div>
+        </div>
+        <div class="email-body">
+          <span class="tag">Verdict · this helps you</span>
+          <p>The court just entered final judgment against USCIS and set a compliance deadline. In plain terms: the policy freezing your work-authorization application has been struck down, and the agency is now ordered to resume adjudicating cases like yours.</p>
+          <p>This is the opening you've been waiting for. With the hold lifted, paying for premium processing now would start a hard 15-day clock. Worth acting on today.</p>
+        </div>
+        <div class="email-foot">detected 14:02 · diffed against 27 known entries · explained by claude</div>
       </div>
     </section>
 
     <!-- PULL QUOTE -->
     <section class="pull">
-      <blockquote class="reveal">A merchant nobody had heard of became one of EBANX's biggest accounts.</blockquote>
-      <div class="pull-attr reveal">The bet, in one line</div>
+      <blockquote class="reveal">It told me the exact moment to pay for premium processing. My authorization came through about ten days later.</blockquote>
+      <div class="pull-attr reveal">What the visibility bought me</div>
     </section>
 
-    <!-- CYCLE TIMELINE -->
+    <!-- LOOP TIMELINE -->
     <section class="cycle">
-      <div class="section-label reveal">The cycle I owned</div>
-      <h2 class="cycle-heading reveal">Qualification to go-live, end to end.</h2>
+      <div class="section-label reveal">The loop it runs</div>
+      <h2 class="cycle-heading reveal">Scrape to inbox, every hour.</h2>
 
       <div class="steps reveal">
         <div class="step">
           <div class="num">01</div>
-          <div class="phase">Spotted &amp; qualified</div>
-          <div class="what">Found a fast-growing merchant no one was tracking and validated the upside before competing for internal resources.</div>
+          <div class="phase">Scrape</div>
+          <div class="what">A headless browser renders the live docket page and grabs the timeline, which only exists after JavaScript draws it.</div>
         </div>
         <div class="step">
           <div class="num">02</div>
-          <div class="phase">Championed internally</div>
-          <div class="what">Won buy-in and engineering bandwidth across US, Mexico, and China stakeholders, each with a different level of influence.</div>
+          <div class="phase">Diff</div>
+          <div class="what">It fingerprints every entry by hashing its date and text, then subtracts what it has already seen, so only genuinely new items get through.</div>
         </div>
         <div class="step">
           <div class="num">03</div>
-          <div class="phase">Negotiated &amp; cleared compliance</div>
-          <div class="what">Aligned commercial terms and compliance overnight, across time zones, to keep the timeline intact.</div>
+          <div class="phase">Explain</div>
+          <div class="what">Claude reads each new entry against the full context of my case and says, in plain sentences, whether it helps, hurts, or changes nothing.</div>
         </div>
         <div class="step">
           <div class="num">04</div>
-          <div class="phase">Integrated &amp; launched Mexico</div>
-          <div class="what">Owned integration, testing, and go-live. Mexico went live in early 2018.</div>
-        </div>
-        <div class="step">
-          <div class="num">05</div>
-          <div class="phase">Added installments</div>
-          <div class="what">Shipped installment payments that lifted average order value 126% month over month, from roughly $25 to over $55.</div>
-        </div>
-        <div class="step">
-          <div class="num">06</div>
-          <div class="phase">Expanded to Brazil</div>
-          <div class="what">Rolled the playbook into a second market, scaling the account toward $300M in annual volume.</div>
+          <div class="phase">Notify</div>
+          <div class="what">The explanation hits my inbox at once, with a short daily heartbeat email when all is quiet, so silence never means the watchdog broke.</div>
         </div>
       </div>
     </section>
@@ -460,16 +554,16 @@
     <!-- OUTCOME -->
     <section class="outcome">
       <div class="deal-body">
-        <p class="reveal">It became one of EBANX's largest accounts, roughly <strong>$300M in annual processing volume</strong>. I finished the year as the company's top business developer, earned two promotions in 15 months, and was tasked with building EBANX's Customer Success foundation layer.</p>
+        <p class="reveal">Over two weeks it caught more than twenty docket entries and flagged every move that mattered: the vacated hold, an enforcement motion, a final judgment against USCIS, the government's emergency stay and notice of appeal. Each arrived already explained for my situation. That visibility told me when to pay for <strong>premium processing</strong>, which puts the government on a strict clock. My work authorization was granted about ten days later.</p>
       </div>
     </section>
 
     <!-- CLOSE -->
     <section class="close">
-      <p class="close-line reveal">The pattern repeats: find what others overlook, then build the case to back it.</p>
+      <p class="close-line reveal">The parts were ordinary: a browser, a hash, a scheduled job, an API call. Pointing them at something that actually mattered was the whole trick.</p>
       <div class="close-links reveal">
-        <a href="./agent.html">
-          <span>Next use case · Building an autonomous agent</span>
+        <a href="./deal.html">
+          <span>Next use case · The SHEIN deal</span>
           <span class="ext">Read ↗</span>
         </a>
         <a href="./index.html#contact">
@@ -487,26 +581,19 @@
   </div>
 
   <script>
-    // Staggered reveal on scroll
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); } });
     }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
     document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 
-    // Hero stagger
     document.querySelectorAll(".deal-hero .reveal").forEach((el, i) => {
       el.style.transitionDelay = (i * 110) + "ms";
     });
-    // Timeline step stagger (children fade with the parent .steps)
-    document.querySelectorAll(".steps .step").forEach((el, i) => {
-      el.style.transition = "opacity 0.7s cubic-bezier(0.2,0.7,0.2,1), transform 0.7s cubic-bezier(0.2,0.7,0.2,1)";
-    });
 
-    // Gentle count-up for numeric metrics
     (function () {
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const figs = document.querySelectorAll('.metric .fig[data-count]');
-      if (reduce) return; // leave the final text as-is
+      if (reduce) return;
       const ease = (t) => 1 - Math.pow(1 - t, 3);
       function run(el) {
         const end = parseFloat(el.dataset.count);
@@ -533,11 +620,3 @@
 
 </body>
 </html>
-
-<style id="__om-edit-overrides">
-:is(h1,h2,h3,h4,h5,h6) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) >b { font-family: Borel !important }
-:is(h1,h2,h3,h4,h5,h6) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) :is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) { font-family: "Lumen Full" !important }
-:is(h1,h2,h3,h4,h5,h6) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) span:last-child { font-size: 83px !important }
-:is(h1,h2,h3,h4,h5,h6) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) span:last-child { font-size: 8px !important }
-:is(h1,h2,h3,h4,h5,h6) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) span:last-child { font-size: 80px !important }
-</style>

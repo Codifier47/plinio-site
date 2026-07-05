@@ -7,41 +7,17 @@
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="shortcut icon" href="./favicon.svg" />
   <meta name="description" content="Plinio Diouf. Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company he co-founded in the UK." />
-  <meta name="author" content="Plinio Diouf" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
-  <meta name="theme-color" content="#f4f1ea" />
-  <link rel="canonical" href="https://plinio.me/" />
 
   <meta property="og:title" content="Plinio Diouf · Payments" />
   <meta property="og:description" content="Plinio Diouf. Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company he co-founded in the UK." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://plinio.me/" />
-  <meta property="og:site_name" content="Plinio Diouf" />
-  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://plinio.me" />
   <meta property="og:image" content="https://plinio.me/og-image.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Plinio Diouf · Payments" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Plinio Diouf · Payments" />
   <meta name="twitter:description" content="Plinio Diouf. Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company he co-founded in the UK." />
   <meta name="twitter:image" content="https://plinio.me/og-image.png" />
-  <meta name="twitter:image:alt" content="Plinio Diouf · Payments" />
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Plinio Diouf",
-    "url": "https://plinio.me/",
-    "image": "https://plinio.me/og-image.png",
-    "jobTitle": "Payments — Sales, GTM & Operations",
-    "description": "Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company co-founded in the UK.",
-    "worksFor": { "@type": "Organization", "name": "EBANX" },
-    "knowsAbout": ["Payments", "Fintech", "Stablecoins", "Go-to-market", "Account Management", "Cross-border payments"]
-  }
-  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -136,6 +112,85 @@
     @media (max-width: 768px) {
       .nav-globe-full  { display: none; }
       .nav-globe-short { display: inline; }
+    }
+
+    /* USE CASE DROPDOWN */
+    .nav-menu { position: relative; }
+    .nav-menu > .menu-trigger {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 400;
+      padding: 0 0 2px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+    .menu-trigger .caret {
+      font-size: 9px;
+      color: var(--ink-muted);
+      transition: transform 0.3s ease;
+    }
+    .nav-menu.open .menu-trigger .caret { transform: rotate(180deg); }
+    .menu-trigger::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 14px; bottom: 0;
+      height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s ease;
+    }
+    .nav-menu:hover .menu-trigger::after,
+    .nav-menu.open .menu-trigger::after { transform: scaleX(1); }
+
+    .menu-panel {
+      position: absolute;
+      top: calc(100% + 14px);
+      right: 0;
+      min-width: 300px;
+      background: #faf8f2;
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 7px;
+      box-shadow: 0 22px 48px -26px rgba(26, 26, 26, 0.55);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity 0.24s ease, transform 0.24s ease, visibility 0.24s;
+      z-index: 60;
+    }
+    .nav-menu.open .menu-panel { opacity: 1; visibility: visible; transform: translateY(0); }
+    .menu-panel a {
+      display: block;
+      padding: 13px 15px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--ink);
+      transition: background 0.2s ease;
+    }
+    .menu-panel a::after { display: none; }
+    .menu-panel a:hover { background: rgba(26, 26, 26, 0.05); }
+    .menu-panel a + a { border-top: 1px solid var(--rule-soft, rgba(26,26,26,0.08)); }
+    .menu-panel .mp-t {
+      font-family: var(--serif);
+      font-size: 17px;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+    .menu-panel .mp-d {
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      margin-top: 3px;
+      font-weight: 300;
+    }
+    @media (max-width: 768px) {
+      .menu-panel { right: -40px; min-width: 260px; }
     }
 
     /* HERO */
@@ -544,6 +599,19 @@
       <a href="#top" class="logo">Plinio.</a>
       <ul class="nav-links">
         <li><a href="#work">Work</a></li>
+        <li class="nav-menu" id="useCaseMenu">
+          <button class="menu-trigger" type="button" aria-haspopup="true" aria-expanded="false">Use Case <span class="caret">▾</span></button>
+          <div class="menu-panel" role="menu">
+            <a href="./agent.html" role="menuitem">
+              <div class="mp-t">Building an autonomous agent</div>
+              <div class="mp-d">An agent that watched my immigration case with Claude</div>
+            </a>
+            <a href="./deal.html" role="menuitem">
+              <div class="mp-t">The SHEIN deal</div>
+              <div class="mp-d">From an unknown merchant to a $300M account</div>
+            </a>
+          </div>
+        </li>
         <li><a href="#contact">Contact</a></li>
         <li>
           <a href="./globe.html" class="nav-globe">
@@ -561,7 +629,7 @@
           <div id="welcome-lottie" aria-label="Welcome animation" role="img"></div>
         </div>
       </div>
-      <h1 class="reveal">I'm <strong>Plinio</strong>. I sell, launch, and manage cross border payment rails.</h1>
+      <h1 class="reveal">I'm <strong>Plinio</strong>. I sold, launched, and managed payment rails across three continents.</h1>
       <div class="avail-pill reveal"><span class="avail-dot"></span>Open to Account Executive, GTM partnership, and Ops</div>
     </header>
 
@@ -569,7 +637,7 @@
       <div class="stat-strip reveal">
         <div class="stat">Launched payment rails in <span class="stat-fig">31 countries</span></div>
         <div class="stat">Originated <span class="stat-fig">$30M+</span> in 18 months</div>
-        <div class="stat">Closed and managed a <span class="stat-fig">$300M+</span> account</div>
+        <div class="stat">Closed and managed a $300M+ account</div>
         <div class="stat"><span class="stat-fig">126%</span> AOV lift from one integration</div>
       </div>
     </section>
@@ -588,7 +656,7 @@
           </div>
           <div class="xp-body">
             <div class="meta">Payment infrastructure · United Kingdom</div>
-            <div class="detail">Launched wallet infrastructure that replaced manual crypto transfers — 95% of transactions automated, scaled to $1M annual TPV. Led a two-week Norway sprint that cut fees 40% and drove 4× MoM growth.</div>
+            <div class="detail">Launched wallet infrastructure that replaced manual crypto transfers — 95% of transactions automated, scaled to $1M annual TPV. A two-week Norway sprint cut fees 40% and drove 4× MoM growth.</div>
           </div>
         </div>
 
@@ -607,7 +675,7 @@
         <div class="xp">
           <div class="xp-top">
             <div class="year">2018—2019</div>
-            <div class="role">Sr Business Developer &amp; AE <span class="co">· EBANX</span></div>
+            <div class="role">Sr Business Developer &amp; CSM <span class="co">· EBANX</span></div>
             <div class="fig">−67% tickets</div>
           </div>
           <div class="xp-body">
@@ -625,7 +693,7 @@
           <div class="xp-body">
             <div class="meta">Payment infrastructure · Brazil</div>
             <div class="detail">Acquired 80+ international merchants, generating $30M+ in new processing volume over 18 months. Co-led LatAm localization, including a Mexico installment integration that lifted AOV 126% MoM.</div>
-            <div class="case-link">My largest deal: a merchant that grew into one of EBANX's biggest accounts. <a href="./deal.html">Read the case study.</a></div>
+            <div class="case-link">My largest deal: a merchant that grew into one of EBANX's biggest accounts. Read the case study.</div>
           </div>
         </div>
 
@@ -753,6 +821,27 @@
     document.querySelectorAll(".hero .reveal").forEach((el, i) => {
       el.style.transitionDelay = (i * 120) + "ms";
     });
+
+    // Use Case dropdown
+    (function () {
+      const menu = document.getElementById("useCaseMenu");
+      if (!menu) return;
+      const trigger = menu.querySelector(".menu-trigger");
+      function setOpen(open) {
+        menu.classList.toggle("open", open);
+        trigger.setAttribute("aria-expanded", open ? "true" : "false");
+      }
+      trigger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        setOpen(!menu.classList.contains("open"));
+      });
+      document.addEventListener("click", (e) => {
+        if (!menu.contains(e.target)) setOpen(false);
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") setOpen(false);
+      });
+    })();
   </script>
 
   <script>
@@ -800,7 +889,5 @@
     })();
   </script>
 
-  <!-- Vercel Web Analytics -->
-  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
