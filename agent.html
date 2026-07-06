@@ -325,43 +325,121 @@
       margin-bottom: 44px;
       max-width: var(--measure);
     }
-    .steps { border-top: 1px solid var(--ink); }
-    .step {
+    /* TOOL FLOW */
+    .flow-outer { position: relative; margin-top: 40px; }
+    .flow {
       display: grid;
-      grid-template-columns: 56px 150px 1fr;
-      gap: 28px;
-      padding: 26px 0;
-      border-bottom: 1px solid var(--rule-soft);
-      align-items: baseline;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: start;
     }
-    .step .num {
+    .node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 8px;
+    }
+    .node .cap {
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
       color: var(--ink-muted);
-      letter-spacing: 0.02em;
+      margin-bottom: 14px;
+      height: 12px;
     }
-    .step .phase {
+    .chip {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      border: 1px solid var(--rule);
+      background: #faf8f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 14px 30px -24px rgba(26,26,26,0.6);
+    }
+    .chip.accent { border-color: rgba(217, 119, 87, 0.5); }
+    .logo { width: 38px; height: 38px; display: block; object-fit: contain; }
+    .node .name {
+      margin-top: 20px;
       font-family: var(--serif);
-      font-size: 21px;
+      font-size: 19px;
       font-weight: 400;
       letter-spacing: -0.01em;
-      line-height: 1.25;
     }
-    .step .what {
-      font-size: 15px;
-      line-height: 1.6;
+    .node .role {
+      margin-top: 6px;
+      font-size: 13px;
+      line-height: 1.5;
       color: var(--ink-soft);
       font-weight: 300;
-      max-width: 540px;
+      max-width: 150px;
+    }
+    .node .tool {
+      margin-top: 10px;
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-muted);
+    }
+    .connectors {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .arrow {
+      grid-column: span 1;
+      position: relative;
+      height: 88px;
+    }
+    .arrow-line {
+      position: absolute;
+      top: 70px;
+      height: 1px;
+      background: var(--rule);
+      left: calc(50% + 44px + 6px);
+      right: calc(-50% + 44px + 6px);
+    }
+    .arrow-line::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: -3px;
+      width: 6px;
+      height: 6px;
+      border-top: 1px solid var(--ink-muted);
+      border-right: 1px solid var(--ink-muted);
+      transform: rotate(45deg);
+    }
+    .loop-note {
+      margin-top: 44px;
+      padding-top: 20px;
+      border-top: 1px solid var(--rule-soft);
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--ink-muted);
+      text-align: center;
     }
     @media (max-width: 720px) {
-      .step {
-        grid-template-columns: 40px 1fr;
-        gap: 4px 18px;
-        padding: 22px 0;
+      .flow { grid-template-columns: 1fr; }
+      .connectors { display: none; }
+      .node {
+        flex-direction: row;
+        text-align: left;
+        gap: 18px;
+        padding: 18px 0;
+        border-bottom: 1px solid var(--rule-soft);
+        align-items: center;
       }
-      .step .phase { grid-column: 2; }
-      .step .what { grid-column: 2; margin-top: 8px; }
+      .node .cap { display: none; }
+      .node .name { margin-top: 0; }
+      .node .role { max-width: none; }
+      .chip { flex: 0 0 auto; }
     }
 
     /* OUTCOME + CLOSE */
@@ -461,8 +539,8 @@
     <!-- HERO -->
     <header class="deal-hero">
       <div class="section-label reveal">Built with Claude · 2026</div>
-      <p class="deal-frame reveal">A federal court docket decided when I could work. So I built something to watch it for me, and tell me what each change actually meant.</p>
-      <h1 class="deal-headline reveal">I built an autonomous agent to <span class="grad">do the monitoring.</span></h1>
+      <p class="deal-frame reveal">A federal court docket influenced when I could start working. So I built an agent to watch it for me and tell me what each change actually meant.</p>
+      <h1 class="deal-headline reveal">Building an autonomous <span class="grad">monitoring Agent.</span></h1>
     </header>
 
     <!-- METRIC STRIP -->
@@ -490,7 +568,7 @@
     <!-- NARRATIVE -->
     <section class="narrative">
       <div class="deal-body">
-        <p class="lead reveal">My work authorization was frozen while a federal court decided its fate, and the only public record was a docket I kept refreshing by hand. So I built an autonomous agent with Claude to do the watching. Every hour it loads the page, spots anything new, asks Claude what the change means for my case, and emails me in plain language.</p>
+        <p class="lead reveal">My work authorization was on hold while a federal court decided its fate, and the only public record was a docket I kept refreshing manually. So I built an autonomous agent with Claude to do the watching. Every hour it loads the page, spots anything new, asks Claude what the change means for my case, and emails me in plain language.</p>
       </div>
     </section>
 
@@ -527,43 +605,72 @@
       <div class="section-label reveal">The loop it runs</div>
       <h2 class="cycle-heading reveal">Scrape to inbox, every hour.</h2>
 
-      <div class="steps reveal">
-        <div class="step">
-          <div class="num">01</div>
-          <div class="phase">Scrape</div>
-          <div class="what">A headless browser renders the live docket page and grabs the timeline, which only exists after JavaScript draws it.</div>
+      <div class="flow-outer reveal">
+        <div class="flow">
+          <div class="node">
+            <div class="cap">Every hour</div>
+            <div class="chip">
+              <img class="logo" alt="Hostinger" src="https://cdn.simpleicons.org/hostinger/1a1a1a" />
+            </div>
+            <div class="name">Hostinger</div>
+            <div class="role">A small VPS wakes the job every hour</div>
+            <div class="tool">VPS · cron</div>
+          </div>
+
+          <div class="node">
+            <div class="cap">New entries</div>
+            <div class="chip">
+              <img class="logo" alt="Python" src="https://cdn.simpleicons.org/python/1a1a1a" />
+            </div>
+            <div class="name">Python</div>
+            <div class="role">Scrapes the live docket and diffs new entries</div>
+            <div class="tool">Playwright</div>
+          </div>
+
+          <div class="node">
+            <div class="cap">Verdict</div>
+            <div class="chip accent">
+              <img class="logo" alt="Claude" src="https://cdn.simpleicons.org/claude/D97757" />
+            </div>
+            <div class="name">Claude API</div>
+            <div class="role">Reads each change, says what it means for my case</div>
+            <div class="tool">Sonnet 4.6</div>
+          </div>
+
+          <div class="node">
+            <div class="cap">Inform</div>
+            <div class="chip">
+              <img class="logo" alt="Email" src="https://cdn.simpleicons.org/gmail/1a1a1a" />
+            </div>
+            <div class="name">Email</div>
+            <div class="role">The plain-language verdict lands in my inbox</div>
+            <div class="tool">Gmail SMTP</div>
+          </div>
         </div>
-        <div class="step">
-          <div class="num">02</div>
-          <div class="phase">Diff</div>
-          <div class="what">It fingerprints every entry by hashing its date and text, then subtracts what it has already seen, so only genuinely new items get through.</div>
-        </div>
-        <div class="step">
-          <div class="num">03</div>
-          <div class="phase">Explain</div>
-          <div class="what">Claude reads each new entry against the full context of my case and says, in plain sentences, whether it helps, hurts, or changes nothing.</div>
-        </div>
-        <div class="step">
-          <div class="num">04</div>
-          <div class="phase">Notify</div>
-          <div class="what">The explanation hits my inbox at once, with a short daily heartbeat email when all is quiet, so silence never means the watchdog broke.</div>
+
+        <div class="connectors">
+          <div class="arrow"><span class="arrow-line"></span></div>
+          <div class="arrow"><span class="arrow-line"></span></div>
+          <div class="arrow"><span class="arrow-line"></span></div>
+          <div class="arrow"></div>
         </div>
       </div>
+
+      <p class="loop-note">Hourly on the hour &mdash; plus a 9am digest to say it&rsquo;s still watching.</p>
     </section>
 
     <!-- OUTCOME -->
     <section class="outcome">
       <div class="deal-body">
-        <p class="reveal">Over two weeks it caught more than twenty docket entries and flagged every move that mattered: the vacated hold, an enforcement motion, a final judgment against USCIS, the government's emergency stay and notice of appeal. Each arrived already explained for my situation. That visibility told me when to pay for <strong>premium processing</strong>, which puts the government on a strict clock. My work authorization was granted about ten days later.</p>
+        <p class="reveal">Over two weeks, it caught more than twenty docket entries and flagged every move that mattered: the vacated hold, an enforcement motion, a final judgment against USCIS, the government's emergency stay and notice of appeal. Each arrived already explained for my situation. That visibility told me when to pay for <strong>premium processing</strong>, which led to my work authorization being granted about ten days later.</p>
       </div>
     </section>
 
     <!-- CLOSE -->
     <section class="close">
-      <p class="close-line reveal">The parts were ordinary: a browser, a hash, a scheduled job, an API call. Pointing them at something that actually mattered was the whole trick.</p>
       <div class="close-links reveal">
         <a href="./deal.html">
-          <span>Next use case · The $300M deal</span>
+          <span>Next use case · The SHEIN deal</span>
           <span class="ext">Read ↗</span>
         </a>
         <a href="./index.html#contact">
