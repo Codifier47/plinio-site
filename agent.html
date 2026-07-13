@@ -3,21 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>An agent that watched my immigration case · Plinio Diouf</title>
+  <title>Autonomous docket monitoring agent</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="shortcut icon" href="./favicon.svg" />
-  <meta name="description" content="I built an autonomous agent with Claude that watches a federal court docket tied to my work authorization, explains each change in plain language, and emails me the moment anything moves." />
-
-  <meta property="og:title" content="An autonomous agent that watched my immigration case · Plinio Diouf" />
-  <meta property="og:description" content="I built an autonomous agent with Claude that watches a federal court docket tied to my work authorization, explains each change in plain language, and emails me the moment anything moves." />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://plinio.me/agent.html" />
-  <meta property="og:image" content="https://plinio.me/og-image.png" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="An autonomous agent that watched my immigration case · Plinio Diouf" />
-  <meta name="twitter:description" content="I built an autonomous agent with Claude that watches a federal court docket tied to my work authorization, explains each change in plain language, and emails me the moment anything moves." />
-  <meta name="twitter:image" content="https://plinio.me/og-image.png" />
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="description" content="An autonomous agent that watches a live court docket hourly, diffs new entries, has Claude explain each change, and emails a plain language verdict." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -443,6 +433,51 @@
       .chip { flex: 0 0 auto; }
     }
 
+    /* ENGINEERING CARDS */
+    .eng { padding: 8px 0 64px; }
+    .eng .section-label { margin-bottom: 8px; }
+    .eng-heading {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3.4vw, 38px);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      line-height: 1.15;
+      margin-bottom: 44px;
+      max-width: var(--measure);
+    }
+    .eng-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .eng-card {
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      background: #faf8f2;
+      box-shadow: 0 18px 40px -28px rgba(26, 26, 26, 0.5);
+      padding: 24px 24px 26px;
+    }
+    .eng-card h3 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 19px;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .eng-card p {
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      font-weight: 300;
+    }
+    @media (max-width: 900px) {
+      .eng-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .eng-grid { grid-template-columns: 1fr; }
+    }
+
     /* OUTCOME + CLOSE */
     .outcome { padding: 8px 0 0; }
     .outcome .deal-body { max-width: var(--measure); }
@@ -541,7 +576,7 @@
     <!-- HERO -->
     <header class="deal-hero">
       <div class="section-label reveal">Built with Claude · 2026</div>
-      <p class="deal-frame reveal">A federal court docket influenced when I could start working. So I built an agent to watch it for me and tell me what each change actually meant.</p>
+      <p class="deal-frame reveal">A federal court docket once gated a deadline I could not control, so I built an agent to watch it around the clock and tell me what every change actually meant. That matter is closed. What follows is how the system works.</p>
       <h1 class="deal-headline reveal">Building an autonomous <span class="grad">monitoring Agent.</span></h1>
     </header>
 
@@ -561,8 +596,8 @@
           <div class="lab">Lines of Python</div>
         </div>
         <div class="metric">
-          <span class="fig" data-count="1">1</span>
-          <div class="lab">User. Me.</div>
+          <span class="fig" data-count="16">16</span>
+          <div class="lab">Characters in each entry's fingerprint hash</div>
         </div>
       </div>
     </section>
@@ -570,7 +605,7 @@
     <!-- NARRATIVE -->
     <section class="narrative">
       <div class="deal-body">
-        <p class="lead reveal">My work authorization was on hold while a federal court decided its fate, and the only public record was a docket I kept refreshing manually. So I built an autonomous agent with Claude to do the watching. Every hour it loads the page, spots anything new, asks Claude what the change means for my case, and emails me in plain language.</p>
+        <p class="lead reveal">Every hour, the agent loads the docket page in a headless browser, fingerprints each timeline entry, and diffs those fingerprints against everything it has already seen. Anything new gets handed to Claude along with context on what the case is about, with instructions to explain in a few plain sentences what changed and whether it calls for a reaction. The explanation lands by email minutes later, subject line and all, written by Claude.</p>
       </div>
     </section>
 
@@ -580,17 +615,17 @@
       <div class="email reveal">
         <div class="email-bar">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span class="from">docket-watch@ · Dorcas v. USCIS</span>
+          <span class="from">docket-watch@ · Federal docket · New entry</span>
           <span class="flag">New entry</span>
         </div>
         <div class="email-head">
           <div class="email-subject-label">Subject</div>
-          <div class="email-subject">Final judgment entered: the hold on your case is vacated.</div>
+          <div class="email-subject">Final judgment entered: the hold is vacated.</div>
         </div>
         <div class="email-body">
           <span class="tag">Verdict · this helps you</span>
-          <p>The court just entered final judgment against USCIS and set a compliance deadline. In plain terms: the policy freezing your work-authorization application has been struck down, and the agency is now ordered to resume adjudicating cases like yours.</p>
-          <p>This is the opening you've been waiting for. With the hold lifted, paying for premium processing now would start a hard 15-day clock. Worth acting on today.</p>
+          <p>The court just entered final judgment against the agency and set a compliance deadline. In plain terms: the policy that had frozen the plaintiffs' applications has been struck down, and the agency is now ordered to resume processing them.</p>
+          <p>This is the opening you've been waiting for. Worth acting on today.</p>
         </div>
         <div class="email-foot">detected 14:02 · diffed against 27 known entries · explained by claude</div>
       </div>
@@ -598,8 +633,8 @@
 
     <!-- PULL QUOTE -->
     <section class="pull">
-      <blockquote class="reveal">It told me the exact moment to pay for premium processing. My authorization came through about ten days later.</blockquote>
-      <div class="pull-attr reveal">What the visibility bought me</div>
+      <blockquote class="reveal">Twenty-five docket changes caught over two weeks &mdash; each one hashed, diffed, and explained before I ever checked the page myself.</blockquote>
+      <div class="pull-attr reveal">What the system caught</div>
     </section>
 
     <!-- LOOP TIMELINE -->
@@ -661,10 +696,39 @@
       <p class="loop-note">Hourly on the hour &mdash; plus a 9am digest to say it&rsquo;s still watching.</p>
     </section>
 
+    <!-- ENGINEERING -->
+    <section class="eng">
+      <div class="section-label reveal">Under the hood</div>
+      <h2 class="eng-heading reveal">The parts that were actually hard.</h2>
+
+      <div class="eng-grid">
+        <div class="eng-card reveal">
+          <h3>Spotting a new entry</h3>
+          <p>Every timeline entry is reduced to a SHA-256 hash of its date and text, truncated to 16 characters. Each run diffs the current set of hashes against everything already known, so it's the content that decides what's new, not entry count or page order.</p>
+        </div>
+        <div class="eng-card reveal">
+          <h3>When the page breaks</h3>
+          <p>If the headless browser can't load the page, or the scraper comes back with zero parsed entries, the run logs a warning and stops there. No alert fires and nothing gets marked as seen &mdash; a parsing failure is never mistaken for silence.</p>
+        </div>
+        <div class="eng-card reveal">
+          <h3>One run at a time</h3>
+          <p>Each run takes an exclusive file lock before touching anything. If a check is still in flight when the next cron tick fires, the new run logs that another instance is active and exits immediately instead of racing it for the same entries.</p>
+        </div>
+        <div class="eng-card reveal">
+          <h3>What Claude is asked</h3>
+          <p>Claude gets the new entries plus context on the case, and is asked to open with a line starting &ldquo;SUBJECT:&rdquo; before explaining in plain language what changed and whether it needs action. The code parses that first line for the email subject; if Claude skips the format, the whole reply just becomes the body instead.</p>
+        </div>
+        <div class="eng-card reveal">
+          <h3>When nothing changes</h3>
+          <p>On a quiet hour, the script logs the unchanged count, updates its last-checked timestamp, and sends nothing. The only proof of life is a separate digest, once a day, confirming the monitor is still watching.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- OUTCOME -->
     <section class="outcome">
       <div class="deal-body">
-        <p class="reveal">Over two weeks, it caught more than twenty docket entries and flagged every move that mattered: the vacated hold, an enforcement motion, a final judgment against USCIS, the government's emergency stay and notice of appeal. Each arrived already explained for my situation. That visibility told me when to pay for <strong>premium processing</strong>, which led to my work authorization being granted about ten days later.</p>
+        <p class="reveal">Over two weeks, the agent caught more than twenty docket entries and flagged every move that mattered: a hold vacated, an enforcement motion, a final judgment against the agency, a stay request, and a notice of appeal. Each one arrived already fingerprinted, diffed, and explained &mdash; the docket did the work of being watched, so I didn't have to.</p>
       </div>
     </section>
 

@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /agent.html
 
 Sitemap: https://plinio.me/sitemap.xml
