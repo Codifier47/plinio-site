@@ -362,7 +362,7 @@
     /* timeline rows reveal individually rather than as one block */
     .step {
       opacity: 0;
-      transform: translateY(12px);
+      transform: translateY(16px);
       transition: opacity 0.55s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
     .step.visible { opacity: 1; transform: translateY(0); }
@@ -517,17 +517,36 @@
       el.style.transitionDelay = (i * 110) + "ms";
     });
 
-    // Timeline steps: each row reveals as it arrives. Rows that arrive in the
-    // same batch (fast scroll, tall viewport) cascade 60ms apart; a row that
-    // arrives alone reveals immediately rather than sitting on a stale delay.
-    const stepObserver = new IntersectionObserver((entries) => {
-      entries.filter((e) => e.isIntersecting).forEach((e, i) => {
-        e.target.style.transitionDelay = Math.min(i, 5) * 60 + "ms";
-        e.target.classList.add("visible");
-        stepObserver.unobserve(e.target);
-      });
-    }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
-    document.querySelectorAll(".steps .step").forEach((el) => stepObserver.observe(el));
+    // Timeline steps reveal as they rise into view, at 78% of viewport height
+    // so the fade plays where the reader is looking rather than at the edge.
+    // Rows crossing the line in the same pass cascade 60ms apart; a row
+    // crossing alone reveals immediately. This is a scroll sweep rather than
+    // an IntersectionObserver because a narrow trigger band can let a fast
+    // flick skip a row entirely and strand it at opacity 0.
+    (function () {
+      const steps = [].slice.call(document.querySelectorAll(".steps .step"));
+      let queued = false;
+      function sweep() {
+        queued = false;
+        const line = window.innerHeight * 0.78;
+        let i = 0;
+        for (const el of steps) {
+          if (el.classList.contains("visible")) continue;
+          if (el.getBoundingClientRect().top < line) {
+            el.style.transitionDelay = Math.min(i++, 5) * 60 + "ms";
+            el.classList.add("visible");
+          }
+        }
+        if (steps.every((el) => el.classList.contains("visible"))) {
+          window.removeEventListener("scroll", onScroll);
+        }
+      }
+      function onScroll() {
+        if (!queued) { queued = true; requestAnimationFrame(sweep); }
+      }
+      window.addEventListener("scroll", onScroll, { passive: true });
+      sweep();
+    })();
 
   </script>
 
