@@ -21,7 +21,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Borel&family=Architects+Daughter&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Borel&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet" />
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 
@@ -93,28 +93,6 @@
       transition: transform 0.35s ease;
     }
     .nav-links a:hover::after { transform: scaleX(1); }
-
-    .nav-globe {
-      font-size: 12px !important;
-      padding: 5px 11px !important;
-      border: 1px solid rgba(26, 26, 26, 0.25);
-      border-radius: 20px;
-      letter-spacing: 0.01em;
-      white-space: nowrap;
-      transition: background 0.25s ease, border-color 0.25s ease !important;
-    }
-    .nav-globe::after { display: none !important; }
-    .nav-menu > .menu-trigger.nav-globe { padding: 5px 11px; }
-    .nav-menu > .menu-trigger.nav-globe::after { display: none; }
-    .nav-globe:hover {
-      background: rgba(26, 26, 26, 0.06);
-      border-color: rgba(26, 26, 26, 0.45);
-    }
-    .nav-globe-short { display: none; }
-    @media (max-width: 768px) {
-      .nav-globe-full  { display: none; }
-      .nav-globe-short { display: inline; }
-    }
 
     /* USE CASE DROPDOWN */
     .nav-menu { position: relative; }
@@ -505,6 +483,14 @@
     .skills-block ul li { color: var(--ink-soft); }
     .skills-block ul li + li:has(.stack),
     .skills-block ul li:has(.stack) + li { margin-top: 10px; }
+    .tool-link {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: var(--rule);
+      text-underline-offset: 4px;
+      transition: text-decoration-color 0.2s ease;
+    }
+    .tool-link:hover { text-decoration-color: var(--ink); }
     .skills-block .stack {
       display: block;
       font-family: var(--sans);
@@ -667,7 +653,7 @@
         </li>
         <li><a href="#contact">Contact</a></li>
         <li class="nav-menu nav-menu-end" id="sideProjectsMenu">
-          <button class="menu-trigger nav-globe" type="button" aria-haspopup="true" aria-expanded="false">Side projects <span class="caret">▾</span></button>
+          <button class="menu-trigger" type="button" aria-haspopup="true" aria-expanded="false">Side projects <span class="caret">▾</span></button>
           <div class="menu-panel" role="menu">
             <a href="https://callhorns.com" role="menuitem" target="_blank" rel="noopener">
               <div class="mp-t">Call Horns</div>
@@ -827,7 +813,7 @@
           <ul>
             <li>Self-serve country activation<span class="stack">HubSpot, Tableau, Mailchimp</span></li>
             <li>Transaction monitoring by corridor<span class="stack">SQL, JetAdmin, DBeaver</span></li>
-            <li>An hourly monitoring agent<span class="stack">Python, Claude Code</span></li>
+            <li><a class="tool-link" href="./agent.html" rel="nofollow">An hourly monitoring agent</a><span class="stack">Python, Claude Code</span></li>
           </ul>
         </div>
         <div class="skills-block">
@@ -971,5 +957,7 @@
     })();
   </script>
 
+  <!-- Vercel Web Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
