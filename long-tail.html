@@ -3,21 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Featured Deal · Plinio Diouf</title>
+  <title>The Long Tail · Plinio Diouf</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="shortcut icon" href="./favicon.svg" />
-  <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="The story of my largest EBANX deal: an unknown merchant I championed internally that grew into one of the company's biggest accounts, roughly $300M in annual processing volume." />
+  <meta name="description" content="How a self-serve country expansion flow at EBANX cut manual upsell tickets by two-thirds and lifted quarterly upsells 18%." />
 
-  <meta property="og:title" content="Plinio Diouf · Payments" />
-  <meta property="og:description" content="Plinio Diouf. Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company he co-founded in the UK." />
+  <meta property="og:title" content="Plinio Diouf · Growth &amp; Operations" />
+  <meta property="og:description" content="Plinio Diouf. Seven years of experience across three continents. Acquiring and growing customers for tech companies." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://plinio.me" />
   <meta property="og:image" content="https://plinio.me/og-image.png" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Plinio Diouf · Payments" />
-  <meta name="twitter:description" content="Plinio Diouf. Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company he co-founded in the UK." />
+  <meta name="twitter:title" content="Plinio Diouf · Growth &amp; Operations" />
+  <meta name="twitter:description" content="Plinio Diouf. Seven years of experience across three continents. Acquiring and growing customers for tech companies." />
   <meta name="twitter:image" content="https://plinio.me/og-image.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -78,13 +77,9 @@
       font-size: 16px;
       color: var(--ink);
       text-decoration: none;
-      transition: opacity 0.12s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+      transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
-    @media (hover: hover) and (pointer: fine) {
-      nav a.back-link:hover { opacity: 0.7; transform: translateX(-3px); }
-    }
-    /* press feedback — the only affordance touch devices get */
-    nav a.back-link:active { opacity: 0.55; }
+    nav a.back-link:hover { opacity: 0.7; transform: translateX(-3px); }
     nav .page-title {
       font-family: var(--sans);
       font-size: 13px;
@@ -229,8 +224,6 @@
       max-width: var(--measure);
     }
     .pull .pull-attr {
-      /* trails the blockquote, mirroring the 110ms hero stagger */
-      transition-delay: 120ms;
       margin-top: 26px;
       font-size: 12px;
       text-transform: uppercase;
@@ -316,13 +309,10 @@
       text-decoration: none;
       font-family: var(--serif);
       font-size: 22px;
-      transition: padding 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.12s cubic-bezier(0.2, 0.7, 0.2, 1);
+      transition: padding 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
     .close-links a:first-child { border-top: 1px solid var(--ink); }
-    @media (hover: hover) and (pointer: fine) {
-      .close-links a:hover { padding-left: 12px; }
-    }
-    .close-links a:active { opacity: 0.55; }
+    .close-links a:hover { padding-left: 12px; }
     .close-links a .ext {
       font-family: var(--sans);
       font-size: 12px;
@@ -359,18 +349,8 @@
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* timeline rows reveal individually rather than as one block */
-    .step {
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.55s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
-    }
-    .step.visible { opacity: 1; transform: translateY(0); }
-
     @media (prefers-reduced-motion: reduce) {
       .reveal { opacity: 1; transform: none; transition: none; }
-      /* gentler, not zero: keep the fade, drop the travel */
-      .step { transform: none; transition: opacity 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
       html { scroll-behavior: auto; }
     }
 
@@ -393,34 +373,34 @@
 
     <nav>
       <a class="back-link" href="./index.html">← Plinio</a>
-      <span class="page-title">Use Case · The $300M Deal</span>
+      <span class="page-title">Use Case · The Long Tail</span>
     </nav>
 
     <!-- HERO -->
     <header class="deal-hero">
-      <div class="section-label reveal">Featured Deal · EBANX · 2017–2018</div>
-      <p class="deal-frame reveal">My largest deal at EBANX — and how I won it before anyone in the building was watching.</p>
-      <h1 class="deal-headline reveal">From an unknown merchant to a <span class="amt" style="font-weight: 400; font-family: Borel">$300M</span> account.</h1>
+      <div class="section-label reveal">Customer Success · EBANX · 2018–2019</div>
+      <p class="deal-frame reveal">Merchants below $100k a month had no account manager. Their biggest friction was getting into a new country.</p>
+      <h1 class="deal-headline reveal">From a manual loop to a <span class="amt" style="font-weight: 400; font-family: Borel">button</span>.</h1>
     </header>
 
     <!-- METRIC STRIP -->
     <section class="metric-strip-section">
       <div class="metric-strip reveal">
         <div class="metric">
-          <span class="fig">$300M</span>
-          <div class="lab">Annual processing volume at peak</div>
+          <span class="fig" data-count="67" data-prefix="−" data-suffix="%">−67%</span>
+          <div class="lab">Manual upsell tickets, first quarter</div>
         </div>
         <div class="metric">
-          <span class="fig">126%</span>
-          <div class="lab">AOV lift, month over month</div>
+          <span class="fig" data-count="18" data-suffix="%">18%</span>
+          <div class="lab">More quarterly upsells</div>
         </div>
         <div class="metric">
-          <span class="fig">2</span>
-          <div class="lab">Markets launched, Mexico then Brazil</div>
+          <span class="fig">1</span>
+          <div class="lab">Back-end developer</div>
         </div>
         <div class="metric">
-          <span class="fig">#1</span>
-          <div class="lab">Top business developer that year</div>
+          <span class="fig">3</span>
+          <div class="lab">Teams aligned: CS, Compliance, and Tech</div>
         </div>
       </div>
     </section>
@@ -428,51 +408,46 @@
     <!-- NARRATIVE -->
     <section class="narrative">
       <div class="deal-body">
-        <p class="lead reveal">In late 2017, I went after a fast-growing e-commerce merchant almost no one at EBANX was paying attention to, and I championed it internally to win the resources to land it. Stakeholders spanned the US, Mexico, and China, each with a different level of influence, so technical alignment had to happen overnight, across time zones.</p>
+        <p class="lead reveal">At EBANX, account managers only covered merchants processing $100k or more a month. Below that line sat a long tail of smaller merchants, many of them close to the threshold, with no dedicated attention. Their biggest friction was expanding to new countries. Each country has its own restrictions (tobacco, cannabis, gambling, and so on), so merchants were approved one country at a time, and every new country meant a manual loop through CS, Compliance, and Tech. It slowed their time to market and used up CS capacity.</p>
       </div>
     </section>
 
     <!-- PULL QUOTE -->
     <section class="pull">
-      <blockquote class="reveal">A merchant nobody had heard of became one of EBANX's biggest accounts.</blockquote>
-      <div class="pull-attr reveal">The bet, in one line</div>
+      <blockquote class="reveal">Many of our CS tickets were not problems. They were merchants asking to grow.</blockquote>
+      <div class="pull-attr reveal">What the data showed</div>
     </section>
 
     <!-- CYCLE TIMELINE -->
     <section class="cycle">
-      <div class="section-label reveal">The cycle I owned</div>
-      <h2 class="cycle-heading reveal">Qualification to go-live, end to end.</h2>
+      <div class="section-label reveal">What I built</div>
+      <h2 class="cycle-heading reveal">No playbook, so I built one.</h2>
 
-      <div class="steps">
+      <div class="steps reveal">
         <div class="step">
           <div class="num">01</div>
-          <div class="phase">Spotted &amp; qualified</div>
-          <div class="what">Found a fast-growing merchant no one was tracking and validated the upside before competing for internal resources.</div>
+          <div class="phase">Quantified the problem</div>
+          <div class="what">Counted how many long-tail merchants were risk-free, and how many CS tickets were really upsell requests.</div>
         </div>
         <div class="step">
           <div class="num">02</div>
-          <div class="phase">Championed internally</div>
-          <div class="what">Won buy-in and engineering bandwidth across US, Mexico, and China stakeholders, each with a different level of influence.</div>
+          <div class="phase">Split the flow</div>
+          <div class="what">Risk-free merchants got a self-serve path. Restricted merchants kept the existing compliance review.</div>
         </div>
         <div class="step">
           <div class="num">03</div>
-          <div class="phase">Negotiated &amp; cleared compliance</div>
-          <div class="what">Aligned commercial terms and compliance overnight, across time zones, to keep the timeline intact.</div>
+          <div class="phase">Aligned three teams</div>
+          <div class="what">Brought CS, Compliance, and Tech onto the new split between self-serve and reviewed requests.</div>
         </div>
         <div class="step">
           <div class="num">04</div>
-          <div class="phase">Integrated &amp; launched Mexico</div>
-          <div class="what">Owned integration, testing, and go-live. Mexico went live in early 2018.</div>
+          <div class="phase">Built it with one developer</div>
+          <div class="what">A request from the merchant dashboard triggered a HubSpot workflow and created a Tech task to enable the rails.</div>
         </div>
         <div class="step">
           <div class="num">05</div>
-          <div class="phase">Added installments</div>
-          <div class="what">Shipped installment payments that lifted average order value 126% month over month.</div>
-        </div>
-        <div class="step">
-          <div class="num">06</div>
-          <div class="phase">Expanded to Brazil</div>
-          <div class="what">Rolled the playbook into a second market, scaling the account toward $300M in annual volume.</div>
+          <div class="phase">Kept merchants informed</div>
+          <div class="what">Automated Mailchimp updates told each merchant where their request stood.</div>
         </div>
       </div>
     </section>
@@ -480,15 +455,16 @@
     <!-- OUTCOME -->
     <section class="outcome">
       <div class="deal-body">
-        <p class="reveal">It became one of EBANX's largest accounts, roughly <strong>$300M in annual processing volume</strong>. I finished the year as the company's top business developer, earned two promotions in 15 months, and was tasked with building EBANX's Customer Success foundation layer.</p>
+        <p class="reveal">In the first quarter, manual upsell tickets dropped by two-thirds. The unexpected win came from the dashboard itself: once <strong>“add a country” was visible</strong>, quarterly upsells grew 18%.</p>
+        <p class="reveal">The merchants did not need convincing. They needed a button.</p>
       </div>
     </section>
 
     <!-- CLOSE -->
     <section class="close">
       <div class="close-links reveal">
-        <a href="./agent.html" rel="nofollow">
-          <span>Next use case · Building an autonomous agent</span>
+        <a href="./deal.html">
+          <span>Next use case · The $300M account</span>
           <span class="ext">Read ↗</span>
         </a>
         <a href="./index.html#contact">
@@ -516,47 +492,39 @@
     document.querySelectorAll(".deal-hero .reveal").forEach((el, i) => {
       el.style.transitionDelay = (i * 110) + "ms";
     });
+    // Timeline step stagger (children fade with the parent .steps)
+    document.querySelectorAll(".steps .step").forEach((el, i) => {
+      el.style.transition = "opacity 0.7s cubic-bezier(0.2,0.7,0.2,1), transform 0.7s cubic-bezier(0.2,0.7,0.2,1)";
+    });
 
-    // Timeline steps reveal as they rise into view, at 78% of viewport height
-    // so the fade plays where the reader is looking rather than at the edge.
-    // Rows crossing the line in the same pass cascade 60ms apart; a row
-    // crossing alone reveals immediately. This is a scroll sweep rather than
-    // an IntersectionObserver because a narrow trigger band can let a fast
-    // flick skip a row entirely and strand it at opacity 0.
+    // Gentle count-up for numeric metrics
     (function () {
-      const steps = [].slice.call(document.querySelectorAll(".steps .step"));
-      let queued = false;
-      function sweep() {
-        queued = false;
-        const line = window.innerHeight * 0.78;
-        let i = 0;
-        for (const el of steps) {
-          if (el.classList.contains("visible")) continue;
-          if (el.getBoundingClientRect().top < line) {
-            el.style.transitionDelay = Math.min(i++, 5) * 60 + "ms";
-            el.classList.add("visible");
-          }
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const figs = document.querySelectorAll('.metric .fig[data-count]');
+      if (reduce) return; // leave the final text as-is
+      const ease = (t) => 1 - Math.pow(1 - t, 3);
+      function run(el) {
+        const end = parseFloat(el.dataset.count);
+        const prefix = el.dataset.prefix || '';
+        const suffix = el.dataset.suffix || '';
+        const dur = 1100;
+        const start = performance.now();
+        function tick(now) {
+          const p = Math.min(1, (now - start) / dur);
+          const val = Math.round(end * ease(p));
+          el.textContent = prefix + val + suffix;
+          if (p < 1) requestAnimationFrame(tick);
         }
-        if (steps.every((el) => el.classList.contains("visible"))) {
-          window.removeEventListener("scroll", onScroll);
-        }
+        requestAnimationFrame(tick);
       }
-      function onScroll() {
-        if (!queued) { queued = true; requestAnimationFrame(sweep); }
-      }
-      window.addEventListener("scroll", onScroll, { passive: true });
-      sweep();
+      const mObs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) { run(e.target); mObs.unobserve(e.target); }
+        });
+      }, { threshold: 0.6 });
+      figs.forEach((f) => mObs.observe(f));
     })();
-
   </script>
 
 </body>
 </html>
-
-<style id="__om-edit-overrides">
-:is(h1,h2,h3,h4,h5,h6) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) >b { font-family: Borel !important }
-:is(h1,h2,h3,h4,h5,h6) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) :is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) { font-family: "Lumen Full" !important }
-:is(h1,h2,h3,h4,h5,h6) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) span:last-child { font-size: 83px !important }
-:is(h1,h2,h3,h4,h5,h6) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) span:last-child { font-size: 8px !important }
-:is(h1,h2,h3,h4,h5,h6) >:is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,label,span,a,em,strong,small,td,th,caption) span:last-child { font-size: 80px !important }
-</style>

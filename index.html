@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plinio Diouf · Payments</title>
+  <title>Plinio Diouf · Growth &amp; Operations</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="shortcut icon" href="./favicon.svg" />
-  <meta name="description" content="Plinio Diouf. Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company he co-founded in the UK." />
+  <meta name="description" content="Plinio Diouf. Seven years of experience across three continents. Acquiring and growing customers for tech companies." />
 
-  <meta property="og:title" content="Plinio Diouf · Payments" />
-  <meta property="og:description" content="Plinio Diouf. Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company he co-founded in the UK." />
+  <meta property="og:title" content="Plinio Diouf · Growth &amp; Operations" />
+  <meta property="og:description" content="Plinio Diouf. Seven years of experience across three continents. Acquiring and growing customers for tech companies." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://plinio.me" />
   <meta property="og:image" content="https://plinio.me/og-image.png" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Plinio Diouf · Payments" />
-  <meta name="twitter:description" content="Plinio Diouf. Seven years selling, launching, and managing payment rails across three continents, from EBANX in Brazil to a stablecoin payments company he co-founded in the UK." />
+  <meta name="twitter:title" content="Plinio Diouf · Growth &amp; Operations" />
+  <meta name="twitter:description" content="Plinio Diouf. Seven years of experience across three continents. Acquiring and growing customers for tech companies." />
   <meta name="twitter:image" content="https://plinio.me/og-image.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -104,6 +104,8 @@
       transition: background 0.25s ease, border-color 0.25s ease !important;
     }
     .nav-globe::after { display: none !important; }
+    .nav-menu > .menu-trigger.nav-globe { padding: 5px 11px; }
+    .nav-menu > .menu-trigger.nav-globe::after { display: none; }
     .nav-globe:hover {
       background: rgba(26, 26, 26, 0.06);
       border-color: rgba(26, 26, 26, 0.45);
@@ -191,6 +193,7 @@
     }
     @media (max-width: 768px) {
       .menu-panel { left: 0; right: auto; min-width: 0; width: 260px; max-width: calc(100vw - 44px); }
+      .nav-menu-end .menu-panel { left: auto; right: 0; }
     }
 
     /* HERO */
@@ -343,8 +346,17 @@
     }
     .globe-line:hover .globe-line-text { border-color: var(--ink); }
     .globe-line-arrow { font-size: 18px; color: var(--ink-soft); }
+    .side-projects {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px 20px;
+      align-items: baseline;
+    }
+    .side-projects .globe-line { grid-column: 2; }
     @media (max-width: 720px) {
       .globe-line { gap: 6px 14px; }
+      .side-projects { grid-template-columns: 1fr; gap: 12px; }
+      .side-projects .globe-line { grid-column: 1; }
     }
 
     /* SECTIONS */
@@ -491,6 +503,16 @@
       line-height: 1.7;
     }
     .skills-block ul li { color: var(--ink-soft); }
+    .skills-block ul li + li:has(.stack),
+    .skills-block ul li:has(.stack) + li { margin-top: 10px; }
+    .skills-block .stack {
+      display: block;
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--ink-muted);
+      font-weight: 300;
+    }
 
     /* CONTACT */
     .contact-big {
@@ -510,6 +532,32 @@
       font-weight: 400;
     }
     .contact-big a:hover { color: var(--ink-muted); border-bottom-color: var(--ink-muted); }
+
+    .book-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px 40px;
+      flex-wrap: wrap;
+    }
+    .book-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--paper);
+      background: var(--ink);
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      padding: 14px 26px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+    .book-btn:hover { background: transparent; color: var(--ink); }
+    .book-btn .avail-dot { width: 8px; height: 8px; }
 
     .contact-links {
       margin-top: 56px;
@@ -602,22 +650,33 @@
         <li class="nav-menu" id="useCaseMenu">
           <button class="menu-trigger" type="button" aria-haspopup="true" aria-expanded="false">Use Case <span class="caret">▾</span></button>
           <div class="menu-panel" role="menu">
+            <a href="./long-tail.html" role="menuitem">
+              <div class="mp-t">The long tail</div>
+              <div class="mp-d">Self-serve country expansion: two-thirds fewer support tickets, 18% more upsells</div>
+            </a>
+            <a href="./deal.html" role="menuitem">
+              <div class="mp-t">The $300M account</div>
+              <div class="mp-d">From an unknown merchant to a $300M account</div>
+            </a>
             <a href="./agent.html" role="menuitem" rel="nofollow">
               <div class="mp-t">Building an autonomous agent</div>
               <div class="mp-d">An hourly docket monitor that diffs, explains, and emails</div>
             </a>
-            <a href="./deal.html" role="menuitem">
-              <div class="mp-t">The $300M deal</div>
-              <div class="mp-d">From an unknown merchant to a $300M account</div>
-            </a>
           </div>
         </li>
         <li><a href="#contact">Contact</a></li>
-        <li>
-          <a href="./globe.html" class="nav-globe">
-            <span class="nav-globe-full">Instant Payments Globe</span>
-            <span class="nav-globe-short">Payment Globe</span>
-          </a>
+        <li class="nav-menu nav-menu-end" id="sideProjectsMenu">
+          <button class="menu-trigger nav-globe" type="button" aria-haspopup="true" aria-expanded="false">Side projects <span class="caret">▾</span></button>
+          <div class="menu-panel" role="menu">
+            <a href="https://callhorns.com" role="menuitem" target="_blank" rel="noopener">
+              <div class="mp-t">Call Horns</div>
+              <div class="mp-d">AI receptionist built for auto repair shops</div>
+            </a>
+            <a href="./globe.html" role="menuitem">
+              <div class="mp-t">Instant Payments Globe</div>
+              <div class="mp-d">The world's top instant payment schemes, on one globe</div>
+            </a>
+          </div>
         </li>
       </ul>
     </nav>
@@ -629,22 +688,22 @@
           <div id="welcome-lottie" aria-label="Welcome animation" role="img"></div>
         </div>
       </div>
-      <h1 class="reveal">I'm <strong>Plinio</strong>. I sold, launched, and managed payment rails across three continents.</h1>
-      <div class="avail-pill reveal"><span class="avail-dot"></span>Open to Account Executive, Account Management, and Product</div>
+      <h1 class="reveal">I'm <strong>Plinio</strong>. I acquire and grow customers for tech companies going global.</h1>
+      <div class="avail-pill reveal"><span class="avail-dot"></span>Open to Customer Success, Account Management, and Operations</div>
     </header>
 
     <section id="stats" class="stat-strip-section">
       <div class="stat-strip reveal">
-        <div class="stat">Launched payment rails in <span class="stat-fig">31 countries</span></div>
+        <div class="stat">Built a startup with rails in <span class="stat-fig">31 countries</span></div>
         <div class="stat">Originated <span class="stat-fig">$30M+</span> in 18 months</div>
-        <div class="stat">Closed and managed a <span class="stat-fig">$300M+</span> account</div>
-        <div class="stat"><span class="stat-fig">126%</span> AOV lift from one integration</div>
+        <div class="stat">Closed and managed a <span class="stat-fig">$300M</span> account</div>
+        <div class="stat"><span class="stat-fig">2</span> master's degrees</div>
       </div>
     </section>
 
     <section id="work">
       <div class="section-label reveal">Experience</div>
-      <h2 class="section-heading reveal">Seven years, three continents<br>One thing: <span class="script-grad">Payments.</span></h2>
+      <h2 class="section-heading reveal">Seven years, three continents<br>Always pushing <span class="script-grad">growth.</span></h2>
 
       <div class="xp-list reveal">
 
@@ -656,7 +715,7 @@
           </div>
           <div class="xp-body">
             <div class="meta">Payment infrastructure · United Kingdom</div>
-            <div class="detail">Launched wallet infrastructure that replaced manual crypto transfers — 95% of transactions automated, scaled to $1M annual TPV. A two-week Norway sprint cut fees 40% and drove 4× MoM growth.</div>
+            <div class="detail">API-first payment infrastructure powered by stablecoins. I was responsible for partnerships, API integrations, compliance, product, money movement, and monitoring. The operation runs across the US, LatAm, and Europe.<br>Launched rails in 31 countries · Defined and automated 95% of the transaction flow · Crossed $1M in annual TPV</div>
           </div>
         </div>
 
@@ -667,7 +726,7 @@
             <div class="fig">$100M lead</div>
           </div>
           <div class="xp-body">
-            <div class="meta">Payment service provider · Kenya</div>
+            <div class="meta">Pan-African payments · Kenya</div>
             <div class="detail">Led sales for global e-commerce merchants across Africa; ran feasibility on a $100M enterprise lead, surfacing FX-pricing gaps, and proposed USDT/NGN liquidity swaps to mitigate currency risk.</div>
           </div>
         </div>
@@ -676,11 +735,12 @@
           <div class="xp-top">
             <div class="year">2018—2019</div>
             <div class="role">Senior Account Manager &amp; Customer Success <span class="co">· EBANX</span></div>
-            <div class="fig">−67% tickets</div>
+            <div class="fig">−67% support tickets</div>
           </div>
           <div class="xp-body">
-            <div class="meta">Payment infrastructure · Brazil</div>
-            <div class="detail">Built a cross-border expansion workflow (HubSpot + Tableau + API signals) that automated country activation; grew quarterly upsell 18%.</div>
+            <div class="meta">Cross-border e-commerce payments · Brazil</div>
+            <div class="detail">Merchants under $100k a month had no account manager, and every new country meant a manual loop through CS, Compliance, and Tech. I built a self-serve path for low-risk merchants: manual support tickets fell by two-thirds in a quarter, and upsells grew 18%.</div>
+            <div class="case-link">The full story: <a href="./long-tail.html">Read the case study.</a></div>
           </div>
         </div>
 
@@ -688,24 +748,30 @@
           <div class="xp-top">
             <div class="year">2016—2018</div>
             <div class="role">Business Developer <span class="co">· EBANX</span></div>
-            <div class="fig">$30M+ TPV</div>
+            <div class="fig">80+ merchants</div>
           </div>
           <div class="xp-body">
-            <div class="meta">Payment infrastructure · Brazil</div>
-            <div class="detail">Acquired 80+ international merchants, generating $30M+ in new processing volume over 18 months. Co-led LatAm localization, including a Mexico installment integration that lifted AOV 126% MoM.</div>
-            <div class="case-link">My largest deal: <a href="./deal.html">Read the case study.</a></div>
+            <div class="meta">Cross-border e-commerce payments · Brazil</div>
+            <div class="detail">Acquired 80+ international merchants, generating $30M+ in new processing volume over 18 months. Co-led LatAm localization, including a Mexico installment integration that lifted AOV by 126% MoM.</div>
+            <div class="case-link">From an unknown merchant to $300M a year: <a href="./deal.html">Read the case study.</a></div>
           </div>
         </div>
 
       </div>
     </section>
 
-    <section id="globe-feature" class="globe-feature reveal">
-      <a href="./globe.html" class="globe-line">
-        <span class="section-label">Interactive</span>
-        <span class="globe-line-text">Discover the world's top instant payment schemes</span>
-        <span class="globe-line-arrow">↗</span>
-      </a>
+    <section id="side-projects" class="globe-feature reveal">
+      <div class="side-projects">
+        <span class="section-label">Side projects</span>
+        <a href="https://callhorns.com" class="globe-line" target="_blank" rel="noopener">
+          <span class="globe-line-text">Call Horns: AI receptionist built for auto repair shops</span>
+          <span class="globe-line-arrow">↗</span>
+        </a>
+        <a href="./globe.html" class="globe-line">
+          <span class="globe-line-text">The world's top instant payment schemes, on one globe</span>
+          <span class="globe-line-arrow">↗</span>
+        </a>
+      </div>
     </section>
 
     <section id="education">
@@ -747,21 +813,20 @@
         <div class="skills-block">
           <div class="skills-label">Areas</div>
           <ul>
-            <li>Go-to-market strategy</li>
-            <li>Customer lifecycle management</li>
-            <li>E-commerce</li>
-            <li>Stablecoin & Crypto Payment Rails</li>
-            <li>Data visualization &amp; A/B testing</li>
-            <li>Agile delivery</li>
+            <li>Onboarding and go-live</li>
+            <li>Account growth and renewals</li>
+            <li>Partner and integration management</li>
+            <li>Cross-border e-commerce</li>
+            <li>Payments, FX, and stablecoins</li>
+            <li>Data: SQL, Tableau, dashboards</li>
           </ul>
         </div>
         <div class="skills-block">
-          <div class="skills-label">Tools</div>
+          <div class="skills-label">Useful tools I've built</div>
           <ul>
-            <li>Figma, Miro, Trello</li>
-            <li>Tableau, Excel, SQL, HTML</li>
-            <li>DBeaver, JetAdmin, HubSpot</li>
-            <li>Claude Code</li>
+            <li>Self-serve country activation<span class="stack">HubSpot, Tableau, Mailchimp</span></li>
+            <li>Transaction monitoring by corridor<span class="stack">SQL, JetAdmin, DBeaver</span></li>
+            <li>An hourly monitoring agent<span class="stack">Python, Claude Code</span></li>
           </ul>
         </div>
         <div class="skills-block">
@@ -770,6 +835,8 @@
             <li><span class="script-grad">English</span> · fluent</li>
             <li><span class="script-grad">French</span> · fluent</li>
             <li><span class="script-grad">Portuguese</span> · fluent</li>
+            <li><span class="script-grad">Wolof</span> · fluent</li>
+            <li><span class="script-grad">Spanish</span> · basic</li>
           </ul>
         </div>
         <div class="skills-block">
@@ -785,8 +852,12 @@
 
     <section id="contact">
       <div class="section-label reveal">Get in touch</div>
-      <div class="contact-big reveal">
-        The easiest way to reach me is <a href="mailto:dioufplinio@gmail.com">dioufplinio@gmail.com</a>. I'm currently open to Account Executive, Account Management, and Product roles.
+      <div class="book-row reveal">
+        <div class="contact-big">Book a call with me.</div>
+        <a class="book-btn" id="bookCall" href="https://cal.com/plinio-wqvotm/quick-chat-plinio" target="_blank" rel="noopener"
+           data-cal-namespace="quick-chat-plinio" data-cal-link="plinio-wqvotm/quick-chat-plinio" data-cal-config='{"layout":"month_view"}'>
+          <span class="avail-dot"></span>Pick a time
+        </a>
       </div>
 
       <div class="contact-links reveal">
@@ -822,26 +893,36 @@
       el.style.transitionDelay = (i * 120) + "ms";
     });
 
-    // Use Case dropdown
+    // Nav dropdowns (Use Case, Side projects): one open at a time
     (function () {
-      const menu = document.getElementById("useCaseMenu");
-      if (!menu) return;
-      const trigger = menu.querySelector(".menu-trigger");
-      function setOpen(open) {
+      const menus = document.querySelectorAll(".nav-menu");
+      function setOpen(menu, open) {
         menu.classList.toggle("open", open);
-        trigger.setAttribute("aria-expanded", open ? "true" : "false");
+        menu.querySelector(".menu-trigger").setAttribute("aria-expanded", open ? "true" : "false");
       }
-      trigger.addEventListener("click", (e) => {
-        e.stopPropagation();
-        setOpen(!menu.classList.contains("open"));
+      menus.forEach((menu) => {
+        menu.querySelector(".menu-trigger").addEventListener("click", (e) => {
+          e.stopPropagation();
+          const open = !menu.classList.contains("open");
+          menus.forEach((m) => setOpen(m, false));
+          setOpen(menu, open);
+        });
       });
       document.addEventListener("click", (e) => {
-        if (!menu.contains(e.target)) setOpen(false);
+        menus.forEach((m) => { if (!m.contains(e.target)) setOpen(m, false); });
       });
       document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") setOpen(false);
+        if (e.key === "Escape") menus.forEach((m) => setOpen(m, false));
       });
     })();
+  </script>
+
+  <script>
+    // Cal.com booking popup. If the embed script can't load, the button stays a normal link to cal.com.
+    (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; const sc = d.createElement("script"); sc.src = A; sc.onload = function () { C.__calReady = true; }; d.head.appendChild(sc); cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init", "quick-chat-plinio", { origin: "https://app.cal.com" });
+    Cal.ns["quick-chat-plinio"]("ui", { hideEventTypeDetails: false, layout: "month_view" });
+    document.getElementById("bookCall").addEventListener("click", (e) => { if (window.__calReady) e.preventDefault(); });
   </script>
 
   <script>
