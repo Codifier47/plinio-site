@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Diagnostic rural participatif du site pilote de maracuja au Sénégal.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Diagnostic Maracuja Sénégal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: one narrow phone-first column of lettered sections; a sticky bottom bar tracks progress and opens the WhatsApp summary. */
+:root{
+  --bg:#f7f5f8; --surface:#ffffff; --fg:#231b2a; --muted:#6b6173; --line:#e3dde8;
+  --accent:#5b2a6e; --accent-ink:#ffffff; --accent-soft:#efe6f3;
+  --leaf:#3f6b2a; --leaf-soft:#e7f0df; --sun:#e0a526;
+  --display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono:ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#17121b; --surface:#211a27; --fg:#efe9f2; --muted:#a99fb1; --line:#372e3e;
+  --accent:#c79ad9; --accent-ink:#1b1220; --accent-soft:#33243c;
+  --leaf:#9cc983; --leaf-soft:#22301b; --sun:#e8b54a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17121b; --surface:#211a27; --fg:#efe9f2; --muted:#a99fb1; --line:#372e3e;
+  --accent:#c79ad9; --accent-ink:#1b1220; --accent-soft:#33243c;
+  --leaf:#9cc983; --leaf-soft:#22301b; --sun:#e8b54a; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:680px;margin:0 auto;padding-inline:16px;padding-block:28px 120px;display:flex;flex-direction:column;gap:28px}
+header{display:flex;flex-direction:column;gap:12px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--leaf);font-weight:700}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,7vw,38px);line-height:1.1;margin:0;text-wrap:balance}
+.intro{color:var(--muted);margin:0;max-width:62ch}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.facts li{font-size:13px;padding:4px 10px;border-radius:999px;background:var(--leaf-soft);color:var(--leaf);font-weight:700}
+
+section.sec{display:flex;flex-direction:column;gap:18px}
+.sec-head{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--fg);padding-bottom:6px}
+.sec-letter{font-family:var(--display);font-weight:700;font-size:15px;color:var(--accent-ink);background:var(--accent);width:28px;height:28px;border-radius:50%;display:grid;place-items:center;flex:none;transform:translateY(4px)}
+.sec-head h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0}
+
+.q{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.q.done{border-color:color-mix(in srgb,var(--leaf) 45%,var(--line))}
+.q-label{font-weight:700;display:flex;gap:8px}
+.q-num{font-family:var(--mono);font-size:13px;color:var(--muted);padding-top:3px;flex:none;font-variant-numeric:tabular-nums}
+.q-help{font-size:14px;color:var(--muted);margin:-4px 0 0 0}
+input[type=text],input[type=number],textarea{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+textarea{min-height:84px;resize:vertical}
+input:focus-visible,textarea:focus-visible,button:focus-visible,.pill input:focus-visible+span{outline:3px solid var(--sun);outline-offset:2px}
+.unit-row{display:flex;align-items:center;gap:10px}
+.unit-row input{max-width:160px}
+.unit-row span{color:var(--muted)}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{position:relative}
+.pill input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.pill span{display:inline-block;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg);font-size:15px;cursor:pointer;user-select:none}
+.pill input:checked+span{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+.months .pill span{min-width:52px;text-align:center;padding-inline:8px}
+.note{font-size:15px}
+
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));z-index:5}
+.bar-in{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:14px}
+.prog{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.prog-txt{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.track{height:6px;background:var(--line);border-radius:999px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--leaf);transition:width .25s}
+button{font:inherit;cursor:pointer;border-radius:999px;padding:11px 18px;border:1px solid transparent}
+.btn-main{background:var(--accent);color:var(--accent-ink);font-weight:700}
+.btn-ghost{background:transparent;color:var(--fg);border-color:var(--line)}
+
+#resume{display:flex;flex-direction:column;gap:14px;scroll-margin-top:16px}
+#resume h2{font-family:var(--display);font-size:24px;margin:0}
+.steps{margin:0;padding-left:20px;color:var(--muted)}
+#out{width:100%;min-height:320px;font-family:var(--mono);font-size:13px;line-height:1.55;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:var(--r);padding:14px;white-space:pre-wrap}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.status{font-size:14px;color:var(--leaf);font-weight:700}
+footer{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion: reduce){.fill{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Projet pilote · 1 hectare de maracuja</div>
+    <h1>Diagnostic rural participatif du site pilote</h1>
+    <p class="intro">Ce questionnaire décrit la situation réelle du terrain : ses points forts et ses points à améliorer. Les réponses permettront à Rogério, agronome au Ceará (Brésil), de préparer le plan de culture du maracuja (fruit de la passion) adapté au site. Répondez avec ce que vous savez ; « Je ne sais pas » est une bonne réponse.</p>
+    <ul class="facts">
+      <li>≈ 20 minutes</li>
+      <li>35 questions</li>
+      <li>Brouillon gardé sur ce téléphone</li>
+    </ul>
+  </header>
+
+  <form id="f" novalidate></form>
+
+  <section id="resume" hidden>
+    <h2>Résumé à envoyer</h2>
+    <ol class="steps">
+      <li>Appuyez sur « Copier le résumé ».</li>
+      <li>Ouvrez le groupe WhatsApp et collez le texte.</li>
+      <li>Ajoutez quelques photos du terrain, du sol et de la source d'eau.</li>
+    </ol>
+    <textarea id="out" readonly aria-label="Résumé des réponses"></textarea>
+    <div class="row">
+      <button type="button" class="btn-main" id="copy">Copier le résumé</button>
+      <span class="status" id="copied" role="status"></span>
+    </div>
+  </section>
+
+  <footer>
+    <span>Les réponses restent sur cet appareil jusqu'à ce que vous les envoyiez sur WhatsApp.</span>
+    <div class="row">
+      <button type="button" class="btn-ghost" id="reset">Effacer toutes les réponses</button>
+      <button type="button" class="btn-main" id="reset-ok" hidden>Oui, tout effacer</button>
+    </div>
+  </footer>
+</div>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="prog">
+      <span class="prog-txt" id="prog-txt">0 / 35 répondues</span>
+      <div class="track"><div class="fill" id="prog-fill"></div></div>
+    </div>
+    <button type="button" class="btn-main" id="gen">Voir le résumé</button>
+  </div>
+</div>
+
+<script>
+const NSP = "Je ne sais pas";
+const SECTIONS = [
+  ["A","Le site et son accès"],
+  ["B","L'eau"],
+  ["C","Pluies et drainage"],
+  ["D","Le sol"],
+  ["E","Fumier, compost et matériel"],
+  ["F","Engrais et traitements"],
+  ["G","Main-d'œuvre"],
+  ["H","Environnement de culture"],
+  ["I","Marché et calendrier"],
+  ["J","Bilan"]
+];
+const Q = [
+  {s:"A",id:"repondant",t:"text",label:"Votre nom et votre rôle sur le site",short:"Répondant",ph:"Ex. : Moussa Diallo, gérant du terrain"},
+  {s:"A",id:"lieu",t:"text",label:"Où se trouve le terrain ?",short:"Localisation",help:"Village, commune, département, région. Ajoutez le lien Google Maps si possible.",ph:"Ex. : Keur Massar, Dakar"},
+  {s:"A",id:"surface",t:"number",unit:"ha",label:"Surface totale disponible",short:"Surface totale",help:"Le pilote utilisera 1 ha. Indiquez la surface totale qui pourrait servir plus tard.",note:true,noteph:"Précision (ex. : terrain en un seul bloc ?)"},
+  {s:"A",id:"foncier",t:"radio",label:"Statut du terrain",short:"Statut foncier",help:"Le maracuja produit pendant 1 an à 1 an et demi, puis on peut replanter ou installer des arbres fruitiers : il faut pouvoir utiliser le terrain plusieurs années.",opts:["Propriété (titre foncier ou bail)","Terre familiale","Terre attribuée par la commune","Location",NSP],note:true,noteph:"Durée possible d'utilisation, documents existants…"},
+  {s:"A",id:"acces",t:"radio",label:"La piste jusqu'au terrain pendant l'hivernage",short:"Accès en hivernage",opts:["Praticable toute l'année","Difficile en hivernage","Impraticable en hivernage",NSP],note:true,noteph:"Distance à la route goudronnée et au marché le plus proche (km)"},
+  {s:"A",id:"reseau",t:"radio",label:"Réseau téléphone et internet sur le terrain",short:"Réseau mobile",help:"Le suivi avec Rogério se fera à distance, par photos et appels WhatsApp.",opts:["Bon réseau 4G","Réseau faible, appels seulement","Pas de réseau sur le terrain"]},
+
+  {s:"B",id:"source",t:"check",label:"D'où vient l'eau disponible sur le terrain ?",short:"Source d'eau",opts:["Forage","Puits","Réseau (SDE / Sen'Eau)","Fleuve, marigot ou bassin","Aucune pour l'instant"],note:true,noteph:"Profondeur, distance à la parcelle, autre source…"},
+  {s:"B",id:"eau_seche",t:"radio",label:"Quantité d'eau en pleine saison sèche (mars à juin)",short:"Eau en saison sèche",opts:["Abondante","Suffisante","Limitée","L'eau s'arrête",NSP],note:true,noteph:"Débit connu (m³/heure) ou nombre d'heures de pompage par jour"},
+  {s:"B",id:"qualite_eau",t:"radio",label:"Goût et qualité de l'eau",short:"Qualité de l'eau",help:"Une eau salée abîme le sol et les plantes.",opts:["Douce, bonne à boire","Légèrement salée","Salée",NSP],note:true,noteph:"Analyse d'eau déjà faite ? Résultats"},
+  {s:"B",id:"irrigation",t:"check",label:"Équipement d'irrigation et d'énergie déjà présent",short:"Irrigation / énergie",opts:["Aucun","Arrosage manuel (seau, tuyau)","Aspersion","Goutte-à-goutte","Pompe solaire","Pompe électrique (réseau)","Pompe à gasoil","Château d'eau ou réservoir"]},
+
+  {s:"C",id:"mois_pluie",t:"months",label:"Pendant quels mois pleut-il ?",short:"Mois de pluie"},
+  {s:"C",id:"pluvio",t:"number",unit:"mm / an",label:"Quantité de pluie par an (environ)",short:"Pluviométrie",help:"Si vous ne savez pas, laissez vide ou indiquez si l'année est plutôt sèche ou pluvieuse.",note:true,noteph:"Source (station météo, ANACIM, estimation…)"},
+  {s:"C",id:"inondation",t:"radio",label:"Après une forte pluie, l'eau stagne-t-elle sur la parcelle ?",short:"Eau stagnante",help:"Le maracuja ne supporte pas les racines dans l'eau. Un sol bien drainé est essentiel.",opts:["Jamais, l'eau s'infiltre vite","Parfois, dans certaines zones","Souvent, la parcelle est inondée",NSP],note:true,noteph:"Quelles zones ? Combien de temps ?"},
+
+  {s:"D",id:"sol",t:"radio",label:"Type de sol de la parcelle",short:"Type de sol",opts:["Sableux (dior)","Argileux (deck)","Mélange dior-deck","Latéritique / gravillons","Sol salé (tanne)",NSP],note:true,noteph:"Couleur, présence de cailloux…"},
+  {s:"D",id:"pente",t:"radio",label:"Le terrain est…",short:"Pente",opts:["Plat","En légère pente","En forte pente","Dans un bas-fond"]},
+  {s:"D",id:"analyse_sol",t:"radio",label:"Une analyse de sol a-t-elle déjà été faite ?",short:"Analyse de sol",opts:["Oui, récemment (moins de 3 ans)","Oui, il y a longtemps","Non, jamais",NSP],note:true,noteph:"Laboratoire, résultats (pH, matière organique…) ou envoyez une photo du rapport"},
+  {s:"D",id:"historique",t:"textarea",label:"Qu'est-ce qui a été cultivé sur cette parcelle ces dernières années ?",short:"Cultures précédentes",help:"Cultures, années, engrais ou produits utilisés, ou parcelle en jachère depuis combien de temps.",ph:"Ex. : arachide en 2023, jachère depuis"},
+  {s:"D",id:"arbres",t:"radio",label:"Y a-t-il des arbres ou de l'ombre sur la parcelle ?",short:"Arbres / ombre",help:"Le maracuja a besoin de plein soleil, mais une haie peut protéger du vent.",opts:["Parcelle dégagée, plein soleil","Quelques arbres isolés","Beaucoup d'arbres à dégager","Haie brise-vent autour"]},
+
+  {s:"E",id:"fumier",t:"check",label:"Fumier disponible sur place ou à proximité",short:"Fumier",help:"Le fumier sert à fabriquer le compost, la base de la culture.",opts:["Bovins","Chèvres / moutons","Volaille","Chevaux / ânes","Aucun"],note:true,noteph:"Quantité possible (charrettes par mois), gratuit ou prix"},
+  {s:"E",id:"vegetal",t:"check",label:"Matières végétales pour le compost",short:"Matière végétale",opts:["Paille","Résidus de récolte (fanes, tiges)","Coques d'arachide","Feuilles et branches de taille","Herbe coupée","Peu ou rien"]},
+  {s:"E",id:"materiel",t:"check",label:"Ce qu'on trouve facilement près du site",short:"Matériel local",help:"Pour le palissage : un piquet tous les 3 m et du fil de fer à environ 1,80 m de hauteur.",opts:["Piquets en bois","Fil de fer","Tuyaux PVC / polyéthylène","Sachets de pépinière","Graines de maracuja"],note:true,noteph:"Origine des graines, prix…"},
+
+  {s:"F",id:"engrais_org",t:"check",label:"Engrais organiques utilisés aujourd'hui",short:"Engrais organiques utilisés",help:"Sur ce terrain ou dans les champs voisins.",opts:["Aucun","Fumier","Compost","Fientes de volaille","Tourteau (arachide, neem)","Engrais organique acheté (granulés)"],note:true,noteph:"Quels produits exactement ? Quantités, fréquence, prix"},
+  {s:"F",id:"engrais_min",t:"check",label:"Engrais minéraux (chimiques) utilisés aujourd'hui",short:"Engrais minéraux utilisés",opts:["Aucun","NPK (15-15-15, 6-20-10, 10-10-20…)","Urée","Phosphate (DAP, TSP)","Potasse (chlorure ou sulfate)"],note:true,noteph:"Quels produits et marques ? Doses, prix, d'où ils viennent"},
+  {s:"F",id:"boutique",t:"radio",label:"Y a-t-il des boutiques d'intrants agricoles dans la région ?",short:"Boutiques d'intrants",help:"Boutiques qui vendent semences, engrais, produits de traitement, matériel d'irrigation.",opts:["Oui, à moins de 10 km","Oui, entre 10 et 50 km","Seulement en ville, à plus de 50 km","Non, aucune",NSP],note:true,noteph:"Nom, ville, ce qu'on y trouve"},
+  {s:"F",id:"def_naturels",t:"check",label:"Traitements naturels utilisés ou connus",short:"Traitements naturels",opts:["Aucun","Neem (feuilles, graines, huile)","Piment","Ail","Savon ou détergent","Cendre","Extraits ou purins de plantes"],note:true,noteph:"Utilisés ou seulement connus ? Contre quels insectes ou maladies ? Recette"},
+  {s:"F",id:"def_chimiques",t:"check",label:"Produits chimiques de traitement utilisés ou connus",short:"Traitements chimiques",help:"Pour connaître les pratiques actuelles. Le projet privilégie les méthodes naturelles.",opts:["Aucun","Insecticides","Fongicides","Herbicides","Nématicides"],note:true,noteph:"Noms des produits, contre quoi, utilisés ou seulement connus"},
+
+  {s:"G",id:"mo",t:"number",unit:"personnes",label:"Combien de personnes peuvent travailler sur la parcelle ?",short:"Main-d'œuvre",note:true,noteph:"Coût d'une journée de travail (FCFA) ou salaire mensuel"},
+  {s:"G",id:"experience",t:"check",label:"Expérience de l'équipe sur place",short:"Expérience de l'équipe",opts:["Maraîchage","Arbres fruitiers","Pépinière (semis en sachets)","Compostage","Irrigation goutte-à-goutte","Taille et palissage","Aucune expérience agricole"],note:true,noteph:"Qui a quelle expérience ?"},
+  {s:"G",id:"presence",t:"radio",label:"Quelqu'un peut-il être présent chaque jour, y compris l'après-midi ?",short:"Présence quotidienne",help:"La fleur du maracuja ne vit qu'une journée. Elle doit être pollinisée à la main entre 13 h et 16 h, sinon elle tombe sans donner de fruit.",opts:["Oui, une personne dédiée","Oui, mais à organiser","Non, pas pour l'instant"]},
+
+  {s:"H",id:"protection",t:"radio",label:"La parcelle est-elle protégée des animaux en divagation ?",short:"Clôture",opts:["Clôture complète","Clôture partielle","Pas de clôture"],note:true,noteph:"Type de clôture, gardiennage…"},
+  {s:"H",id:"milieu",t:"check",label:"Ce que vous avez déjà observé dans la zone",short:"Observations",opts:["Maracuja cultivé par des voisins","Grosses abeilles noires (xylocopes)","Termites","Vents forts","Vol de récoltes"],note:true,noteph:"Autres remarques"},
+
+  {s:"I",id:"debouches",t:"check",label:"Où pourrait-on vendre les fruits ou la pulpe ?",short:"Débouchés",help:"Au Brésil, le maracuja se vend surtout en pulpe pour les jus ; hôtels et restaurants l'utilisent aussi pour les cocktails.",opts:["Marché local","Bana-bana / commerçants","Hôtels et restaurants","Transformateurs de jus et pulpe","Supermarchés","Export",NSP],note:true,noteph:"Prix connus du maracuja ou de la pulpe, contacts d'acheteurs…"},
+  {s:"I",id:"demarrage",t:"radio",label:"Quand le site peut-il être prêt pour planter ?",short:"Démarrage possible",help:"Objectif : premiers plants en terre avant la fin de l'année. Les plants passent environ 40 jours en pépinière avant.",opts:["Tout de suite","D'ici 1 mois","D'ici 2 à 3 mois","Plus tard"],note:true,noteph:"Ce qu'il faut faire avant (défricher, clôturer, réparer le forage…)"},
+
+  {s:"J",id:"forces",t:"textarea",label:"Points forts du site",short:"Points forts",help:"Ce qui facilitera la culture : eau, accès, personnes motivées, marché proche…"},
+  {s:"J",id:"ameliorer",t:"textarea",label:"Points à améliorer et principales difficultés",short:"Points à améliorer",help:"Ce qui risque de poser problème et ce qu'il faudrait régler avant de planter."}
+];
+const MONTHS = ["Janv.","Févr.","Mars","Avr.","Mai","Juin","Juil.","Août","Sept.","Oct.","Nov.","Déc."];
+const KEY = "drp-maracuja-v1";
+const TOTAL = Q.length;
+
+const form = document.getElementById("f");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function pillsHTML(q, type, opts){
+  return opts.map((o,i) => `<label class="pill"><input type="${type}" name="q_${q.id}" id="q_${q.id}_${i}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join("");
+}
+function render(){
+  let n = 0, html = "";
+  for (const [letter, title] of SECTIONS){
+    html += `<section class="sec"><div class="sec-head"><span class="sec-letter">${letter}</span><h2>${esc(title)}</h2></div>`;
+    for (const q of Q.filter(x => x.s === letter)){
+      n++; q.n = n;
+      let field = "";
+      if (q.t === "text") field = `<input type="text" id="q_${q.id}" name="q_${q.id}" placeholder="${esc(q.ph||"")}">`;
+      if (q.t === "textarea") field = `<textarea id="q_${q.id}" name="q_${q.id}" placeholder="${esc(q.ph||"")}"></textarea>`;
+      if (q.t === "number") field = `<div class="unit-row"><input type="number" inputmode="decimal" min="0" step="any" id="q_${q.id}" name="q_${q.id}"><span>${esc(q.unit)}</span></div>`;
+      if (q.t === "radio") field = `<div class="pills" role="radiogroup">${pillsHTML(q,"radio",q.opts)}</div>`;
+      if (q.t === "check") field = `<div class="pills">${pillsHTML(q,"checkbox",q.opts)}</div>`;
+      if (q.t === "months") field = `<div class="pills months">${pillsHTML(q,"checkbox",MONTHS)}</div>`;
+      const note = q.note ? `<input type="text" class="note" id="n_${q.id}" name="n_${q.id}" placeholder="${esc(q.noteph||"Précision")}">` : "";
+      const help = q.help ? `<p class="q-help">${esc(q.help)}</p>` : "";
+      html += `<div class="q" id="box_${q.id}"><div class="q-label"><span class="q-num">${String(n).padStart(2,"0")}</span><span>${esc(q.label)}</span></div>${help}${field}${note}</div>`;
+    }
+    html += `</section>`;
+  }
+  form.innerHTML = html;
+}
+
+function collect(){
+  const out = {};
+  for (const q of Q){
+    let vals = [];
+    if (["radio","check","months"].includes(q.t)){
+      vals = [...form.querySelectorAll(`input[name="q_${q.id}"]:checked`)].map(i => i.value);
+    } else {
+      const v = form.querySelector(`#q_${q.id}`).value.trim();
+      if (v) vals = [v];
+    }
+    const nEl = form.querySelector(`#n_${q.id}`);
+    out[q.id] = {vals, note: nEl ? nEl.value.trim() : ""};
+  }
+  return out;
+}
+function answered(a){ return a.vals.length > 0 || a.note.length > 0; }
+
+function progress(){
+  const data = collect();
+  let done = 0;
+  for (const q of Q){
+    const ok = answered(data[q.id]);
+    if (ok) done++;
+    document.getElementById("box_"+q.id).classList.toggle("done", ok);
+  }
+  document.getElementById("prog-txt").textContent = `${done} / ${TOTAL} répondues`;
+  document.getElementById("prog-fill").style.width = (done/TOTAL*100) + "%";
+  return data;
+}
+
+function save(data){
+  try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e) {}
+}
+function restore(){
+  let data = null;
+  try { data = JSON.parse(localStorage.getItem(KEY) || "null"); } catch(e) {}
+  if (!data) return;
+  for (const q of Q){
+    const a = data[q.id]; if (!a) continue;
+    if (["radio","check","months"].includes(q.t)){
+      form.querySelectorAll(`input[name="q_${q.id}"]`).forEach(i => { i.checked = a.vals.includes(i.value); });
+    } else if (a.vals[0]) {
+      form.querySelector(`#q_${q.id}`).value = a.vals[0];
+    }
+    const nEl = form.querySelector(`#n_${q.id}`);
+    if (nEl && a.note) nEl.value = a.note;
+  }
+}
+
+function summary(data){
+  const today = new Date().toLocaleDateString("fr-FR", {day:"numeric", month:"long", year:"numeric"});
+  const lines = ["*DIAGNOSTIC RURAL PARTICIPATIF – MARACUJA*", "Site pilote 1 ha · " + today, ""];
+  for (const [letter, title] of SECTIONS){
+    lines.push(`*${letter}. ${title.toUpperCase()}*`);
+    for (const q of Q.filter(x => x.s === letter)){
+      const a = data[q.id];
+      let v = a.vals.length ? a.vals.join(", ") : "—";
+      if (a.vals.length && q.unit) v += " " + q.unit;
+      if (a.note) v += (a.vals.length ? " — " : "") + a.note;
+      if (!a.vals.length && a.note) v = a.note;
+      lines.push(`${q.n}. ${q.short} : ${v}`);
+    }
+    lines.push("");
+  }
+  lines.push("(Photos du terrain, du sol et de la source d'eau envoyées à la suite)");
+  return lines.join("\n");
+}
+
+render();
+restore();
+progress();
+
+let t;
+form.addEventListener("input", () => {
+  clearTimeout(t);
+  t = setTimeout(() => {
+    const data = progress();
+    save(data);
+    if (!document.getElementById("resume").hidden) document.getElementById("out").value = summary(data);
+  }, 250);
+});
+form.addEventListener("submit", e => e.preventDefault());
+
+document.getElementById("gen").addEventListener("click", () => {
+  const data = progress();
+  save(data);
+  const box = document.getElementById("resume");
+  document.getElementById("out").value = summary(data);
+  document.getElementById("copied").textContent = "";
+  box.hidden = false;
+  box.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+});
+
+document.getElementById("copy").addEventListener("click", () => {
+  const out = document.getElementById("out");
+  const msg = document.getElementById("copied");
+  const fallback = () => { out.focus(); out.select(); msg.textContent = "Texte sélectionné : appuyez longuement puis « Copier »."; };
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(out.value).then(() => { msg.textContent = "Copié. Collez-le dans WhatsApp."; }, fallback);
+  } else fallback();
+});
+
+const resetBtn = document.getElementById("reset"), resetOk = document.getElementById("reset-ok");
+resetBtn.addEventListener("click", () => { resetOk.hidden = !resetOk.hidden; });
+resetOk.addEventListener("click", () => {
+  form.reset();
+  try { localStorage.removeItem(KEY); } catch(e) {}
+  resetOk.hidden = true;
+  document.getElementById("resume").hidden = true;
+  progress();
+  window.scrollTo({top:0});
+});
+</script>
+
+</body>
+</html>
