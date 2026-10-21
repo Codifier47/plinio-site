@@ -624,6 +624,61 @@
       .contact-links { margin-top: 40px; }
       .contact-links a { font-size: 19px; }
     }
+
+    /* CHAT AVATAR (Attlas bubble). Attlas draws the button; we only frame it and add a one-time note. */
+    #attlas-chat-button {
+      border: 1px solid var(--ink);
+      animation: chat-peek 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+    }
+    @keyframes chat-peek {
+      from { translate: 0 90px; }
+      to   { translate: 0 0; }
+    }
+    .chat-note {
+      position: fixed;
+      right: calc(2rem + 52px + 12px);
+      bottom: calc(2rem + 8px);
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      max-width: 230px;
+      padding: 8px 6px 8px 14px;
+      background: var(--paper);
+      border: 1px solid var(--ink);
+      border-radius: 14px 14px 4px 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.3;
+      color: var(--ink);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .chat-note.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .chat-note[hidden] { display: none; }
+    .chat-note-text {
+      all: unset;
+      cursor: pointer;
+    }
+    .chat-note-close {
+      all: unset;
+      cursor: pointer;
+      padding: 0 6px;
+      font-size: 16px;
+      line-height: 1;
+      color: var(--ink-muted);
+    }
+    .chat-note-close:hover { color: var(--ink); }
+    @media (max-width: 768px) {
+      .chat-note { right: calc(1rem + 52px + 10px); bottom: calc(1rem + 6px); max-width: 190px; font-size: 13px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #attlas-chat-button { animation: none; }
+      .chat-note { transition: none; }
+    }
   </style>
 </head>
 <body>
@@ -954,6 +1009,49 @@
           playDraw();
         }
       });
+    })();
+  </script>
+
+  <!-- Chat avatar: Attlas bubble (homepage only). Chat ID 291 (attlas.so/plinio-me). -->
+  <div class="chat-note" id="chatNote" hidden>
+    <button class="chat-note-text" type="button">Questions about my work? Ask me.</button>
+    <button class="chat-note-close" type="button" aria-label="Dismiss">×</button>
+  </div>
+  <script src="https://attlas.so/embed.js" id="291" async></script>
+  <script>
+    // Note next to the avatar: shows once per visit, only after Attlas has drawn its button.
+    (function () {
+      const note = document.getElementById("chatNote");
+      let seen = false;
+      try { seen = sessionStorage.getItem("chatNoteSeen") === "1"; } catch (e) {}
+
+      function markSeen() { try { sessionStorage.setItem("chatNoteSeen", "1"); } catch (e) {} }
+      function hide() { note.classList.remove("show"); markSeen(); }
+      function show() {
+        note.hidden = false;
+        requestAnimationFrame(() => note.classList.add("show"));
+        markSeen();
+        setTimeout(hide, 12000);
+      }
+
+      let tries = 0;
+      const wait = setInterval(() => {
+        const btn = document.getElementById("attlas-chat-button");
+        if (btn) {
+          clearInterval(wait);
+          btn.addEventListener("click", hide);
+          note.querySelector(".chat-note-text").addEventListener("click", (e) => {
+            e.stopPropagation(); // Attlas closes the panel on outside clicks
+            hide();
+            btn.click();
+          });
+          if (!seen) setTimeout(show, 2500);
+        } else if (++tries > 40) {
+          clearInterval(wait); // Attlas didn't load: show nothing
+        }
+      }, 250);
+
+      note.querySelector(".chat-note-close").addEventListener("click", hide);
     })();
   </script>
 
