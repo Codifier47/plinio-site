@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Work · Plinio Diouf</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="shortcut icon" href="./favicon.svg" />
+  <meta name="description" content="Plinio Diouf takes on contract, fractional, and project-based work: AI automation, agents, research and planning, prototypes, launches, and operations. Based in Houston, open to remote and on-site." />
+
+  <meta property="og:title" content="Project Work · Plinio Diouf" />
+  <meta property="og:description" content="Contract, fractional, and project-based work for startups and large companies. AI automation, agents, research, prototypes, launches, and operations." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://plinio.me/projects.html" />
+  <meta property="og:image" content="https://plinio.me/og-image.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Project Work · Plinio Diouf" />
+  <meta name="twitter:description" content="Contract, fractional, and project-based work for startups and large companies." />
+  <meta name="twitter:image" content="https://plinio.me/og-image.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Borel&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <script>document.documentElement.classList.add("js");</script>
+  <style>
+    :root {
+      --paper: #f4f1ea;
+      --paper-raised: #faf8f2;
+      --ink: #1a1a1a;
+      --ink-soft: #3d3d3d;
+      --ink-muted: #837e70;
+      --rule: rgba(26, 26, 26, 0.18);
+      --rule-soft: rgba(26, 26, 26, 0.10);
+      --grad: linear-gradient(92deg, #ff6bb3 0%, #ff2d8a 22%, #ff3d3d 48%, #ff7a3d 74%, #f5b84a 100%);
+      --serif: "Fraunces", Georgia, "Times New Roman", serif;
+      --script: "Borel", cursive;
+      --sans: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 17px;
+      line-height: 1.55;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+    a:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
+    ::selection { background: var(--ink); color: var(--paper); }
+
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 32px; }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 36px 0 0;
+    }
+    .back-link {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 16px;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.2s ease, transform 0.3s var(--ease);
+    }
+    .back-link:hover { opacity: 0.7; transform: translateX(-3px); }
+    .page-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--ink-muted);
+    }
+
+    .section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+    .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--grad);
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      isolation: isolate;
+      padding: 120px 0 96px;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      top: -140px;
+      right: -260px;
+      width: 620px;
+      height: 620px;
+      border-radius: 50%;
+      background: conic-gradient(from 200deg, #ff6bb3, #ff2d8a, #ff3d3d, #ff7a3d, #f5b84a, #ff6bb3);
+      filter: blur(110px);
+      opacity: 0.2;
+      pointer-events: none;
+      animation: drift 36s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    @keyframes drift {
+      0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+      50%  { transform: translate3d(-150px, 70px, 0) rotate(70deg) scale(1.18); }
+      100% { transform: translate3d(-60px, 150px, 0) rotate(140deg) scale(0.95); }
+    }
+    .hero .section-label { margin-bottom: 28px; }
+    h1 {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(42px, 7vw, 80px);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      max-width: 860px;
+      text-wrap: balance;
+    }
+    h1 em { font-style: italic; display: block; }
+    .lead {
+      margin-top: 32px;
+      font-size: clamp(18px, 2vw, 21px);
+      line-height: 1.6;
+      font-weight: 300;
+      color: var(--ink-soft);
+      max-width: 620px;
+      text-wrap: pretty;
+    }
+    .where {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-top: 22px;
+      font-size: 14px;
+      color: var(--ink-soft);
+    }
+    .where .dot { transform: translateY(-1px); animation: ping 2.8s ease-out infinite; }
+    @keyframes ping {
+      0%   { box-shadow: 0 0 0 0 rgba(255, 61, 61, 0.45); }
+      70%  { box-shadow: 0 0 0 9px rgba(255, 61, 61, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 61, 61, 0); }
+    }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 26px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.3s var(--ease);
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-solid { background: var(--ink); color: var(--paper); }
+    .btn-solid:hover { background: transparent; color: var(--ink); }
+    .btn-line { border-color: rgba(26, 26, 26, 0.3); }
+    .btn-line:hover { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+
+    /* SECTIONS */
+    section { padding: 96px 0; }
+    .section-head { margin-bottom: 48px; }
+    .section-head .section-label { margin-bottom: 22px; }
+    .section-head-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px 40px;
+      flex-wrap: wrap;
+    }
+    h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(30px, 4.2vw, 48px);
+      letter-spacing: -0.015em;
+      line-height: 1.12;
+    }
+    .section-note {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 17px;
+      color: var(--ink-muted);
+    }
+    .num {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--ink-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* EXAMPLE (inside a service row) */
+    .example {
+      margin-top: 18px;
+      padding: 16px 18px;
+      background: var(--paper-raised);
+      border: 1px solid var(--rule-soft);
+      border-radius: 12px;
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--ink);
+      box-shadow: 0 14px 30px -26px rgba(26, 26, 26, 0.5);
+    }
+    .example .tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 6px;
+    }
+    .example .tag .dot { width: 6px; height: 6px; }
+    .example a {
+      display: inline-block;
+      margin-top: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 1px;
+      white-space: nowrap;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .example a:hover { color: var(--ink-muted); border-color: var(--ink-muted); }
+
+    /* SERVICE LIST */
+    .services {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 56px;
+      border-top: 1px solid var(--ink);
+    }
+    .service {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      align-items: baseline;
+      padding: 28px 0 30px;
+      border-bottom: 1px solid var(--rule);
+      transition: padding-left 0.3s ease;
+    }
+    .service:nth-child(even) { --d: 120ms; }
+    .service:hover { padding-left: 10px; }
+    .service h3 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 22px;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .service p { color: var(--ink-soft); font-size: 15.5px; font-weight: 300; line-height: 1.6; }
+
+    .catchall {
+      margin-top: 64px;
+      font-family: var(--serif);
+      font-size: clamp(22px, 2.9vw, 30px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      max-width: 760px;
+      text-wrap: pretty;
+    }
+    .catchall a {
+      font-style: normal;
+      font-weight: 400;
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--ink);
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .catchall a:hover { color: var(--ink-muted); border-color: var(--ink-muted); }
+
+    /* FORMATS */
+    .formats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+    }
+    .format { padding: 34px 28px 38px; border-right: 1px solid var(--rule-soft); }
+    .format:first-child { padding-left: 0; }
+    .format:last-child { border-right: none; padding-right: 0; }
+    .format h3 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 30px;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .format p { color: var(--ink-soft); font-size: 16px; font-weight: 300; }
+
+    /* STEPS */
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; list-style: none; }
+    .steps li { position: relative; padding-top: 34px; }
+    .steps li::before {
+      content: "";
+      position: absolute;
+      top: 4px; left: 0; right: -32px;
+      height: 1px;
+      background: var(--rule);
+    }
+    .steps li:last-child::before { right: 0; }
+    .steps li::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--ink);
+      box-shadow: 0 0 0 5px var(--paper);
+    }
+    .steps li:last-child::after { background: var(--grad); }
+    .steps h3 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 23px;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      margin: 8px 0 10px;
+    }
+    .steps p { color: var(--ink-soft); font-size: 15px; font-weight: 300; line-height: 1.6; }
+
+    .steps { --stagger: 420ms; }
+    .js .step > * {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s ease, transform 0.7s var(--ease);
+      transition-delay: calc(var(--i, 0) * var(--stagger) + 220ms);
+    }
+    .js .step::after {
+      transform: scale(0);
+      transition: transform 0.5s cubic-bezier(0.3, 1.7, 0.5, 1);
+      transition-delay: calc(var(--i, 0) * var(--stagger));
+    }
+    .js .step::before {
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.8s var(--ease);
+      transition-delay: calc(var(--i, 0) * var(--stagger) + 120ms);
+    }
+    .js .step.visible > * { opacity: 1; transform: none; }
+    .js .step.visible::after { transform: scale(1); }
+    .js .step.visible::before { transform: scaleX(1); }
+
+    /* CONTACT */
+    .contact { padding: 48px 0 112px; }
+    .contact-panel {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: clamp(40px, 7vw, 80px);
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 28px;
+    }
+    .contact-panel::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      right: -180px;
+      bottom: -300px;
+      width: 560px;
+      height: 560px;
+      border-radius: 50%;
+      background: conic-gradient(from 200deg, #ff6bb3, #ff2d8a, #ff3d3d, #ff7a3d, #f5b84a, #ff6bb3);
+      filter: blur(100px);
+      opacity: 0.42;
+      pointer-events: none;
+      animation: drift-panel 30s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    @keyframes drift-panel {
+      0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+      100% { transform: translate3d(-220px, -40px, 0) rotate(-120deg) scale(1.2); }
+    }
+    .contact-panel .section-label { color: rgba(244, 241, 234, 0.55); margin-bottom: 24px; }
+    .contact-panel h2 {
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(36px, 5.6vw, 64px);
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+    }
+    .contact-panel .lead { margin-top: 20px; color: rgba(244, 241, 234, 0.74); max-width: 520px; }
+    .contact-panel a:focus-visible { outline-color: var(--paper); }
+    .contact-panel .btn { border-color: rgba(244, 241, 234, 0.34); }
+    .contact-panel .btn-solid { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+    .contact-panel .btn-solid:hover { background: transparent; color: var(--paper); }
+    .contact-panel .btn-line:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+    .contact-panel .more { margin-top: 40px; font-size: 15px; font-weight: 300; color: rgba(244, 241, 234, 0.6); }
+    .contact-panel .more a {
+      color: var(--paper);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(244, 241, 234, 0.5);
+      transition: border-color 0.2s ease;
+    }
+    .contact-panel .more a:hover { border-color: var(--paper); }
+
+    /* FOOTER */
+    footer {
+      padding: 56px 0 48px;
+      border-top: 1px solid var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+    footer .loc { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink); }
+    .script-grad {
+      font-family: var(--script);
+      font-size: 1.15em;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* REVEAL (only when JS is running, so content never stays hidden) */
+    .js .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+      transition-delay: var(--d, 0ms);
+    }
+    .js .reveal.visible { opacity: 1; transform: translateY(0); }
+    .js .service.reveal.settled { transition: padding-left 0.3s ease; transition-delay: 0ms; }
+
+    @media (max-width: 820px) {
+      .services { grid-template-columns: 1fr; }
+      .service:nth-child(even) { --d: 0ms; }
+      .formats { grid-template-columns: 1fr; }
+      .format, .format:first-child, .format:last-child {
+        padding: 26px 0 28px;
+        border-right: none;
+        border-bottom: 1px solid var(--rule-soft);
+      }
+      .format:last-child { border-bottom: none; }
+      .steps { grid-template-columns: 1fr; gap: 0; --stagger: 0ms; }
+      .js .step::before { transform: scaleY(0); transform-origin: top; }
+      .js .step.visible::before { transform: scaleY(1); }
+      .steps li { padding: 0 0 34px 34px; }
+      .steps li:last-child { padding-bottom: 0; }
+      .steps li::before { top: 8px; bottom: -8px; left: 4px; right: auto; width: 1px; height: auto; }
+      .steps li:last-child::before { display: none; }
+      .steps li::after { top: 8px; }
+      .steps h3 { margin-top: 2px; }
+    }
+    @media (max-width: 720px) {
+      .wrap { padding: 0 22px; }
+      nav { padding-top: 22px; }
+      .hero { padding: 72px 0 64px; }
+      .hero::before { width: 420px; height: 420px; right: -220px; top: -120px; filter: blur(80px); }
+      section { padding: 64px 0; }
+      .section-head { margin-bottom: 36px; }
+      .service:hover { padding-left: 0; }
+      .catchall { margin-top: 48px; }
+      .contact { padding: 24px 0 72px; }
+      .contact-panel { border-radius: 22px; padding: 40px 24px; }
+      .btn { padding: 13px 22px; }
+    }
+    @media (max-width: 420px) {
+      .page-title { display: none; }
+      .actions .btn { flex: 1 1 auto; justify-content: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .js .reveal { opacity: 1; transform: none; transition: none; }
+      .btn, .service, .back-link { transition: none; }
+      .btn:hover { transform: none; }
+      .hero::before, .contact-panel::before, .where .dot { animation: none; }
+      .js .step > *, .js .step::before, .js .step::after { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <nav>
+      <a class="back-link" href="./index.html">← Plinio</a>
+      <span class="page-title">Project work</span>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="section-label reveal">Contract · Fractional · Project-based</div>
+      <h1 class="reveal">Got a project that needs <em>an extra pair of hands?</em></h1>
+      <p class="lead reveal">I take on fixed-term projects for teams of any size, from early-stage startups to large companies. You bring the problem. I scope it, do the work, and hand it over ready to use.</p>
+      <p class="where reveal"><span class="dot" aria-hidden="true"></span><span>Based in Houston, Texas. Remote or on-site, and happy to relocate for the right project.</span></p>
+      <div class="actions reveal">
+        <a class="btn btn-solid" href="https://cal.com/plinio-diouf/quick-chat-plinio" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Book a call ↗</a>
+        <a class="btn btn-line" href="mailto:dioufplinio@gmail.com?subject=Project%20inquiry">Email me ↗</a>
+      </div>
+    </header>
+
+    <!-- SERVICES -->
+    <section id="services">
+      <div class="section-head reveal">
+        <div class="section-label">Services</div>
+        <div class="section-head-row">
+          <h2>What I can help with</h2>
+          <p class="section-note">From a single automation to a full launch.</p>
+        </div>
+      </div>
+
+      <div class="services">
+        <div class="service reveal">
+          <span class="num">01</span>
+          <div>
+            <h3>Automate processes with AI</h3>
+            <p>Find the repetitive, manual work slowing your team down, like reports, data entry, follow-ups, or checking for updates, and automate it so it runs on its own.</p>
+            <div class="example">
+              <span class="tag"><span class="dot" aria-hidden="true"></span>Example</span>
+              A monitoring agent that checks a live web page every hour, spots what changed, and emails a plain-language summary.<br>
+              <a href="./agent.html">See how it works →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="service reveal">
+          <span class="num">02</span>
+          <div>
+            <h3>Build AI agents that do the work</h3>
+            <p>Agents that take a task from start to finish: answering calls, booking appointments, replying to customers, or sorting incoming requests.</p>
+            <div class="example">
+              <span class="tag"><span class="dot" aria-hidden="true"></span>Example</span>
+              Call Horns, an AI receptionist that answers the phone for auto repair shops.<br>
+              <a href="https://callhorns.com" target="_blank" rel="noopener">Visit Call Horns ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="service reveal">
+          <span class="num">03</span>
+          <div>
+            <h3>Research and planning</h3>
+            <p>Market research, customer interviews, competitor maps, and business plans that end in a clear recommendation on what to do next.</p>
+          </div>
+        </div>
+
+        <div class="service reveal">
+          <span class="num">04</span>
+          <div>
+            <h3>Prototypes and testing</h3>
+            <p>Turn an idea into something people can try, like a landing page, a simple tool, or a new workflow. Then test it with real users before you invest more.</p>
+          </div>
+        </div>
+
+        <div class="service reveal">
+          <span class="num">05</span>
+          <div>
+            <h3>Launches and new markets</h3>
+            <p>Plan and run the launch of a new product, country, or customer segment: local partners, rules and regulations, pricing, and go-to-market.</p>
+          </div>
+        </div>
+
+        <div class="service reveal">
+          <span class="num">06</span>
+          <div>
+            <h3>Partners and vendors</h3>
+            <p>Find, compare, and negotiate with partners, suppliers, and software vendors, then manage the integration until it is live.</p>
+          </div>
+        </div>
+
+        <div class="service reveal">
+          <span class="num">07</span>
+          <div>
+            <h3>Customer onboarding and growth</h3>
+            <p>Onboarding flows, customer success playbooks, and self-serve paths that get customers live faster and take pressure off your support team.</p>
+          </div>
+        </div>
+
+        <div class="service reveal">
+          <span class="num">08</span>
+          <div>
+            <h3>Data, dashboards, and reporting</h3>
+            <p>Clean up the numbers and build the dashboards your team actually checks, in SQL, Tableau, or plain spreadsheets.</p>
+          </div>
+        </div>
+
+        <div class="service reveal">
+          <span class="num">09</span>
+          <div>
+            <h3>Financial models and decisions</h3>
+            <p>Unit economics, forecasts, and scenario models that help you decide whether to launch, invest, or wait.</p>
+          </div>
+        </div>
+
+        <div class="service reveal">
+          <span class="num">10</span>
+          <div>
+            <h3>Operations and process fixes</h3>
+            <p>Map how work really gets done, find where it breaks, and redesign the process so it runs without constant supervision.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="catchall reveal">Not on the list? If it involves customers, operations, data, or a new idea that needs testing, I can probably help. <a href="mailto:dioufplinio@gmail.com?subject=Project%20inquiry">Tell me about it.</a></p>
+    </section>
+
+    <!-- FORMATS -->
+    <section id="formats">
+      <div class="section-head reveal">
+        <div class="section-label">Engagement</div>
+        <h2>Ways to work together</h2>
+      </div>
+      <div class="formats reveal">
+        <div class="format">
+          <h3>Project</h3>
+          <p>A defined piece of work with a clear deliverable and an end date.</p>
+        </div>
+        <div class="format">
+          <h3>Fractional</h3>
+          <p>A few days a week inside your team, for as long as you need.</p>
+        </div>
+        <div class="format">
+          <h3>Contract</h3>
+          <p>Full-time on your team for a fixed period.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEPS -->
+    <section id="how">
+      <div class="section-head reveal">
+        <div class="section-label">Process</div>
+        <h2>How it works</h2>
+      </div>
+      <ol class="steps">
+        <li class="step" style="--i: 0">
+          <span class="num">01</span>
+          <h3>We talk</h3>
+          <p>A short call about the problem and what a good outcome looks like.</p>
+        </li>
+        <li class="step" style="--i: 1">
+          <span class="num">02</span>
+          <h3>I scope it</h3>
+          <p>You get a short written proposal: what I will do, what you will get, and by when.</p>
+        </li>
+        <li class="step" style="--i: 2">
+          <span class="num">03</span>
+          <h3>I do the work</h3>
+          <p>Regular check-ins along the way, so there are no surprises.</p>
+        </li>
+        <li class="step" style="--i: 3">
+          <span class="num">04</span>
+          <h3>I hand it over</h3>
+          <p>Everything documented, so your team can run it without me.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="contact-panel reveal">
+        <div class="section-label">Get in touch</div>
+        <h2>Have a project in mind?</h2>
+        <p class="lead">Tell me about it, even if it is not fully defined yet. We can shape it together.</p>
+        <div class="actions">
+          <a class="btn btn-solid" href="https://cal.com/plinio-diouf/quick-chat-plinio" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Book a call ↗</a>
+          <a class="btn btn-line" href="mailto:dioufplinio@gmail.com?subject=Project%20inquiry">Email ↗</a>
+          <a class="btn btn-line" href="https://www.linkedin.com/in/plinio-diouf" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+        <p class="more">Want to see my background first? <a href="./index.html">Experience and use cases →</a></p>
+      </div>
+    </section>
+
+    <footer>
+      <div class="loc">Houston, Texas</div>
+      <div><span class="script-grad">Clauded with Love, Plinio 2026</span></div>
+    </footer>
+
+  </div>
+
+  <script>
+    (function () {
+      var els = document.querySelectorAll(".reveal, .step");
+      function show(el) {
+        el.classList.add("visible");
+        // After the entrance finishes, hand the transition back to the hover styles.
+        setTimeout(function () { el.classList.add("settled"); }, 1400);
+      }
+      document.querySelectorAll(".hero .reveal").forEach(function (el, i) {
+        el.style.setProperty("--d", (i * 120) + "ms");
+      });
+      if (!("IntersectionObserver" in window)) { els.forEach(show); return; }
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { show(e.target); observer.unobserve(e.target); }
+        });
+      }, { threshold: 0.1, rootMargin: "0px 0px -60px 0px" });
+      els.forEach(function (el) { observer.observe(el); });
+    })();
+  </script>
+
+  <!-- Vercel Web Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
